@@ -10,6 +10,7 @@ class Sheldon:
         self.language = language
         self.adapter_name = adapter_name
         self.adapter = self.load_adapter(adapter_name)
+        self.blocked_users = self.adapter.adapter_config['blocked_users_id']
 
     def add_module(self, module_name):
         try:
