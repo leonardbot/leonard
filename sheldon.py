@@ -78,7 +78,7 @@ class Sheldon:
                 message_match = regexp.match(message['text'])
                 if message_match is not None:
                     self.loaded_modules[module]['module'].get_answer(
-                        message=message['text'],
+                        message=message,
                         lang=self.language,
                         bot=self
                     )

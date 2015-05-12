@@ -43,7 +43,7 @@ answer = {
 def get_answer(message, lang, bot):
     bot.send_message(
         message_text=answer[lang].format(
-            text=message["message"],
+            text=message["text"],
             name=message["name"]
         )
     )
