@@ -13,7 +13,7 @@ console_adapter_config = {
 def get_messages():
     message = input('Enter message:')
     return [{
-        "message": message,
+        "text": message,
         "time": time(),
         "sender_id": hash(getlogin()),
         "sender_name": getlogin(),
@@ -28,3 +28,4 @@ def send_message(message_text="",
     print("Text:", message_text)
     print("Photos:", message_photos)
     print("Options:", options)
+    return True

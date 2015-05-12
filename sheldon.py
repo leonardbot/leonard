@@ -19,10 +19,16 @@ class Sheldon:
             print("Error with importing module", module_name)
             return False
 
+        module_regexps = []
+        for regexp in module.module_config['regexps'][self.language]:
+            module_regexps.append(re.compile(regexp))
+
+
         self.loaded_modules.update({
             module_name: {
                 "module": module,
-                "config": module.module_config
+                "config": module.module_config,
+                "regexps": module_regexps
             }
         })
         return True
@@ -61,6 +67,33 @@ class Sheldon:
             print("Fatal: Error when connecting with adapter")
             exit()
         return adapter
+
+    def get_messages(self):
+        new_messages = self.adapter.get_messages()
+        return new_messages
+
+    def parse_message(self, message):
+        for module in self.loaded_modules:
+            for regexp in self.loaded_modules[module]['regexps']:
+                message_match = regexp.match(message['text'])
+                if message_match is not None:
+                    self.loaded_modules[module]['module'].get_answer(
+                        message=message['text'],
+                        lang=self.language,
+                        bot=self
+                    )
+                    return True
+
+    def send_message(self, message_text,
+                     message_photos=[], options={}):
+        adapter_response = self.adapter.send_message(
+            message_text, message_photos, options
+        )
+        if adapter_response:
+            return True
+        else:
+            print("Error with sending message '{}'".format(message_text))
+            return False
 
 
 
