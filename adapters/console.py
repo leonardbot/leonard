@@ -1,7 +1,7 @@
 from time import time
 from os import getlogin
 
-console_adapter_config = {
+adapter_config = {
     "name": "console",
     "options": {},
     "blocked_users_id": [],
