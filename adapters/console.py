@@ -4,7 +4,11 @@ from os import getlogin
 console_adapter_config = {
     "name": "console",
     "enable": 1,
-    "options": {}
+    "options": {},
+    "blocked_users_id": [],
+    "bot_admins_id": [
+        hash(getlogin())
+    ]
 }
 
 def get_messages():
@@ -12,7 +16,7 @@ def get_messages():
     return [{
         "message": message,
         "time": time(),
-        "sender_id": None,
+        "sender_id": hash(getlogin()),
         "sender_name": getlogin(),
         "sender_type": None
     }]
