@@ -1,13 +1,13 @@
 import re
 import os
-import settings
 
 
 class Sheldon:
-    language = settings.bot_language
-    adapter = settings.bot_adapter
-
     loaded_modules = []
+
+    def __init__(self, bot_language, bot_adapter):
+        self.language = bot_language
+        self.adapter = bot_adapter
 
     def load_modules(self):
         python_file_regexp = re.compile("(.+)\.py")
