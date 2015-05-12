@@ -44,7 +44,7 @@ def get_answer(message, lang, bot):
     bot.send_message(
         message_text=answer[lang].format(
             text=message["text"],
-            name=message["name"]
+            name=message["sender_name"]
         )
     )
     return True
