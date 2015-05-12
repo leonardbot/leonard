@@ -2,6 +2,7 @@ import re
 import os
 import settings
 
+
 class Sheldon:
     language = settings.bot_language
     adapter = settings.bot_adapter
