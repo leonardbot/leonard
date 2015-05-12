@@ -1,4 +1,4 @@
-module_config ={
+module_config = {
     "name": "test",
     "public_name": {
         "en": "Test",
@@ -30,8 +30,7 @@ module_config ={
             "!т"
         ]
     },
-    "adapters": [],
-    "options": {}
+    "adapters": []
 }
 
 answer = {
