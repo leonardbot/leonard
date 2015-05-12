@@ -18,7 +18,8 @@ def get_messages():
         "time": time(),
         "sender_id": hash(getlogin()),
         "sender_name": getlogin(),
-        "sender_type": None
+        "sender_type": None,
+        "options": {}
     }]
 
 
