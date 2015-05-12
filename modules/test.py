@@ -38,11 +38,15 @@ module_config = [
     }
 ]
 
+answer = {
+    "en": "Test completed. Message: '{text}' from {name}",
+    "ru": "Тест пройден. Cообщение: '{text}' от {name}"
+}
 
 
-def get_answer(message):
+def get_answer(message, lang):
     send_message(
-        message_text="Тест пройден. Cообщение: '{text}' от {name}".format(
+        message_text=answer[lang].format(
             text=message["message"],
             name=message["name"]
         )
