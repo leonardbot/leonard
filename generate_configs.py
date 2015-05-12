@@ -4,17 +4,36 @@ from json import dumps
 modules_config = [
     {
         "name": "test",
-        "public_name": "Test",
-        "description": "Проверка общей работоспособности бота",
-        "regexps": [
-            "!(тест|test|т|t)"
-        ],
-        "command_format": "!тест",
-        "examples": [
-            "!тест",
-            "!test",
-            "!т"
-        ]
+        "public_name": {
+            "en": "Test",
+            "ru": "Тест"
+        },
+        "description": {
+            "en": "Check bot for basic operability",
+            "ru": "Проверка бота на общую работоспособность"
+        },
+        "regexps": {
+                "en": [
+                    "!t(est)?"
+                ],
+                "ru": [
+                    "!т(ест)?"
+                ]
+        },
+        "command_format": {
+            "en": "!test",
+            "ru": "!тест"
+        },
+        "examples": {
+            "en": [
+                "!test",
+                "!t"
+            ],
+            "ru": [
+                "!тест",
+                "!т"
+            ]
+        }
     }
 ]
 modules_config_file = open('config/modules.json', 'w')
