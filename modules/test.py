@@ -1,5 +1,3 @@
-from sheldon import send_message
-
 module_config = [
     {
         "name": "test",
@@ -44,8 +42,8 @@ answer = {
 }
 
 
-def get_answer(message, lang):
-    send_message(
+def get_answer(message, lang, bot):
+    bot.send_message(
         message_text=answer[lang].format(
             text=message["message"],
             name=message["name"]
