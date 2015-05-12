@@ -4,10 +4,11 @@ import os
 
 class Sheldon:
     loaded_modules = {}
+    loaded_adapter = {}
 
-    def __init__(self, bot_language, bot_adapter):
-        self.language = bot_language
-        self.adapter = bot_adapter
+    def __init__(self, language, adapter_name):
+        self.language = language
+        self.adapter = self.load_adapter(adapter_name)
 
     def add_module(self, module_name):
         try:
@@ -49,5 +50,17 @@ class Sheldon:
     def reload_modules(self):
         self.loaded_modules = {}
         self.load_modules()
+
+    def load_adapter(self, adapter_name='console'):
+        try:
+            adapter = __import__('adapters.' + adapter_name,
+                                 fromlist=[''])
+        except ImportError as error_msg:
+            adapter = None
+            print(error_msg)
+            print("Fatal: Error when connecting with adapter")
+            exit()
+        return adapter
+
 
 
