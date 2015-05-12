@@ -8,6 +8,7 @@ class Sheldon:
 
     def __init__(self, language, adapter_name):
         self.language = language
+        self.adapter_name = adapter_name
         self.adapter = self.load_adapter(adapter_name)
 
     def add_module(self, module_name):
@@ -19,10 +20,15 @@ class Sheldon:
             print("Error with importing module", module_name)
             return False
 
+        # If in config specificated some adapters,
+        # check, can this adapter work with this module
+        if module.module_config['adapters']:
+            if self.adapter_name not in module.module_config['adapters']:
+                return False
+
         module_regexps = []
         for regexp in module.module_config['regexps'][self.language]:
             module_regexps.append(re.compile(regexp))
-
 
         self.loaded_modules.update({
             module_name: {
