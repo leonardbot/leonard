@@ -80,14 +80,15 @@ class Sheldon:
                     self.loaded_modules[module]['module'].get_answer(
                         message=message,
                         lang=self.language,
-                        bot=self
+                        bot=self,
+                        options=message_match.groups()
                     )
                     return True
 
     def send_message(self, message_text,
-                     message_photos=[], options={}):
+                     message_photos=[]):
         adapter_response = self.adapter.send_message(
-            message_text, message_photos, options
+            message_text, message_photos
         )
         if adapter_response:
             return True

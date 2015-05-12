@@ -17,15 +17,12 @@ def get_messages():
         "time": time(),
         "sender_id": hash(getlogin()),
         "sender_name": getlogin(),
-        "sender_type": None,
-        "options": {}
+        "sender_type": None
     }]
 
 
 def send_message(message_text="",
-                 message_photos=[],
-                 options={}):
+                 message_photos=[]):
     print("Text:", message_text)
     print("Photos:", message_photos)
-    print("Options:", options)
     return True

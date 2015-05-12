@@ -40,7 +40,7 @@ answer = {
 }
 
 
-def get_answer(message, lang, bot):
+def get_answer(message, lang, bot, options):
     bot.send_message(
         message_text=answer[lang].format(
             text=message["text"],
