@@ -33,19 +33,10 @@ modules_config = [
                 "!тест",
                 "!т"
             ]
-        }
+        },
+        "adapters": []
     }
 ]
 modules_config_file = open('config/modules.json', 'w')
 modules_config_file.write(dumps(modules_config))
 modules_config_file.close()
-
-# Adapters config
-console_adapter_config = {
-    "name": "console",
-    "enable": 1,
-    "options": {}
-}
-console_adapter_config_file = open('config/adapters/console.json', 'w')
-console_adapter_config_file.write(dumps(console_adapter_config))
-console_adapter_config_file.close()
