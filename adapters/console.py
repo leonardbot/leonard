@@ -5,7 +5,7 @@ adapter_config = {
     "name": "console",
     "options": {},
     "blocked_users_id": [],
-    "bot_admins_id": [
+    "admin_ids": [
         hash(getlogin())
     ]
 }

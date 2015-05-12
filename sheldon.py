@@ -11,6 +11,7 @@ class Sheldon:
         self.adapter_name = adapter_name
         self.adapter = self.load_adapter(adapter_name)
         self.blocked_users = self.adapter.adapter_config['blocked_users_id']
+        self.admins = self.adapter.adapter_config['admin_ids']
 
     def add_module(self, module_name):
         try:
@@ -101,6 +102,13 @@ class Sheldon:
             return True
         else:
             print("Error with sending message '{}'".format(message_text))
+            return False
+
+    def is_admin(self, sender_id):
+        """Function, that checks is user admin of adapter or not"""
+        if sender_id in self.admins:
+            return True
+        else:
             return False
 
 
