@@ -3,7 +3,6 @@ from os import getlogin
 
 console_adapter_config = {
     "name": "console",
-    "enable": 1,
     "options": {},
     "blocked_users_id": [],
     "bot_admins_id": [
