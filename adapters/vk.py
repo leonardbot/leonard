@@ -68,3 +68,4 @@ def send_message(sender_id, sender_type,
         'message': message_text
     }
     vk.method('messages.send', message)
+    return True
