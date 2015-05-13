@@ -42,6 +42,8 @@ def get_messages():
     global last_message_id
     response = vk.method('messages.get', {'last_message_id': last_message_id})
     messages = []
+    if response['items']:
+        last_message_id = response['items'][-1]['id']
     for item in response['items']:
         message = {
             'text': item['body'],
@@ -56,7 +58,6 @@ def get_messages():
             message['sender_id'] = item['user_id']
             message['sender_type'] = 'user'
         messages.append(message)
-    last_message_id = response['items'][-1]['id']
     return messages
 
 
