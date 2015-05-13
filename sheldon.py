@@ -30,7 +30,7 @@ class Sheldon:
 
         module_regexps = []
         for regexp in module.module_config['regexps'][self.language]:
-            module_regexps.append(re.compile(regexp))
+            module_regexps.append(re.compile(regexp, re.IGNORECASE))
 
         self.loaded_modules.update({
             module_name: {
