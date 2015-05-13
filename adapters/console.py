@@ -3,7 +3,6 @@ from os import getlogin
 
 adapter_config = {
     "name": "console",
-    "options": {},
     "blocked_users_id": [],
     "admin_ids": [
         hash(getlogin())
