@@ -39,6 +39,7 @@ last_message_id = vk.method('messages.get', {
 
 
 def get_messages():
+    global last_message_id
     response = vk.method('messages.get', {'last_message_id': last_message_id})
     messages = []
     for item in response['items']:
@@ -55,11 +56,14 @@ def get_messages():
             message['sender_id'] = item['user_id']
             message['sender_type'] = 'user'
         messages.append(message)
+    last_message_id = response['items'][-1]['id']
     return messages
 
 
 def send_message(sender_id, sender_type,
                  message_text="", message_photos=[]):
-    print("Text:", message_text)
-    print("Photos:", message_photos)
-    return True
+    message = {
+        sender_type + '_id': sender_id,
+        'message': message_text
+    }
+    return message
