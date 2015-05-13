@@ -42,17 +42,20 @@ def get_messages():
     response = vk.method('messages.get', {'last_message_id': last_message_id})
     messages = []
     for item in response['items']:
-        messages.append({
+        message = {
             'text': item['body'],
-            'time':
-        })
-    return [{
-        "text": message,
-        "time": time(),
-        "sender_id": hash(getlogin()),
-        "sender_name": getlogin(),
-        "sender_type": None
-    }]
+            'time': item['date'],
+            'sender_id': None,
+            'sender_type': None
+        }
+        if 'chat_id' in item:
+            message['sender_id'] = item['chat_id']
+            message['sender_type'] = 'chat'
+        else:
+            message['sender_id'] = item['user_id']
+            message['sender_type'] = 'user'
+        messages.append(message)
+    return messages
 
 
 def send_message(sender_id, sender_type,
