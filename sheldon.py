@@ -3,10 +3,21 @@ import os
 
 
 class Sheldon:
+    """
+    Sheldon class - main class of the bot.
+    When bot starting, creating new instance of Sheldon.
+    """
     loaded_modules = {}
     loaded_adapter = {}
 
     def __init__(self, language, adapter_name):
+        """
+        Constructor, which creating new bot and loading adapter.
+
+        :param language: string, 'en' or 'ru'
+        :param adapter_name: string, for example, 'console'
+        :return:
+        """
         self.language = language
         self.adapter_name = adapter_name
         self.adapter = self.load_adapter(adapter_name)
@@ -14,6 +25,12 @@ class Sheldon:
         self.admins = self.adapter.adapter_config['admin_ids']
 
     def add_module(self, module_name):
+        """
+        Adding new module to connected modules
+
+        :param module_name: string, for example, 'test' or 'say'
+        :return: bool, if everything ok - True, else - False
+        """
         try:
             module = __import__('modules.' + module_name,
                                 fromlist=[''])
@@ -42,12 +59,23 @@ class Sheldon:
         return True
 
     def delete_module(self, module_name):
+        """
+        Delete module from connected modules
+
+        :param module_name: string, for example, 'test' or 'say'
+        :return:
+        """
         try:
             self.loaded_modules.pop(module_name)
         except KeyError:
             print("Module {} is not loaded".format(module_name))
 
     def load_modules(self):
+        """
+        Function for load all modules from modules folder
+
+        :return:
+        """
         python_file_regexp = re.compile("(.+)\.py")
         modules_folder = os.listdir('modules')
         for file in modules_folder:
@@ -61,11 +89,13 @@ class Sheldon:
         else:
             print("Loaded {} modules".format(str(len(self.loaded_modules))))
 
-    def reload_modules(self):
-        self.loaded_modules = {}
-        self.load_modules()
-
     def load_adapter(self, adapter_name='console'):
+        """
+        Load adapter for bot
+
+        :param adapter_name: string, for example, 'console'
+        :return:
+        """
         try:
             adapter = __import__('adapters.' + adapter_name,
                                  fromlist=[''])
@@ -77,6 +107,12 @@ class Sheldon:
         return adapter
 
     def get_messages(self):
+        """
+        Function to check and get new messages from adapter
+
+        :return: list of dictionaries, with 'text', 'time',
+                 'sender_id', 'sender_name', 'sender_type'
+        """
         new_messages = self.adapter.get_messages()
         return new_messages
 
