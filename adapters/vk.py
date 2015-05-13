@@ -36,6 +36,7 @@ vk = vk_api.VkApi(vk_login, vk_password)
 last_message_id = vk.method('messages.get', {
     'count': 1
 })['items'][0]['id']
+vk_upload = vk_api.VkUpload(vk)
 
 
 def get_messages():
@@ -67,5 +68,24 @@ def send_message(sender_id, sender_type,
         sender_type + '_id': sender_id,
         'message': message_text
     }
+
+    attachment_photos = []
+    if len(message_photos) > 5:
+        message_photos = message_photos[:5]
+    for photo in message_photos:
+        if photo[-3:] != 'gif':
+            response = vk_upload.photo_messages(photo)
+            attachment_photos.append('photo{owner_id}_{id}'.format(
+                owner_id=response['owner_id'],
+                id=response['id']
+            ))
+        else:
+            response = vk_upload.document(photo)
+            attachment_photos.append('document{owner_id}_{id}'.format(
+                owner_id=response['owner_id'],
+                id=response['id']
+            ))
+    message['attachment'] = ','.join(attachment_photos)
+
     vk.method('messages.send', message)
     return True
