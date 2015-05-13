@@ -44,6 +44,8 @@ def get_answer(message, lang, bot, options):
         message_text=answer[lang].format(
             text=message["text"],
             name=message["sender_name"]
-        )
+        ),
+        sender_id=message['sender_id'],
+        sender_type=message['sender_type']
     )
     return True

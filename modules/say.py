@@ -36,6 +36,8 @@ module_config = {
 
 def get_answer(message, lang, bot, options):
     bot.send_message(
-        message_text=options[0]
+        message_text=options[0],
+        sender_id=message['sender_id'],
+        sender_type=message['sender_type']
     )
     return True

@@ -130,9 +130,11 @@ class Sheldon:
                     return True
 
     def send_message(self, message_text,
-                     message_photos=[]):
+                     message_photos=[],
+                     sender_id, sender_type):
         adapter_response = self.adapter.send_message(
-            message_text, message_photos
+            message_text, message_photos,
+            sender_id, sender_type
         )
         if adapter_response:
             return True

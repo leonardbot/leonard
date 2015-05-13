@@ -22,7 +22,9 @@ def get_messages():
 
 
 def send_message(message_text="",
-                 message_photos=[]):
+                 message_photos=[],
+                 sender_id,
+                 sender_type):
     print("Text:", message_text)
     print("Photos:", message_photos)
     return True
