@@ -74,14 +74,14 @@ def send_message(sender_id, sender_type,
         message_photos = message_photos[:5]
     for photo in message_photos:
         if photo[-3:] != 'gif':
-            response = vk_upload.photo_messages(photo)
+            response = vk_upload.photo_messages(photo)[0]
             attachment_photos.append('photo{owner_id}_{id}'.format(
                 owner_id=response['owner_id'],
                 id=response['id']
             ))
         else:
-            response = vk_upload.document(photo)
-            attachment_photos.append('document{owner_id}_{id}'.format(
+            response = vk_upload.document(photo)[0]
+            attachment_photos.append('doc{owner_id}_{id}'.format(
                 owner_id=response['owner_id'],
                 id=response['id']
             ))
