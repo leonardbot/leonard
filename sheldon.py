@@ -117,6 +117,13 @@ class Sheldon:
         return new_messages
 
     def parse_message(self, message):
+        """
+        Function to search modules which matching with message
+        and send message to that module
+
+        :param message: incoming message
+        :return:
+        """
         for module in self.loaded_modules:
             for regexp in self.loaded_modules[module]['regexps']:
                 message_match = regexp.match(message['text'])
