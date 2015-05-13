@@ -34,16 +34,15 @@ module_config = {
 }
 
 answer = {
-    "en": "Test completed. Message: '{text}' from {name}",
-    "ru": "Тест пройден. Cообщение: '{text}' от {name}"
+    "en": "Test completed. Message: '{text}'",
+    "ru": "Тест пройден. Cообщение: '{text}'"
 }
 
 
 def get_answer(message, lang, bot, options):
     bot.send_message(
         message_text=answer[lang].format(
-            text=message["text"],
-            name=message["sender_name"]
+            text=message["text"]
         ),
         sender_id=message['sender_id'],
         sender_type=message['sender_type']
