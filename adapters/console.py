@@ -21,10 +21,8 @@ def get_messages():
     }]
 
 
-def send_message(message_text="",
-                 message_photos=[],
-                 sender_id,
-                 sender_type):
+def send_message(sender_id, sender_type,
+                 message_text="", message_photos=[]):
     print("Text:", message_text)
     print("Photos:", message_photos)
     return True
