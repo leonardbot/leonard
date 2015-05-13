@@ -135,6 +135,19 @@ class Sheldon:
                         options=message_match.groups()
                     )
                     return True
+        # If message not matching with any modules,
+        # but message starts from '!', send message
+        # that command is bad.
+        if self.language == 'en':
+            problem_message = 'Command is bad. Check it again.'
+        elif self.language == 'ru':
+            problem_message = 'Команда не распознана. Проверьте ее еще раз.'
+        else:
+            print('Choose correct bot language')
+            return False
+
+        self.send_message(message['sender_id'], message['sender_type'],
+                          message_text=problem_message)
 
     def send_message(self, sender_id, sender_type,
                      message_text='', message_photos=[]):
@@ -154,6 +167,3 @@ class Sheldon:
             return True
         else:
             return False
-
-
-
