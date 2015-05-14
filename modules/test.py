@@ -10,10 +10,10 @@ module_config = {
     },
     "regexps": {
             "en": [
-                "!t(est)?"
+                "!test"
             ],
             "ru": [
-                "!т(ест)?"
+                "!тест"
             ]
     },
     "command_format": {
@@ -22,12 +22,10 @@ module_config = {
     },
     "examples": {
         "en": [
-            "!test",
-            "!t"
+            "!test"
         ],
         "ru": [
-            "!тест",
-            "!т"
+            "!тест"
         ]
     },
     "adapters": []
