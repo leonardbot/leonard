@@ -1,5 +1,6 @@
 import vk_api
 import json
+from time import sleep
 
 adapter_config = {
     "name": "vk",
@@ -35,7 +36,6 @@ last_message_id = vk.method('messages.get', {
     'count': 1
 })['items'][0]['id']
 vk_upload = vk_api.VkUpload(vk)
-
 
 def get_messages():
     global last_message_id
@@ -85,5 +85,10 @@ def send_message(sender_id, sender_type,
             ))
     message['attachment'] = ','.join(attachment_photos)
 
-    vk.method('messages.send', message)
+    try:
+        vk.method('messages.send', message)
+    except vk_api.ApiError:
+        sleep(1)
+        message['text'] = 'Повторите Вашу команду, пожалуйста.'
+        vk.method('messages.send', message)
     return True
