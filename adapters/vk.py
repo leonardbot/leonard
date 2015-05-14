@@ -1,13 +1,11 @@
 import vk_api
 import json
-from time import time
-from os import getlogin
 
 adapter_config = {
     "name": "vk",
     "blocked_users_id": [],
     "admin_ids": [
-        hash(getlogin())
+        91670994
     ]
 }
 
