@@ -104,6 +104,7 @@ class Sheldon:
             print(error_msg)
             print("Fatal: Error when connecting with adapter")
             exit()
+        print("Loaded adapter", adapter_name)
         return adapter
 
     def get_messages(self):
