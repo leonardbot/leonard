@@ -94,5 +94,7 @@ def send_message(sender_id, sender_type,
         vk.method('messages.send', message)
     except ConnectionError:
         return False
+    except vk_api.ApiHttpError:
+        return False
 
     return True
