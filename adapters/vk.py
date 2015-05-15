@@ -40,7 +40,15 @@ vk_upload = vk_api.VkUpload(vk)
 
 def get_messages():
     global last_message_id
-    response = vk.method('messages.get', {'last_message_id': last_message_id})
+    try:
+        response = vk.method('messages.get', {'last_message_id': last_message_id})
+    except vk_api.ApiError:
+        return []
+    except ConnectionError:
+        return []
+    except vk_api.ApiHttpError:
+        return []
+
     messages = []
     if response['items']:
         last_message_id = response['items'][-1]['id']
