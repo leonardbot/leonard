@@ -1,6 +1,7 @@
 import vk_api
 import json
 from time import sleep
+from requests.exceptions import ConnectionError
 
 adapter_config = {
     "name": "vk",
@@ -91,4 +92,7 @@ def send_message(sender_id, sender_type,
         sleep(1)
         message['text'] = 'Повторите Вашу команду, пожалуйста.'
         vk.method('messages.send', message)
+    except ConnectionError:
+        return False
+
     return True

@@ -1,1 +1,2 @@
 vk_api
+requests
