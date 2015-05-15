@@ -10,7 +10,7 @@ module_config = {
     },
     "description": {
         "en": "Get hot butts",
-        "ru": "Получить горячую женскую попку"
+        "ru": "Получить фотографию женских ягодиц"
     },
     "regexps": {
             "en": [
