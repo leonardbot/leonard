@@ -67,8 +67,10 @@ class Sheldon:
         """
         try:
             self.loaded_modules.pop(module_name)
+            return True
         except KeyError:
             print("Module {} is not loaded".format(module_name))
+            return False
 
     def load_modules(self):
         """
