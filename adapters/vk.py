@@ -57,7 +57,8 @@ def get_messages():
             'text': item['body'],
             'time': item['date'],
             'sender_id': None,
-            'sender_type': None
+            'sender_type': None,
+            'user_id': item['user_id']
         }
         if 'chat_id' in item:
             message['sender_id'] = item['chat_id']

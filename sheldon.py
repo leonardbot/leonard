@@ -167,9 +167,9 @@ class Sheldon:
             print("Error with sending message '{}'".format(message_text))
             return False
 
-    def is_admin(self, sender_id):
+    def is_admin(self, user_id):
         """Function, that checks is user admin of adapter or not"""
-        if sender_id in self.admins:
+        if user_id in self.admins:
             return True
         else:
             return False
