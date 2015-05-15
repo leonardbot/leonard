@@ -144,7 +144,7 @@ class Sheldon:
                 if self.language == 'en':
                     problem_message = 'Command is bad. Check it again.'
                 elif self.language == 'ru':
-                    problem_message = 'Команда не распознана.' + \
+                    problem_message = 'Команда не распознана. ' + \
                                       'Проверьте ее еще раз.'
                 else:
                     print('Choose correct bot language')
