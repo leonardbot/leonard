@@ -10,10 +10,10 @@ module_config = {
     },
     "regexps": {
             "en": [
-                "!module (add|delete) (.+)"
+                "!module (add|delete) (.+)+"
             ],
             "ru": [
-                "!модуль (добавить|удалить) (.+)"
+                "!модуль (добавить|удалить) (.+)+"
             ]
     },
     "command_format": {
@@ -54,10 +54,9 @@ error_message = {
 }
 
 def get_answer(message, lang, bot, options):
-    print(message['sender_id'])
-    if bot.is_admin(message['sender_id']):
-        module_name = options[2]
-        if options[1] == delete_add_words[lang][0]:
+    if bot.is_admin(message['user_id']):
+        module_name = options[1]
+        if options[0] == delete_add_words[lang][0]:
             if bot.add_module(module_name):
                 bot.send_message(
                     message_text=added_deleted_words[lang][0],
@@ -70,7 +69,7 @@ def get_answer(message, lang, bot, options):
                     sender_id=message['sender_id'],
                     sender_type=message['sender_type']
                 )
-        elif options[1] == delete_add_words[lang][1]:
+        elif options[0] == delete_add_words[lang][1]:
             if bot.delete_module(module_name):
                 bot.send_message(
                     message_text=added_deleted_words[lang][1],
