@@ -97,13 +97,13 @@ def send_message(sender_id, sender_type,
 
     try:
         vk.method('messages.send', message)
-    except vk_api.vk_api.ApiError:
+    except vk_api.ApiError:
         sleep(1)
         message['text'] = 'Повторите Вашу команду, пожалуйста.'
         vk.method('messages.send', message)
     except ConnectionError:
         return False
-    except vk_api.vk_api.ApiHttpError:
+    except vk_api.ApiHttpError:
         return False
 
     return True
