@@ -99,7 +99,11 @@ def send_message(sender_id, sender_type,
         vk.method('messages.send', message)
     except vk_api.ApiError:
         sleep(1)
-        message['text'] = 'Повторите Вашу команду, пожалуйста.'
+        message['message'] = 'Повторите Вашу команду, пожалуйста.'
+        vk.method('messages.send', message)
+    except vk_api.Captcha:
+        sleep(1)
+        message['message'] = 'Повторите Вашу команду, пожалуйста.'
         vk.method('messages.send', message)
     except ConnectionError:
         return False
