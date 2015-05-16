@@ -11,6 +11,7 @@ adapter_config = {
     ]
 }
 
+
 def get_messages():
     message = input('Enter message:')
     return [{
