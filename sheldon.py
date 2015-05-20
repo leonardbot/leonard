@@ -183,10 +183,7 @@ class SheldonTest(Sheldon):
     for testing modules
     """
     def __init__(self, language):
-        self.language = language
-        self.adapter = self.load_adapter('console')
-        self.blocked_users = self.adapter.adapter_config['blocked_users_id']
-        self.admins = self.adapter.adapter_config['admin_ids']
+        super().__init__(language, 'console')
         self.sent_messages = []
 
     def send_message(self, sender_id, sender_type,
