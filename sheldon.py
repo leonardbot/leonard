@@ -131,12 +131,13 @@ class Sheldon:
             for regexp in self.loaded_modules[module]['regexps']:
                 message_match = regexp.match(message['text'])
                 if message_match is not None:
-                    self.loaded_modules[module]['module'].get_answer(
-                        message=message,
-                        lang=self.language,
-                        bot=self,
-                        options=message_match.groups()
-                    )
+                    if message['user_id'] not in self.blocked_users:
+                        self.loaded_modules[module]['module'].get_answer(
+                            message=message,
+                            lang=self.language,
+                            bot=self,
+                            options=message_match.groups()
+                        )
                     return True
         # If message not matching with any modules,
         # but message starts from '!', send message
@@ -173,3 +174,28 @@ class Sheldon:
             return True
         else:
             return False
+
+
+class SheldonTest(Sheldon):
+    """
+    Class for unit-tests of modules.
+    Some functions (like send_message) are rewrote specialy
+    for testing modules
+    """
+    def __init__(self, language):
+        self.language = language
+        self.adapter = self.load_adapter('console')
+        self.blocked_users = self.adapter.adapter_config['blocked_users_id']
+        self.admins = self.adapter.adapter_config['admin_ids']
+        self.sent_messages = []
+
+    def send_message(self, sender_id, sender_type,
+                     message_text='', message_photos=[]):
+        self.sent_messages.append(
+            {
+                'sender_id': sender_id,
+                'sender_type': sender_type,
+                'message_text': message_text,
+                'message_photos': message_photos
+            }
+        )
