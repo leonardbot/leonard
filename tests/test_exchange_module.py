@@ -59,7 +59,13 @@ def test_negative_number():
     assert bot.sent_messages[-1]['message_text'] == incorrect_currency_message
 
 
-def test_incorrect_currency():
+def test_incorrect_first_currency():
+    message['text'] = '!to pollars 5 rubles'
+    bot.parse_message(message)
+    assert bot.sent_messages[-1]['message_text'] == incorrect_number_message
+
+
+def test_incorrect_second_currency():
     message['text'] = '!to dollars 5 rublz'
     bot.parse_message(message)
     assert bot.sent_messages[-1]['message_text'] == incorrect_number_message
