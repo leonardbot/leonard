@@ -2,3 +2,4 @@ vk_api
 requests
 pyquery
 feedparser
+pytest
