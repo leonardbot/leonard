@@ -1,5 +1,4 @@
 from time import time
-from os import getlogin
 
 i = 0
 
@@ -7,7 +6,7 @@ adapter_config = {
     "name": "console",
     "blocked_users_id": [],
     "admin_ids": [
-        hash(getlogin())
+        1
     ]
 }
 
@@ -17,9 +16,9 @@ def get_messages():
     return [{
         "text": message,
         "time": time(),
-        "sender_id": hash(getlogin()),
+        "sender_id": 1,
         "sender_type": None,
-        "user_id": hash(getlogin())
+        "user_id": 1
     }]
 
 

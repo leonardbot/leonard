@@ -1,13 +1,12 @@
 from sheldon import SheldonTest
-from os import getlogin
 from time import time
 
 message = {
     "text": '!help',
     "time": time(),
-    "sender_id": hash(getlogin()),
+    "sender_id": 1,
     "sender_type": None,
-    "user_id": hash(getlogin())
+    "user_id": 1
 }
 bot = SheldonTest('en')
 bot.load_modules()

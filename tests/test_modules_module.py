@@ -1,13 +1,12 @@
 from sheldon import SheldonTest
-from os import getlogin
 from time import time
 
 message = {
     "text": '!module delete test',
     "time": time(),
-    "sender_id": hash(getlogin()),
+    "sender_id": 1,
     "sender_type": None,
-    "user_id": hash(getlogin())
+    "user_id": 1
 }
 bot = SheldonTest('en')
 bot.load_modules()
@@ -28,7 +27,7 @@ def test_deleting_without_admin():
 
 
 def test_deleting_incorrect_module():
-    message['user_id'] = hash(getlogin())
+    message['user_id'] = 1
     message['text'] = '!module delete foobar'
     bot.parse_message(message)
     assert bot.sent_messages[-1]['message_text'] == incorrect_module_message
@@ -54,7 +53,7 @@ def test_adding_without_admin():
 
 
 def test_adding_incorrect_module():
-    message['user_id'] = hash(getlogin())
+    message['user_id'] = 1
     message['text'] = '!module add foobar'
     bot.parse_message(message)
     assert bot.sent_messages[-1]['message_text'] == incorrect_module_message
