@@ -50,7 +50,7 @@ def test_getting_answer_from_rubles_to_euro():
 def test_incorrect_number():
     message['text'] = '!to euro dsk rubles'
     bot.parse_message(message)
-    assert bot.sent_messages[-1]['message_text'] == incorrect_number_message
+    assert bot.sent_messages[-1]['message_text'] == bad_command_message
 
 
 def test_negative_number():
@@ -62,13 +62,13 @@ def test_negative_number():
 def test_incorrect_first_currency():
     message['text'] = '!to pollars 5 rubles'
     bot.parse_message(message)
-    assert bot.sent_messages[-1]['message_text'] == incorrect_number_message
+    assert bot.sent_messages[-1]['message_text'] == bad_command_message
 
 
 def test_incorrect_second_currency():
     message['text'] = '!to dollars 5 rublz'
     bot.parse_message(message)
-    assert bot.sent_messages[-1]['message_text'] == incorrect_number_message
+    assert bot.sent_messages[-1]['message_text'] == bad_command_message
 
 
 def test_getting_dollars_rate_without_parameter():
