@@ -15,11 +15,11 @@ module_config = {
     },
     "regexps": {
             "en": [
-                "!tj"
+                "!tj(ournal)?"
             ],
             "ru": [
-                "!tj",
-                "!тж"
+                "!tj(ournal)?",
+                "!тж(урнал)?"
             ]
     },
     "command_format": {
