@@ -56,7 +56,7 @@ def test_incorrect_number():
 def test_negative_number():
     message['text'] = '!to euro -50 rubles'
     bot.parse_message(message)
-    assert bot.sent_messages[-1]['message_text'] == incorrect_currency_message
+    assert bot.sent_messages[-1]['message_text'] == bad_command_message
 
 
 def test_incorrect_first_currency():
@@ -84,7 +84,7 @@ def test_getting_euro_rate_without_parameter():
     bot.parse_message(message)
     # Before space in message - current rate,
     # after - currency
-    assert bot.sent_messages[-1]['message_text'].split(' ') == 'USD'
+    assert bot.sent_messages[-1]['message_text'].split(' ')[1] == 'USD'
 
 
 def test_getting_rubles_rate_without_parameter():
@@ -92,7 +92,7 @@ def test_getting_rubles_rate_without_parameter():
     bot.parse_message(message)
     # Before space in message - current rate,
     # after - currency
-    assert bot.sent_messages[-1]['message_text'].split(' ') == 'USD'
+    assert bot.sent_messages[-1]['message_text'].split(' ')[1] == 'USD'
 
 
 def test_getting_answer_with_wrong_cmd():

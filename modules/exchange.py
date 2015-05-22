@@ -48,6 +48,18 @@ small_names_of_currency = {
         'рубл': 'rub'
     }
 }
+full_names_of_currency = {
+    'en': {
+        'usd': 'dollar(s)',
+        'eur': 'euro',
+        'rub': 'ruble'
+    },
+    'ru': {
+        'usd': 'dollar',
+        'eur': 'euro',
+        'rub': 'ruble'
+    }
+}
 incorrect_number_message = 'Enter correct number.'
 incorrect_currency_message = 'Enter correct currency.'
 
@@ -67,13 +79,14 @@ def get_answer(message, lang, bot, options):
         from_currency = small_names_of_currency[bot.language][options[0]]
         if from_currency == 'usd':
             to_currency = 'eur'
-            result_message = "{} euro"
+            result_message = "{} {}"
         else:
             to_currency = 'usd'
-            result_message = "{} dollar(s)"
+            result_message = "{} {}"
         bot.send_message(
             message_text=result_message.format(
-                get_exchange_rate(1, from_currency, to_currency)
+                get_exchange_rate(1, from_currency, to_currency),
+                to_currency.upper()
             ),
             sender_id=message['sender_id'],
             sender_type=message['sender_type']
@@ -88,6 +101,7 @@ def get_answer(message, lang, bot, options):
             sender_id=message['sender_id'],
             sender_type=message['sender_type']
         )
+        return False
     except ValueError:
         bot.send_message(
             message_text=incorrect_number_message,
@@ -95,5 +109,16 @@ def get_answer(message, lang, bot, options):
             sender_type=message['sender_type']
         )
     else:
-        pass
+        to_currency = small_names_of_currency[bot.language][options[3]]
+        from_currency = small_names_of_currency[bot.language][options[6]]
+        bot.send_message(
+            message_text='{} {} - {} {}'.format(
+                str(currency_value),
+                from_currency,
+                get_exchange_rate(currency_value, from_currency, to_currency),
+                to_currency
+            ),
+            sender_id=message['sender_id'],
+            sender_type=message['sender_type']
+        )
     return True
