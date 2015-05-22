@@ -68,9 +68,6 @@ def get_answer(message, lang, bot, options):
         if from_currency == 'usd':
             to_currency = 'eur'
             result_message = "{} euro"
-        elif from_currency == 'eur':
-            to_currency = 'usd'
-            result_message = "{} dollar(s)"
         else:
             to_currency = 'usd'
             result_message = "{} dollar(s)"
