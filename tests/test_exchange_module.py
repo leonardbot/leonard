@@ -22,29 +22,29 @@ def test_module_in_loaded_modules():
 
 def test_getting_answer_from_euro_to_dollars():
     bot.parse_message(message)
-    assert '5 euro - ' in bot.sent_messages[-1]['message_text']
-    assert 'dollars' in bot.sent_messages[-1]['message_text']
+    assert '5 EUR - ' in bot.sent_messages[-1]['message_text']
+    assert 'USD' in bot.sent_messages[-1]['message_text']
 
 
 def test_getting_answer_from_dollars_to_euro():
     message['text'] = '!euro 1 dollar'
     bot.parse_message(message)
-    assert '10 dollar(s) - ' in bot.sent_messages[-1]['message_text']
-    assert 'euro' in bot.sent_messages[-1]['message_text']
+    assert '10 USD - ' in bot.sent_messages[-1]['message_text']
+    assert 'EUR' in bot.sent_messages[-1]['message_text']
 
 
 def test_getting_answer_from_dollars_to_rubles():
     message['text'] = '!to rubles 15 dollars'
     bot.parse_message(message)
-    assert '15 dollar(s) - ' in bot.sent_messages[-1]['message_text']
-    assert 'ruble(s)' in bot.sent_messages[-1]['message_text']
+    assert '15 USD - ' in bot.sent_messages[-1]['message_text']
+    assert 'RUB' in bot.sent_messages[-1]['message_text']
 
 
 def test_getting_answer_from_rubles_to_euro():
     message['text'] = '!to euro 1 ruble'
     bot.parse_message(message)
-    assert '1 ruble(s) - ' in bot.sent_messages[-1]['message_text']
-    assert 'euro' in bot.sent_messages[-1]['message_text']
+    assert '1 RUB - ' in bot.sent_messages[-1]['message_text']
+    assert 'EUR' in bot.sent_messages[-1]['message_text']
 
 
 def test_incorrect_number():
@@ -76,7 +76,7 @@ def test_getting_dollars_rate_without_parameter():
     bot.parse_message(message)
     # Before space in message - current rate,
     # after - currency
-    assert bot.sent_messages[-1]['message_text'].split(' ')[1] == 'euro'
+    assert bot.sent_messages[-1]['message_text'].split(' ')[1] == 'EUR'
 
 
 def test_getting_euro_rate_without_parameter():
@@ -84,7 +84,7 @@ def test_getting_euro_rate_without_parameter():
     bot.parse_message(message)
     # Before space in message - current rate,
     # after - currency
-    assert bot.sent_messages[-1]['message_text'].split(' ') == 'dollar(s)'
+    assert bot.sent_messages[-1]['message_text'].split(' ') == 'USD'
 
 
 def test_getting_rubles_rate_without_parameter():
@@ -92,7 +92,7 @@ def test_getting_rubles_rate_without_parameter():
     bot.parse_message(message)
     # Before space in message - current rate,
     # after - currency
-    assert bot.sent_messages[-1]['message_text'].split(' ') == 'dollar(s)'
+    assert bot.sent_messages[-1]['message_text'].split(' ') == 'USD'
 
 
 def test_getting_answer_with_wrong_cmd():
