@@ -3,3 +3,4 @@ requests
 pyquery
 feedparser
 pytest
+wikipedia
