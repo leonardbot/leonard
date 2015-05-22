@@ -60,8 +60,18 @@ full_names_of_currency = {
         'rub': 'ruble'
     }
 }
-incorrect_number_message = 'Enter correct number.'
-incorrect_currency_message = 'Enter correct currency.'
+incorrect_number_message = {
+    'en': 'Enter correct number.',
+    'ru': 'Введите корректное число.'
+}
+
+
+def send_incorrect_number_message(bot, message):
+    bot.send_message(
+        message_text=incorrect_number_message[bot.language],
+        sender_id=message['sender_id'],
+        sender_type=message['sender_type']
+    )
 
 
 def get_exchange_rate(amount, from_currency, to_currency):
@@ -96,18 +106,11 @@ def get_answer(message, lang, bot, options):
     try:
         currency_value = int(options[4])
     except TypeError:
-        bot.send_message(
-            message_text=incorrect_number_message,
-            sender_id=message['sender_id'],
-            sender_type=message['sender_type']
-        )
+        send_incorrect_number_message(bot, message)
         return False
     except ValueError:
-        bot.send_message(
-            message_text=incorrect_number_message,
-            sender_id=message['sender_id'],
-            sender_type=message['sender_type']
-        )
+        send_incorrect_number_message(bot, message)
+        return False
     else:
         to_currency = small_names_of_currency[bot.language][options[2]]
         from_currency = small_names_of_currency[bot.language][options[5]]
