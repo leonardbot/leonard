@@ -29,7 +29,7 @@ def test_getting_answer_from_euro_to_dollars():
 def test_getting_answer_from_dollars_to_euro():
     message['text'] = '!euro 1 dollar'
     bot.parse_message(message)
-    assert '10 USD - ' in bot.sent_messages[-1]['message_text']
+    assert '1 USD - ' in bot.sent_messages[-1]['message_text']
     assert 'EUR' in bot.sent_messages[-1]['message_text']
 
 
