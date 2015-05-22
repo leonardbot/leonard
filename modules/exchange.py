@@ -13,10 +13,10 @@ module_config = {
     },
     "regexps": {
             "en": [
-                "!((to )?(dollar|euro|ruble)(s)? (\d) (dollar|euro|ruble)(s)?|dollar|ruble|euro)"
+                "!((to )?(dollar|euro|ruble)(s)? (\d+) (dollar|euro|ruble)(s)?|dollar|ruble|euro)"
             ],
             "ru": [
-                "!((в )?(рубл|евро|доллар)(ы|и|а|ов|ей)? (\d) (рубл|евро|доллар)(ы|и|а|ов|ей)?|рубл(ь)?|доллар|евро)"
+                "!((в )?(рубл|евро|доллар)(ы|и|а|ов|ей)? (\d+) (рубл|евро|доллар)(ы|и|а|ов|ей)?|рубл(ь)?|доллар|евро)"
             ]
     },
     "command_format": {
@@ -109,14 +109,14 @@ def get_answer(message, lang, bot, options):
             sender_type=message['sender_type']
         )
     else:
-        to_currency = small_names_of_currency[bot.language][options[3]]
-        from_currency = small_names_of_currency[bot.language][options[6]]
+        to_currency = small_names_of_currency[bot.language][options[2]]
+        from_currency = small_names_of_currency[bot.language][options[5]]
         bot.send_message(
             message_text='{} {} - {} {}'.format(
                 str(currency_value),
-                from_currency,
+                from_currency.upper(),
                 get_exchange_rate(currency_value, from_currency, to_currency),
-                to_currency
+                to_currency.upper()
             ),
             sender_id=message['sender_id'],
             sender_type=message['sender_type']
