@@ -111,7 +111,7 @@ def get_3_best_tweets():
 
 
 def get_answer(message, lang, bot, options):
-    digest = get_3_best_tweets() + get_3_latest_news() + \
+    digest = get_3_latest_news() + get_3_best_tweets() + \
              get_media_analyze('russian')
     for send_message in digest:
         bot.send_message(
