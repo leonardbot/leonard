@@ -48,7 +48,9 @@ def get_answer(message, lang, bot, options):
         summary = wikipedia.summary(article_title, sentences=5)
     except wikipedia.exceptions.PageError:
         bot.send_message(
-            message_text=page_error_message[bot.language]
+            message_text=page_error_message[bot.language],
+            sender_id=message['sender_id'],
+            sender_type=message['sender_type']
         )
     except wikipedia.exceptions.DisambiguationError as error:
         # There is a bug in wikipedia module.
