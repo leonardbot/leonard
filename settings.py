@@ -1,5 +1,5 @@
 # 'en' or 'ru'
 bot_language = 'ru'
 
-# 'console' or 'vk'
-bot_adapter = 'vk'
+# 'console', 'telegram' or 'vk'
+bot_adapter = 'telegram'
