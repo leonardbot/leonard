@@ -20,17 +20,17 @@ def test_module_in_loaded_modules():
 
 def test_getting_answer():
     bot.parse_message(message)
-    assert 'Анализ СМИ:' in bot.sent_messages[-1]['message_text']
-    assert 'Лучшие твиты:' in bot.sent_messages[-2]['message_text']
-    assert 'Последние новости:' in bot.sent_messages[-3]['message_text']
+    assert 'Анализ СМИ:' in bot.sent_messages[-4]['message_text']
+    assert 'Лучшие твиты:' in bot.sent_messages[-8]['message_text']
+    assert 'Последние новости:' in bot.sent_messages[-12]['message_text']
 
 
 def test_getting_answer_with_full_module_name():
     message['text'] = '!tjournal'
     bot.parse_message(message)
-    assert 'Анализ СМИ:' in bot.sent_messages[-1]['message_text']
-    assert 'Лучшие твиты:' in bot.sent_messages[-2]['message_text']
-    assert 'Последние новости:' in bot.sent_messages[-3]['message_text']
+    assert 'Анализ СМИ:' in bot.sent_messages[-4]['message_text']
+    assert 'Лучшие твиты:' in bot.sent_messages[-8]['message_text']
+    assert 'Последние новости:' in bot.sent_messages[-12]['message_text']
 
 
 def test_getting_answer_with_wrong_cmd():
