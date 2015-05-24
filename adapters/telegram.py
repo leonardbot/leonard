@@ -1,8 +1,7 @@
 from pytg.sender import Sender
 from pytg.receiver import Receiver
 from pytg.utils import coroutine
-from time import sleep
-from requests.exceptions import ConnectionError
+import os.path
 
 adapter_config = {
     "name": "telegram",
@@ -21,6 +20,8 @@ message = {}
 def parse_telegram_messages():
     global message
     msg = (yield)
+    if 'text' not in msg:
+        msg['text'] = ''
     message = {
         'text': msg['text'],
         'time': msg['date'],
@@ -49,7 +50,7 @@ def send_message(sender_id, sender_type,
     telegram_sender.send_msg(sender_id, message_text)
     for photo in message_photos:
         if photo[-3:] == 'gif':
-            telegram_sender.send_document(sender_id, photo)
+            telegram_sender.send_document(sender_id, os.path.abspath(photo))
         else:
-            telegram_sender.send_photo(sender_id, photo)
+            telegram_sender.send_photo(sender_id, os.path.abspath(photo))
     return True
