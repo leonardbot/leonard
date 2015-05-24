@@ -17,11 +17,12 @@ telegram_receiver = Receiver(host="localhost", port=4458)
 message = {}
 
 
+@coroutine
 def parse_telegram_messages():
     global message
     msg = (yield)
     message = {
-        'text': msg['receiver']['text'],
+        'text': msg['text'],
         'time': msg['date'],
         'sender_id': msg['sender']['cmd'],
         'sender_type': msg['sender']['type'],
