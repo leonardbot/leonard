@@ -4,3 +4,4 @@ pyquery
 feedparser
 pytest
 wikipedia
+pytg
