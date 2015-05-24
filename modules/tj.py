@@ -1,6 +1,7 @@
 import feedparser
 import requests
 from pyquery import PyQuery
+from time import sleep
 
 
 module_config = {
@@ -110,19 +111,13 @@ def get_3_best_tweets():
 
 
 def get_answer(message, lang, bot, options):
-    bot.send_message(
-        message_text='<br>'.join(get_3_latest_news()),
-        sender_id=message['sender_id'],
-        sender_type=message['sender_type']
-    )
-    bot.send_message(
-        message_text='<br>'.join(get_3_best_tweets()),
-        sender_id=message['sender_id'],
-        sender_type=message['sender_type']
-    )
-    bot.send_message(
-        message_text='<br>'.join(get_media_analyze('russian')),
-        sender_id=message['sender_id'],
-        sender_type=message['sender_type']
-    )
+    digest = get_3_best_tweets() + get_3_latest_news() + \
+             get_media_analyze('russian')
+    for send_message in digest:
+        bot.send_message(
+            message_text=send_message,
+            sender_id=message['sender_id'],
+            sender_type=message['sender_type']
+        )
+        sleep(1)
     return True
