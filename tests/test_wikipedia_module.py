@@ -20,7 +20,7 @@ def test_module_in_loaded_modules():
 
 def test_getting_answer_with_people():
     bot.parse_message(message)
-    assert 'Steve Jobs' in bot.sent_messages[-1]['message_text']
+    assert 'Steven Paul "Steve" Jobs' in bot.sent_messages[-1]['message_text']
 
 
 def test_getting_answer_with_animal():
@@ -38,7 +38,7 @@ def test_getting_answer_with_full_name_of_module():
 def test_getting_answer_with_movie():
     message['text'] = '!wiki Fast And Furious'
     bot.parse_message(message)
-    assert 'Fast And Furious' in bot.sent_messages[-1]['message_text']
+    assert 'The Fast and the Furious' in bot.sent_messages[-1]['message_text']
 
 
 def test_getting_answer_with_incorrect_param():
