@@ -34,9 +34,13 @@ def parse_telegram_messages():
 def get_messages():
     global message
     telegram_receiver.start()
-    telegram_receiver.message(
-        parse_telegram_messages()
-    )
+    try:
+        telegram_receiver.message(
+            parse_telegram_messages()
+        )
+    except KeyboardInterrupt:
+        telegram_receiver.stop()
+        exit()
     return [message]
 
 
