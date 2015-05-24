@@ -17,7 +17,7 @@ telegram_receiver = Receiver(host="localhost", port=4458)
 message = {}
 
 
-def parse_telegram_messages(reciever):
+def parse_telegram_messages():
     global message
     msg = (yield)
     message = {
@@ -34,7 +34,7 @@ def get_messages():
     global message
     telegram_receiver.start()
     telegram_receiver.message(
-        parse_telegram_messages(telegram_receiver)
+        parse_telegram_messages()
     )
     return [message]
 
