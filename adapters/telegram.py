@@ -46,5 +46,10 @@ def get_messages():
 
 def send_message(sender_id, sender_type,
                  message_text="", message_photos=[]):
-    print(message_text, message_photos, sender_id, sender_type)
+    telegram_sender.send_msg(sender_id, message_text)
+    for photo in message_photos:
+        if photo[-3:] == 'gif':
+            telegram_sender.send_document(sender_id, photo)
+        else:
+            telegram_sender.send_photo(sender_id, photo)
     return True
