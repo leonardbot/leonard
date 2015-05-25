@@ -1,3 +1,5 @@
+from time import sleep
+
 module_config = {
     "name": "help",
     "public_name": {
@@ -74,9 +76,11 @@ def get_answer(message, lang, bot, options):
                 examples=', '.join(module_config['examples'][lang])
             )
         )
-    bot.send_message(
-        message_text=';<br>'.join(modules_list),
-        sender_id=message['sender_id'],
-        sender_type=message['sender_type']
-    )
+    for module_help in modules_list:
+        bot.send_message(
+            message_text=module_help,
+            sender_id=message['sender_id'],
+            sender_type=message['sender_type']
+        )
+        sleep(1)
     return True
