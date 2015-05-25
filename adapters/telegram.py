@@ -29,6 +29,9 @@ def parse_telegram_messages():
         'sender_type': msg['sender']['type'],
         'user_id': msg['sender']['cmd']
     }
+    if msg['receiver']['type'] == 'chat':
+        message['sender_id'] = msg['receiver']['cmd']
+        message['sender_type'] = 'chat'
     return message
 
 
