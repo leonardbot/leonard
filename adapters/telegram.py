@@ -23,7 +23,7 @@ def parse_telegram_messages():
     # If message was sent by bot,
     # return []
     if msg['own']:
-        message = 0
+        message = []
         return False
     if 'text' not in msg:
         msg['text'] = ''
@@ -37,6 +37,7 @@ def parse_telegram_messages():
     if msg['receiver']['type'] == 'chat':
         message['sender_id'] = msg['receiver']['cmd']
         message['sender_type'] = 'chat'
+    message = [message]
     return True
 
 
