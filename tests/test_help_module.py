@@ -18,8 +18,8 @@ def test_module_in_loaded_modules():
 
 def test_getting_answer():
     bot.parse_message(message)
-    for module in bot.loaded_modules:
-        assert module in bot.sent_messages[-1]['message_text']
+    for module_num in range(1, len(bot.loaded_modules) + 1):
+        assert bot.sent_messages[-module_num]['message_text']
 
 
 def test_getting_answer_with_wrong_cmd():
