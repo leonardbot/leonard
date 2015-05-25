@@ -9,8 +9,8 @@ module_config = {
         "ru": "Попа"
     },
     "description": {
-        "en": "Get hot butts",
-        "ru": "Получить фотографию женских ягодиц"
+        "en": "No comments",
+        "ru": "Без комментариев"
     },
     "regexps": {
             "en": [
