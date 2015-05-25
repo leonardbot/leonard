@@ -20,6 +20,11 @@ message = {}
 def parse_telegram_messages():
     global message
     msg = (yield)
+    # If message was sent by bot,
+    # return []
+    if msg['own']:
+        message = 0
+        return False
     if 'text' not in msg:
         msg['text'] = ''
     message = {
@@ -32,7 +37,7 @@ def parse_telegram_messages():
     if msg['receiver']['type'] == 'chat':
         message['sender_id'] = msg['receiver']['cmd']
         message['sender_type'] = 'chat'
-    return message
+    return True
 
 
 def get_messages():
@@ -45,7 +50,7 @@ def get_messages():
     except KeyboardInterrupt:
         telegram_receiver.stop()
         exit()
-    return [message]
+    return message
 
 
 def send_message(sender_id, sender_type,
