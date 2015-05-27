@@ -2,4 +2,4 @@
 bot_language = 'ru'
 
 # 'console', 'telegram' or 'vk'
-bot_adapter = 'telegram'
+bot_adapter = 'vk'
