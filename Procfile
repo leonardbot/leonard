@@ -1,1 +1,1 @@
-web: python start.py ru vk
+worker: python start.py ru vk
