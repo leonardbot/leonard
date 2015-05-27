@@ -1,8 +1,8 @@
 from time import sleep
 from sheldon import Sheldon
-from settings import bot_language, bot_adapter
+import sys
 
-bot = Sheldon(bot_language, bot_adapter)
+bot = Sheldon(sys.argv[1], sys.argv[2])
 bot.load_modules()
 
 while True:
