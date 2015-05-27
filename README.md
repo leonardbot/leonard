@@ -69,4 +69,4 @@ Avaliable commands
 --------------------
 Updated version of commands you can get by '!help' оr '!помощь'
 
-![bot's commands](http://i.imgur.com/q6sPALk.png)
+![bot's commands](http://i.imgur.com/av9kHJQ.png)
