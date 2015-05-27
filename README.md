@@ -1,6 +1,6 @@
 Sheldon bot
 ===================
-
+[![Build Status](https://travis-ci.org/Shamoi/sheldon.svg?branch=master)](https://travis-ci.org/Shamoi/sheldon)
 
 Sheldon is a powerful modules-based bot for chats. Now Sheldon can work with VK and Telegram, but I think that list will be expand soon.
 
