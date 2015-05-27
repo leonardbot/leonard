@@ -1,5 +1,5 @@
 import vk_api
-import json
+import os
 from time import sleep
 from requests.exceptions import ConnectionError
 
@@ -11,32 +11,14 @@ adapter_config = {
     ]
 }
 
-try:
-    vk_settings = json.loads(
-        open('adapters/{adapter_name}_settings.json'.format(
-            adapter_name=adapter_config['name'])
-    ).read())
-    vk_login = vk_settings['vk_login']
-    vk_password = vk_settings['vk_password']
-except FileNotFoundError:
-    vk_login = input('Enter your vk login:')
-    vk_password = input('Enter your vk password:')
-    settings_file = open(
-        'adapters/{}_settings.json'.format(
-            adapter_config['name']
-        ), 'w'
-    )
-    settings_file.write(json.dumps({
-        'vk_login': vk_login,
-        'vk_password': vk_password
-    }))
-    settings_file.close()
-
+vk_login = os.environ['VK_LOGIN']
+vk_password = os.environ['VK_PASSWORD']
 vk = vk_api.VkApi(vk_login, vk_password)
 last_message_id = vk.method('messages.get', {
     'count': 1
 })['items'][0]['id']
 vk_upload = vk_api.VkUpload(vk)
+
 
 def get_messages():
     global last_message_id
