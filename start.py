@@ -4,6 +4,7 @@ import sys
 
 bot = Sheldon(sys.argv[1], sys.argv[2])
 bot.load_modules()
+print('Bot loaded.')
 
 while True:
     new_messages = bot.get_messages()
