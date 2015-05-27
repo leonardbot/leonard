@@ -1,7 +1,6 @@
-from pytg.sender import Sender
-from pytg.receiver import Receiver
+from pytg import Telegram
 from pytg.utils import coroutine
-import os.path
+import os
 
 adapter_config = {
     "name": "telegram",
@@ -11,8 +10,12 @@ adapter_config = {
     ]
 }
 
-telegram_sender = Sender(host="localhost", port=4458)
-telegram_receiver = Receiver(host="localhost", port=4458)
+telegram_connect = Telegram(
+    telegram=os.environ['TG_PATH'] + 'bin/telegram-cli',
+    pubkey_file=os.environ['TG_PATH'] + 'tg-server.pub'
+)
+telegram_sender = telegram_connect.sender
+telegram_receiver = telegram_connect.receiver
 message = {}
 
 
