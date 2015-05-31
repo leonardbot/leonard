@@ -59,7 +59,7 @@ export PYTHONPATH=.
 ```
 Then just run:
 ```bash
-py.test
+py.test .
 ```
 
 ----------
