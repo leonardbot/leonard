@@ -12,7 +12,7 @@ Install
 ```bash
 git clone https://github.com/Shamoi/sheldon.git
 cd sheldon
-pip install -r requirements.text
+pip install -r requirements.txt
 ```
 
 ----------
