@@ -4,6 +4,6 @@ python:
 # command to install dependencies
 install:
   - "pip install -r requirements.txt"
-  - "export PYTHONPATH=."
+  - "export PYTHONPATH=." # It's needed to correctly run tests
 # command to run tests
 script: py.test .
