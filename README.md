@@ -2,7 +2,7 @@ Sheldon bot
 ===================
 [![Build Status](https://travis-ci.org/Shamoi/sheldon.svg?branch=master)](https://travis-ci.org/Shamoi/sheldon)
 
-Sheldon is a powerful modules-based bot for chats. Now Sheldon can work with VK and Telegram, but I think that list will be expand soon.
+Sheldon is a powerful modules-based bot for chats. Right now Sheldon can work with VK and Telegram, but that list will be expand soon.
 
 ----------
 
@@ -12,7 +12,7 @@ Install
 ```bash
 git clone https://github.com/Shamoi/sheldon.git
 cd sheldon
-pip install -r requirements.text
+pip install -r requirements.txt
 ```
 
 ----------
@@ -59,7 +59,7 @@ export PYTHONPATH=.
 ```
 Then just run:
 ```bash
-py.test
+py.test .
 ```
 
 ----------
@@ -69,4 +69,4 @@ Avaliable commands
 --------------------
 Updated version of commands you can get by '!help' оr '!помощь'
 
-![bot's commands](http://i.imgur.com/q6sPALk.png)
+![bot's commands](http://i.imgur.com/av9kHJQ.png)
