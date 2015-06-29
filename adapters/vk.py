@@ -85,12 +85,8 @@ def send_message(sender_id, sender_type,
         message['message'] = 'Повторите Вашу команду, пожалуйста.'
         vk.method('messages.send', message)
     except vk_api.Captcha:
-        sleep(1)
-        message['message'] = 'Повторите Вашу команду, пожалуйста.'
-        try:
-            vk.method('messages.send', message)
-        except vk_api.Captcha:
-            return False
+        print("VK adapter: captcha error")
+        return False
     except ConnectionError:
         return False
     except vk_api.ApiHttpError:
