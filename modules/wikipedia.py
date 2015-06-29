@@ -58,7 +58,10 @@ def get_answer(message, lang, bot, options):
         try:
             summary = wikipedia.summary(error.options[0], sentences=5)
         except wikipedia.exceptions.DisambiguationError as error_2:
-            summary = wikipedia.summary(error_2.options[1], sentences=5)
+            try:
+                summary = wikipedia.summary(error_2.options[1], sentences=5)
+            except wikipedia.exceptions.DisambiguationError:
+                return False
     if summary:
         bot.send_message(
             message_text=summary,
