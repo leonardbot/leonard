@@ -1,4 +1,4 @@
-vk_api
+vk_api==6.0
 requests
 pyquery
 feedparser
