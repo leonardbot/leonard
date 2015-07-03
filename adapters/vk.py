@@ -14,6 +14,7 @@ adapter_config = {
 vk_login = os.environ['VK_LOGIN']
 vk_password = os.environ['VK_PASSWORD']
 vk = vk_api.VkApi(vk_login, vk_password)
+vk.authorization()
 last_message_id = vk.method('messages.get', {
     'count': 1
 })['items'][0]['id']
