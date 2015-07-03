@@ -6,6 +6,7 @@
 """
 
 import vk_api
+import os
 
 LOGFORMAT = """
 REQUEST:
@@ -43,7 +44,7 @@ def main():
     """ Пример получения последнего сообщения со стены """
     print('Log may contain authorization data')
 
-    login, password = 'login@nopython.me', 'password'
+    login, password = os.environ['VK_LOGIN'], os.environ['VK_PASSWORD']
     vk = vk_api.VkApi(login, password)
 
     reqlogger = ReqLogger(vk.http)
