@@ -1,1 +1,1 @@
-worker: python start.py ru telegram
+worker: python start.py ru vk
