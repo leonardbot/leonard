@@ -1,5 +1,6 @@
 import re
 import os
+import _thread
 
 
 class Sheldon:
