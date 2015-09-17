@@ -132,12 +132,13 @@ class Sheldon:
                 message_match = regexp.match(message['text'])
                 if message_match is not None:
                     if message['user_id'] not in self.blocked_users:
-                        self.loaded_modules[module]['module'].get_answer(
-                            message=message,
-                            lang=self.language,
-                            bot=self,
-                            options=message_match.groups()
-                        )
+                        _thread.start_new_thread(self.loaded_modules[module]['module'].get_answer,
+                            (
+                                message,
+                                self.language,
+                                self,
+                                message_match.groups()
+                        ))
                     return True
         # If message not matching with any modules,
         # but message starts from '!', send message
