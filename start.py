@@ -1,15 +1,15 @@
-from time import sleep
+import argparse
 from sheldon import Sheldon
-import sys
 
-bot = Sheldon(sys.argv[1], sys.argv[2])
-bot.load_modules()
-print('Bot loaded.')
+parser = argparse.ArgumentParser(description='Start bot')
+parser.add_argument('--config-prefix', type=str, default='SHELDON_',
+                    help='a str from which starting all config variables')
+parser.add_argument('--adapter', type=str, default='console',
+                    help='a str with name of adapter from adapters folder'
+                         'or PyPi')
+args = parser.parse_args()
 
-while True:
-    new_messages = bot.get_messages()
-    for message in new_messages:
-        if message['sender_id'] in bot.blocked_users:
-            continue
-        bot.parse_message(message)
-    sleep(0.5)
+bot = Sheldon({'config-prefix': args.config_prefix,
+               'adapter': args.adapter})
+
+bot.start()
