@@ -59,13 +59,19 @@ class Leonard:
             logger.info_message('Quiting')
             exit()
 
-    def _load_storage(self):
+    def _load_storage(self, command_line_arguments):
         """
         Connect to bot storage in Redis
 
+        :param command_line_arguments: dict, arguments for creating config:
+                                       config-prefix - prefix of environment
+                                                       variables.
+                                                       Default - 'LEONARD_'
         :return:
         """
-        self.storage = storage.Storage(self)
+        self.storage = storage.Storage(
+            self, command_line_arguments['config-prefix']
+        )
 
     def _load_adapter(self, command_line_arguments):
         """

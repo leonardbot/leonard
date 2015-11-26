@@ -16,14 +16,14 @@ from redis import StrictRedis
 
 
 class Storage:
-    def __init__(self, bot):
+    def __init__(self, bot, config_prefix):
         """
         Create new storage for bot
 
-        :param bot: Bot object
+        :param bot: Leonard object
+        :param config_prefix: prefix of variables in config. Default - 'LEONARD_'
         :return:
         """
-        self.bot = bot
 
         # Connect to Redis.
         # If we had problems with Redis - just set self.redis to None.
@@ -31,9 +31,9 @@ class Storage:
 
         # We get parameters for redis connection from bot's config.
         self.redis = StrictRedis(
-            host=bot.config.get('SHELDON_REDIS_HOST', 'localhost'),
-            port=bot.config.get('SHELDON_REDIS_PORT', '6379'),
-            db=bot.config.get('SHELDON_REDIS_DB', '0')
+            host=bot.config.get('{}REDIS_HOST'.format(config_prefix), 'localhost'),
+            port=bot.config.get('{}REDIS_PORT'.format(config_prefix), '6379'),
+            db=bot.config.get('{}REDIS_DB'.format(config_prefix), '0')
         )
         try:
             # Check Redis connection
