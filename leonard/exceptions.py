@@ -10,7 +10,7 @@ Tools for catching exceptions
 Copyright (C) 2015
 """
 
-from sheldon.utils import logger
+from leonard.utils import logger
 
 
 def catch_module_errors(module_call_function):

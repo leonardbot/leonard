@@ -12,15 +12,15 @@ import time
 import _thread as thread
 import schedule
 
-from sheldon import adapter
-from sheldon import config
-from sheldon import exceptions
-from sheldon import manager
-from sheldon import storage
-from sheldon.utils import logger
+from leonard import adapter
+from leonard import config
+from leonard import exceptions
+from leonard import manager
+from leonard import storage
+from leonard.utils import logger
 
 
-class Sheldon:
+class Leonard:
     """
     Main class of the bot.
     Run script creating new instance of this class and run it.
@@ -49,7 +49,7 @@ class Sheldon:
         :param command_line_arguments: dict, arguments for creating config:
                                        config-prefix - prefix of environment
                                                        variables.
-                                                       Default - 'SHELDON_'
+                                                       Default - 'LEONARD_'
         :return:
         """
         self.config = config.Config(prefix=command_line_arguments['config-prefix'])

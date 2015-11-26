@@ -8,25 +8,25 @@ config:                          # Config variable that needed to set
                                  # You must set default values after colon.
 """
 
-import sheldon
-import sheldon.utils.logger
+import leonard
+import leonard.utils.logger
 import schedule
 
 
-@sheldon.hooks.message(['hello, bot', 'hey, bot'])
+@leonard.hooks.message(['hello, bot', 'hey, bot'])
 def hello_message(message, bot):
-    answer = sheldon.OutgoingMessage(text=bot.config.get('SHELDON_HELLO_REPLY'),
+    answer = leonard.OutgoingMessage(text=bot.config.get('SHELDON_HELLO_REPLY'),
                                      attachments=[])
     bot.send_message(answer)
 
 
-@sheldon.hooks.command('hello')
+@leonard.hooks.command('hello')
 def hello_command(message, bot):
-    answer = sheldon.OutgoingMessage(text=bot.config.get('SHELDON_HELLO_REPLY'),
+    answer = leonard.OutgoingMessage(text=bot.config.get('SHELDON_HELLO_REPLY'),
                                      attachments=[])
     bot.send_message(answer)
 
 
-@sheldon.hooks.interval(schedule.every(5).minutes)
+@leonard.hooks.interval(schedule.every(5).minutes)
 def hello_interval(bot):
-    sheldon.utils.logger.info_message('Hello from hello module')
+    leonard.utils.logger.info_message('Hello from hello module')

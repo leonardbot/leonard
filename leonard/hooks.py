@@ -12,7 +12,7 @@ Copyright (C) 2015
 import _thread as thread
 import re
 
-from sheldon.exceptions import catch_module_errors
+from leonard.exceptions import catch_module_errors
 
 
 class Hook:
@@ -36,7 +36,7 @@ class Hook:
         Run hook
 
         :param incoming_message: Message object
-        :param bot: Sheldon object
+        :param bot: Leonard object
         :return:
         """
         thread.start_new_thread(self.func, (
@@ -159,7 +159,7 @@ class IntervalHook(Hook):
         """
         Call interval hook
 
-        :param bot: Sheldon object
+        :param bot: Leonard object
         :param incoming_message: not using
         :return:
         """
@@ -179,15 +179,15 @@ def find_hooks(plugin_module):
     for name in plugin_module.__dict__.keys():
         item = plugin_module.__dict__[name]
 
-        # Hooks are setting '_sheldon_hook' parameters
+        # Hooks are setting '_leonard_hook' parameters
         # on functions when they decorated.
-        if (hasattr(item, '_sheldon_hook') and
-                    item._sheldon_hook.type != 'interval'):
+        if (hasattr(item, '_leonard_hook') and
+                    item._leonard_hook.type != 'interval'):
             # If it not interval hook,
-            hooks.append(item._sheldon_hook)
-        elif (hasattr(item, '_sheldon_hook') and
-                      item._sheldon_hook.type == 'interval'):
-            interval_hooks.append(item._sheldon_hook)
+            hooks.append(item._leonard_hook)
+        elif (hasattr(item, '_leonard_hook') and
+                      item._leonard_hook.type == 'interval'):
+            interval_hooks.append(item._leonard_hook)
     return [hooks, interval_hooks]
 
 
@@ -207,12 +207,12 @@ def message(regexes=[], case_sensitive=False):
             Wrapper around user's function
 
             :param message_object: incoming message, Message object
-            :param bot_object: Sheldon object
+            :param bot_object: Leonard object
             :return:
             """
             return func(message_object, bot_object)
 
-        wrapped._sheldon_hook = MessageHook(wrapped, regexes, case_sensitive)
+        wrapped._leonard_hook = MessageHook(wrapped, regexes, case_sensitive)
         return wrapped
 
     return hook
@@ -221,7 +221,7 @@ def message(regexes=[], case_sensitive=False):
 def command(command_text):
     """
     Hook for catching commands, for example:
-    "!asana", "!deploy sheldon" etc.
+    "!asana", "!deploy leonard" etc.
 
     :param command_text: str, command text without '!'. For example, 'join'.
     :return:
@@ -233,12 +233,12 @@ def command(command_text):
             Wrapper around user's function
 
             :param message_object: incoming message, Message object
-            :param bot_object: Sheldon object
+            :param bot_object: Leonard object
             :return:
             """
             return func(message_object, bot_object)
 
-        wrapped._sheldon_hook = CommandHook(wrapped, command_text)
+        wrapped._leonard_hook = CommandHook(wrapped, command_text)
         return wrapped
 
     return hook
@@ -260,12 +260,12 @@ def callback(callback_func):
             Wrapper around user's function
 
             :param message_object: incoming message, Message object
-            :param bot_object: Sheldon object
+            :param bot_object: Leonard object
             :return:
             """
             return func(message_object, bot_object)
 
-        wrapped._sheldon_hook = CallbackHook(wrapped, callback_func)
+        wrapped._leonard_hook = CallbackHook(wrapped, callback_func)
         return wrapped
 
     return hook
@@ -286,12 +286,12 @@ def interval(interval_object):
             """
             Wrapper around user's function
 
-            :param bot_object: Sheldon object
+            :param bot_object: Leonard object
             :return:
             """
             return func(bot_object)
 
-        wrapped._sheldon_hook = IntervalHook(wrapped, interval_object)
+        wrapped._leonard_hook = IntervalHook(wrapped, interval_object)
         return wrapped
 
     return hook

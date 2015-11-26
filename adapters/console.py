@@ -10,7 +10,7 @@ config:                         # Config variable that needed to set
 from os import getlogin
 from time import sleep
 from random import randint
-from sheldon.adapter import IncomingMessage, Attachment
+from leonard.adapter import IncomingMessage, Attachment
 
 # Code running on adapter loading may be here
 

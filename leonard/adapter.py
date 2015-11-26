@@ -12,8 +12,8 @@ Copyright (C) 2015
 
 import importlib
 
-from sheldon.utils import logger
-from sheldon.config import parse_config
+from leonard.utils import logger
+from leonard.config import parse_config
 
 
 class Adapter:

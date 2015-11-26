@@ -11,19 +11,19 @@ Copyright (C) 2015
 import os
 import yaml
 
-from sheldon.utils import logger
+from leonard.utils import logger
 
 
 class Config:
-    def __init__(self, prefix='SHELDON_'):
+    def __init__(self, prefix='LEONARD_'):
         """
         Load config from environment variables.
 
         :param prefix: string, all needed environment variables
                             starts from it.
-                            Default - 'SHELDON_'. So, environment
+                            Default - 'LEONARD_'. So, environment
                             variables will be looking like:
-                            'SHELDON_BOT_NAME', 'SHELDON_TWITTER_KEY'
+                            'LEONARD_BOT_NAME', 'LEONARD_TWITTER_KEY'
         :return:
         """
         # Bot config variables
