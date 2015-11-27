@@ -36,7 +36,7 @@ class Leonard:
 
         self._load_config(command_line_arguments)
 
-        self._load_storage()
+        self._load_storage(command_line_arguments)
 
         self._load_adapter(command_line_arguments)
 
