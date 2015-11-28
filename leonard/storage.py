@@ -11,7 +11,6 @@ Copyright (C) 2015
 """
 from leonard.utils import logger
 
-# We will catch all import exceptions in bot.py
 from redis import StrictRedis
 
 
