@@ -14,6 +14,7 @@ import schedule
 
 from leonard import adapter
 from leonard import config
+from leonard import db
 from leonard import exceptions
 from leonard import manager
 from leonard import storage
@@ -37,6 +38,8 @@ class Leonard:
         self._load_config(command_line_arguments)
 
         self._load_storage(command_line_arguments)
+
+        self._load_database(command_line_arguments)
 
         self._load_adapter(command_line_arguments)
 
@@ -70,6 +73,20 @@ class Leonard:
         :return:
         """
         self.storage = storage.Storage(
+            self, command_line_arguments['config-prefix']
+        )
+
+    def _load_database(self, command_line_arguments):
+        """
+        Connect to bot db in MongoDB
+
+        :param command_line_arguments: dict, arguments for creating config:
+                                       config-prefix - prefix of environment
+                                                       variables.
+                                                       Default - 'LEONARD_'
+        :return:
+        """
+        self.database = db.Database(
             self, command_line_arguments['config-prefix']
         )
 
@@ -126,6 +143,8 @@ class Leonard:
         thread.start_new_thread(self.start_interval_hooks, ())
 
         for message in self.adapter.module.get_messages(self):
+            # Connect users middleware
+            message.sender = self.database.find_by_adapter_id(message.adapter_id)
             hook = self.parse_message(message)
             if hook:
                 hook.call(message, self)

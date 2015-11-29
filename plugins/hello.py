@@ -4,7 +4,7 @@ name: hello     # Name of plugin, lowercase, match with
                 # file or package name.
 description: "Example plugin for testing bot."
 config:                          # Config variable that needed to set
-  SHELDON_HELLO_REPLY: 'Hi'      # in environment.
+  LEONARD_HELLO_REPLY: 'Hi'      # in environment.
                                  # You must set default values after colon.
 """
 
@@ -15,14 +15,14 @@ import schedule
 
 @leonard.hooks.message(['hello, bot', 'hey, bot'])
 def hello_message(message, bot):
-    answer = leonard.OutgoingMessage(text=bot.config.get('SHELDON_HELLO_REPLY'),
+    answer = leonard.OutgoingMessage(text=bot.config.get('LEONARD_HELLO_REPLY'),
                                      attachments=[])
     bot.send_message(answer)
 
 
 @leonard.hooks.command('hello')
 def hello_command(message, bot):
-    answer = leonard.OutgoingMessage(text=bot.config.get('SHELDON_HELLO_REPLY'),
+    answer = leonard.OutgoingMessage(text=bot.config.get('LEONARD_HELLO_REPLY'),
                                      attachments=[])
     bot.send_message(answer)
 

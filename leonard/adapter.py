@@ -69,14 +69,17 @@ class IncomingMessage(Message):
     Class for messages from user.
     """
 
-    def __init__(self, sender, *args, **kwargs):
+    def __init__(self, adapter_id, *args, **kwargs):
         """
         Create new message from user.
 
-        :param sender: User object, sender of message
+        :param adapter_id: str, message sender id from adapter.
+                          For example, 'console12983'
         """
         super().__init__(*args, **kwargs)
-        self.sender = sender
+        self.adapter_id = adapter_id
+        # Sender will be set by users middleware
+        self.sender = None
 
 
 class OutgoingMessage(Message):

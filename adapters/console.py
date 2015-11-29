@@ -4,7 +4,7 @@ name: console # Name of adapter, lowercase, match with
               # file or package name.
 description: "Example adapter for testing bot."
 config:                         # Config variable that needed to set
-  SHELDON_CONSOLE_PROMPT: '>>>' # in environment.
+  LEONARD_CONSOLE_PROMPT: '>>>' # in environment.
                                 # You can set default values after colon.
 """
 from os import getlogin
@@ -45,9 +45,9 @@ def get_messages(bot):
                     attachment_path=attachment_data[1:],
                     attachment_id=randint(1, 1000000000)  # Fake id
                 ))
-
-        yield IncomingMessage(sender=User(username=getlogin()), text=text,
-                              attachments=attachments, variables={
+        yield IncomingMessage(adapter_id='console' + str(hash(getlogin())),
+                              text=text, attachments=attachments,
+                              variables={
                                   # Fake message id
                                   'console_id': randint(1, 1000000000)
                               })
@@ -63,16 +63,3 @@ def send_message(message, bot):
         print(attachment.path)
         print(attachment.text)
 
-
-# Adapter must have implementation of User class.
-class User:
-    def __init__(self, username):
-        """
-        Create new User for console adapter
-
-        :param username: name in bash session
-        :return:
-        """
-        # Adapter object should have 'id' and 'username' params.
-        self.id = hash(username)
-        self.username = username
