@@ -48,7 +48,7 @@ class Database:
             return self.create_new_user(adapter_id)
 
         user = list(cursor)[0]
-        return User(user['adapter_id'], user)
+        return User(user['adapter_id'], user, self)
 
     def create_new_user(self, adapter_id):
         """
@@ -65,20 +65,42 @@ class Database:
                 '_id': ObjectId(result.inserted_id)
             })
         )[0]
-        return User(user['adapter_id'], user)
+        return User(user['adapter_id'], user, self)
+
+    def find(self, params):
+        """
+        Find objects in MongoDB
+
+        :param params: dict, params of objects
+        :return: list with objects
+        """
+        return list(self.collection.find(params))
 
 
 class User:
     """
     Class for each user to store his data
     """
-    def __init__(self, adapter_id, data):
+    def __init__(self, adapter_id, data, database):
         """
         Create new user object from user in MongoDB
 
         :param adapter_id: str, user id from adapter
         :param data: dict with user data from database
+        :param database: Database object
         :return:
         """
         self.adapter_id = adapter_id
         self.data = data
+        self.database = database
+
+    def update(self, params):
+        """
+        Edit user object in MongoDB
+
+        :param params: dict, params to update in user object
+        :return:
+        """
+        self.database.collection.update({
+            'adapter_id': self.adapter_id
+        }, params)
