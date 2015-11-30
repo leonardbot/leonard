@@ -145,6 +145,7 @@ class Leonard:
         for message in self.adapter.module.get_messages(self):
             # Connect users middleware
             message.sender = self.database.find_by_adapter_id(message.adapter_id)
+
             hook = self.parse_message(message)
             if hook:
                 hook.call(message, self)
