@@ -145,17 +145,15 @@ class Leonard:
         for message in self.adapter.module.get_messages(self):
             # Connect users middleware
             message.sender = self.database.find_by_adapter_id(message.adapter_id)
-
-            hook = self.parse_message(message)
-            if hook:
-                hook.call(message, self)
+            # Parse message in new thread
+            thread.start_new_thread(self.parse_message, (message, ))
 
     def parse_message(self, message):
         """
-        Check message for all hooks of plugins
+        Check message for all hooks of plugins and call matched hook
 
         :param message: IncomingMessage object
-        :return: Hook object or None
+        :return:
         """
         found_hooks = []
         for plugin in self.plugins_manager.plugins:
@@ -165,9 +163,7 @@ class Leonard:
 
         if found_hooks:
             found_hooks.sort(key=lambda h: h.priority, reverse=True)
-            return found_hooks[0]
-        else:
-            return None
+            found_hooks[0].call(message, self)
 
     def start_interval_hooks(self):
         """

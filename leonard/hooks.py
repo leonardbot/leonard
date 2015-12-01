@@ -39,9 +39,7 @@ class Hook:
         :param bot: Leonard object
         :return:
         """
-        thread.start_new_thread(self.func, (
-            incoming_message, bot
-        ))
+        self.func.__call__(incoming_message, bot)
 
 
 class MessageHook(Hook):
