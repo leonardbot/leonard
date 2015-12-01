@@ -94,13 +94,13 @@ class User:
         self.data = data
         self.database = database
 
-    def update(self, params):
+    def update(self):
         """
-        Edit user object in MongoDB
+        Edit user object in MongoDB from data param
+        of User object
 
-        :param params: dict, params to update in user object
         :return:
         """
         self.database.collection.update({
             'adapter_id': self.adapter_id
-        }, params)
+        }, self.data)
