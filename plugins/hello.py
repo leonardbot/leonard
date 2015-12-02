@@ -3,6 +3,7 @@
 name: hello     # Name of plugin, lowercase, match with
                 # file or package name.
 description: "Example plugin for testing bot."
+priority: 1
 config:                            # Config variable that needed to set
   LEONARD_SOME_API_KEY: '123'      # in environment.
                                    # You must set default values after colon.

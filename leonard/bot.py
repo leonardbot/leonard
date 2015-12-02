@@ -162,7 +162,15 @@ class Leonard:
                 found_hooks.append(hook)
 
         if found_hooks:
-            found_hooks.sort(key=lambda h: h.priority, reverse=True)
+            # Sort found hooks by priority of plugin and priority of hook,
+            # than call the most appropriate
+            found_hooks.sort(
+                key=lambda h: (
+                    h.plugin.config.priority,
+                    h.priority
+                ),
+                reverse=True
+            )
             found_hooks[0].call(message, self)
 
     def start_interval_hooks(self):

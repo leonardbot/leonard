@@ -61,11 +61,12 @@ class PluginsManager:
                 plugin_name
             ))
             return
-        plugin_config = parse_config(plugin_module)
-        hooks, interval_hooks = find_hooks(plugin_module)
-
+        plugin_config = parse_config(plugin_module, 'plugin')
+        # Create new Plugin object with no hooks and no interval hooks
         plugin = Plugin(plugin_name, plugin_module, plugin_config,
-                        hooks, interval_hooks)
+                        [], [])
+        # Set plugin hooks and interval hooks by find_hooks function
+        plugin.hooks, plugin.interval_hooks = find_hooks(plugin)
         self.plugins.append(plugin)
 
 

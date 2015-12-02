@@ -60,7 +60,7 @@ class Config:
 
 class ModuleConfig:
     """
-    Config class for each module: plugins and adapters
+    Config class for adapters and basic class for plugins
     """
     def __init__(self, data):
         """
@@ -75,11 +75,27 @@ class ModuleConfig:
         self._data = data
 
 
-def parse_config(module):
+class PluginConfig(ModuleConfig):
+    """
+    Config class for plugins
+    """
+    def __init__(self, data):
+        """
+        Create new object for plugin config
+
+        :param data: dict, result of yaml.load()
+        :return:
+        """
+        super().__init__(data)
+        self.priority = data['priority']
+
+
+def parse_config(module, type):
     """
     Parse module (plugin/adapter) config in __doc__
 
     :param module: module object
+    :param type: str 'adapter'/'plugin'
     :return: ModuleConfig object
     """
     if not hasattr(module, '__doc__'):
@@ -96,7 +112,10 @@ def parse_config(module):
         ))
         return None
 
-    config = ModuleConfig(config_data)
+    if type == 'plugin':
+        config = PluginConfig(config_data)
+    else:
+        config = ModuleConfig(config_data)
     return config
 
 

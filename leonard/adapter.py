@@ -136,7 +136,7 @@ def load_adapter(adapter_name):
         logger.critical_message('Problems with importing adapter')
         return None
 
-    adapter_config = parse_config(adapter_module)
+    adapter_config = parse_config(adapter_module, 'adapter')
 
     adapter_object = Adapter(adapter_name,
                              adapter_module,

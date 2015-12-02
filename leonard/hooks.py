@@ -25,6 +25,8 @@ class Hook:
     # 'web' (web hook)
     type = ''
     func = None
+    # Plugin object which hook from.
+    plugin = None
 
     # If not one module return True after check,
     # bot sort matches by priority and choose first.
@@ -95,7 +97,7 @@ class CommandHook(Hook):
                         For example, 'join'.
         """
         self.type = 'command'
-        self.priority = 2
+        self.priority = 1
 
         self.func = user_function
         self.command = command
@@ -164,13 +166,14 @@ class IntervalHook(Hook):
         thread.start_new_thread(self.func, (bot, ))
 
 
-def find_hooks(plugin_module):
+def find_hooks(plugin):
     """
     Find hooks in plugin module
 
-    :param plugin_module: module object
+    :param plugin: Plugin object
     :return: list of list of Hook objects and list of IntervalHook objects
     """
+    plugin_module = plugin.module
     hooks = []
     interval_hooks = []
     # Iterating throw plugin elements
@@ -179,9 +182,12 @@ def find_hooks(plugin_module):
 
         # Hooks are setting '_leonard_hook' parameters
         # on functions when they decorated.
+        if hasattr(item, '_leonard_hook'):
+            # Set plugin param of hook
+            item._leonard_hook.plugin = plugin
+
         if (hasattr(item, '_leonard_hook') and
                     item._leonard_hook.type != 'interval'):
-            # If it not interval hook,
             hooks.append(item._leonard_hook)
         elif (hasattr(item, '_leonard_hook') and
                       item._leonard_hook.type == 'interval'):
