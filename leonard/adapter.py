@@ -41,14 +41,13 @@ class Message:
     """
     Class for every message: incoming and outgoing.
     """
-    def __init__(self, text='', attachments=[], channel=None, variables={}):
+    def __init__(self, text='', attachments=[], variables={}):
         """
         Create new message.
 
         :param text: string, text of message
         :param attachments: list[Attachment] or Attachment object,
                                     attachments with message
-        :param channel: Message's channel: channel in Slack, room in Hipchat etc.
         :param variables: dict, external parameters from/to adapter:
                           may be 'slack_username', 'slack_emoji', 'telegram_id'
                           Read about those in adapters' documentation.
@@ -60,7 +59,6 @@ class Message:
             self.attachments = [attachments]
         else:
             self.attachments = attachments
-        self.channel = channel
         self.variables = variables
 
 
