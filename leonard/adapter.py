@@ -69,17 +69,20 @@ class IncomingMessage(Message):
     Class for messages from user.
     """
 
-    def __init__(self, adapter_id, *args, **kwargs):
+    def __init__(self, adapter_id, language, *args, **kwargs):
         """
         Create new message from user.
 
         :param adapter_id: str, message sender id from adapter.
-                          For example, 'console12983'
+                           For example, 'console12983'
+        :param language: str, language code of message.
+                         For example, 'ru', 'en'
         """
         super().__init__(*args, **kwargs)
         self.adapter_id = adapter_id
         # Sender will be set by users middleware
         self.sender = None
+        self.language = language
 
 
 class OutgoingMessage(Message):

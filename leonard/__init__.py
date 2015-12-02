@@ -18,6 +18,10 @@ from leonard.hooks import *
 # for plugins sending messages
 from leonard.adapter import *
 
+# Import function for getting localized text
+# of messages
+from leonard.messages import *
+
 # Utils folder contains scripts for more
 # comfortable work with sending and parsing
 # messages. For example, script for downloading

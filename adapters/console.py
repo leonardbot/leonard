@@ -3,9 +3,9 @@
 name: console # Name of adapter, lowercase, match with
               # file or package name.
 description: "Example adapter for testing bot."
-config:                         # Config variable that needed to set
-  LEONARD_CONSOLE_PROMPT: '>>>' # in environment.
-                                # You can set default values after colon.
+config:                          # Config variable that needed to set
+  LEONARD_CONSOLE_LANGUAGE: 'en' # in environment.
+                                 # You can set default values after colon.
 """
 from os import getlogin
 from time import sleep
@@ -46,6 +46,10 @@ def get_messages(bot):
                     attachment_id=randint(1, 1000000000)  # Fake id
                 ))
         yield IncomingMessage(adapter_id='console' + str(hash(getlogin())),
+                              language=bot.config.get(
+                                  'LEONARD_CONSOLE_LANGUAGE',
+                                  'en'
+                              ),
                               text=text, attachments=attachments,
                               variables={
                                   # Fake message id
@@ -62,4 +66,3 @@ def send_message(message, bot):
         print(attachment.type)
         print(attachment.path)
         print(attachment.text)
-

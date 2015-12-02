@@ -3,13 +3,12 @@
 name: hello     # Name of plugin, lowercase, match with
                 # file or package name.
 description: "Example plugin for testing bot."
-config:                          # Config variable that needed to set
-  LEONARD_HELLO_REPLY: 'Hi'      # in environment.
-                                 # You must set default values after colon.
+config:                            # Config variable that needed to set
+  LEONARD_SOME_API_KEY: '123'      # in environment.
+                                   # You must set default values after colon.
 """
 
 import leonard
-import leonard.utils.logger
 import schedule
 
 
@@ -29,4 +28,4 @@ def hello_command(message, bot):
 
 @leonard.hooks.interval(schedule.every(5).minutes)
 def hello_interval(bot):
-    leonard.utils.logger.info_message('Hello from hello module')
+    leonard.logger.info_message('Hello from hello module')
