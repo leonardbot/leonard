@@ -15,15 +15,19 @@ import schedule
 
 @leonard.hooks.message(['hello, bot', 'hey, bot'])
 def hello_message(message, bot):
-    answer = leonard.OutgoingMessage(text=bot.config.get('LEONARD_HELLO_REPLY'),
-                                     attachments=[])
+    answer = leonard.OutgoingMessage(
+        text=leonard.get_text('hello.hello_message', message),
+        attachments=[]
+    )
     bot.send_message(answer)
 
 
 @leonard.hooks.command('hello')
 def hello_command(message, bot):
-    answer = leonard.OutgoingMessage(text=bot.config.get('LEONARD_HELLO_REPLY'),
-                                     attachments=[])
+    answer = leonard.OutgoingMessage(
+        text=leonard.get_text('hello.hello_message', message),
+        attachments=[]
+    )
     bot.send_message(answer)
 
 
