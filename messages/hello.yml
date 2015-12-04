@@ -1,1 +1,3 @@
-hello_message: 'Hi!'
+hello_message:
+  en: 'Hi!'
+  ru: 'Привет!'

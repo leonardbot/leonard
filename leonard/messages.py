@@ -57,7 +57,7 @@ def get_text(name, incoming_message=None):
     # different language versions of message.
     if type(result) == dict:
         try:
-            return result[incoming_message.sender.language]
+            return result[incoming_message.language]
         except (TypeError, KeyError):
             return None
     return result
