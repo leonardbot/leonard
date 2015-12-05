@@ -2,7 +2,7 @@
 Leonard bot is a virtual assistant, who will be can create notifications, notes, search in the internet and in the maps etc.
 ## Install and start
 ```
-git clone https://github.com/sevazhidkov/leonard
+git clone https://github.com/sevazhidkov/leonard.git
 cd leonard
 pip install -r requirements.txt
 ```
@@ -56,3 +56,13 @@ If you created new plugin don't forget to add it to ```installed_plugins.txt```.
 * You can improve Leonard core. At the moment, the most important thing is more effective working with threads.
 
 * You can translate Leonard to your language. Checkout ```messages``` folder and ```leonard/messages.py```.
+
+## Contact
+Send me a message in Telegram: [@sevazhidkov](https://telegram.me/sevazhidkov)
+
+Or in Twitter: [@sevazhidkov](https://twitter.com/sevazhidkov)
+
+Or E-mail: [zhidkovseva@gmail.com](mailto:zhidkovseva@gmail.com)
+
+Also you can buy me [coffee](https://paypal.me/sevazhidkov/5), [pizza](https://paypal.me/sevazhidkov/10),
+[new Macbook Pro](https://paypal.me/sevazhidkov/2408) or [whatever you want](https://paypal.me/sevazhidkov).
