@@ -14,6 +14,9 @@ import re
 
 from leonard.exceptions import catch_module_errors
 
+REPLACE_SYMBOLS = [',', '.', '?', '!', '(',
+                   ')', ':', '"', '/', ';']
+
 
 class Hook:
     """
@@ -136,6 +139,47 @@ class CallbackHook(Hook):
         :return: True or False
         """
         return self.callback_func.__call__(incoming_message)
+
+
+class KeywordsHook(Hook):
+    def __init__(self, user_function, keywords_list):
+        """
+        Create new callback hook.
+
+        :param user_function: decorated user's function, called
+                              when callback matching with incoming message
+        :param keywords_list: list of lists of str (keywords).
+                              For example, [['weather', 'now'],
+                                            ['weather', 'tomorrow']]
+        """
+        self.type = 'callback'
+        self.priority = 2
+
+        self.func = user_function
+        self.keywords_list = keywords_list
+
+    def check(self, incoming_message):
+        """
+        Check, is this message catching for this hook
+
+        :param incoming_message: IncomingMessage object
+        :return: True or False
+        """
+        message_text = incoming_message.text
+        for sym in REPLACE_SYMBOLS:
+            message_text = message_text.replace(sym, ' ')
+        message_words = message_text.split()
+        for keywords in self.keywords_list:
+            # Create set for keywords to have ability to delete
+            # keywords by words
+            keywords_set = set(keywords)
+            for word in keywords:
+                if word in message_words:
+                    keywords_set.pop(word)
+            # If set is empty, so all words found, return True
+            if keywords_set == set():
+                return True
+        return False
 
 
 class IntervalHook(Hook):
@@ -270,6 +314,35 @@ def callback(callback_func):
             return func(message_object, bot_object)
 
         wrapped._leonard_hook = CallbackHook(wrapped, callback_func)
+        return wrapped
+
+    return hook
+
+
+def keywords(keywords_list):
+    """
+    Hook for catching catching messages by keywords list.
+    Hook match only when all words from one or more of keyword list
+    (not list of keywords lists) is in the message words.
+
+    :param keywords_list: list of lists of str (keywords).
+                          For example, [['weather', 'now'],
+                                        ['weather', 'tomorrow']]
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = KeywordsHook(wrapped, keywords_list)
         return wrapped
 
     return hook
