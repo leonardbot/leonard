@@ -44,7 +44,7 @@ Variables sorted by priority: from high to low.
 | LEONARD\_REDIS\_HOST       | Host for Redis storage                                   | localhost                 |
 | LEONARD\_REDIS\_PORT       | Port for Redis storage                                   | 6379                      |
 | LEONARD\_REDIS\_DB         | Num of DB for Redis storage                              | 0                         |
-| LEONARD\_CONSOLE\_LANGUAGE | Letters of language that console adapter uses as default | en                        |
+| LEONARD\_DEFAULT\_LANGUAGE | Letters of language that adapters uses as default        | en                        |
 ## Contributing
 * You can create new plugins or extend existing plugins. You can find examples of
 plugins code in ```plugins/hello.py```. All hooks you can see in ```leonard/hooks.py```.

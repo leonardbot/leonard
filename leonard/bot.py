@@ -145,6 +145,16 @@ class Leonard:
         for message in self.adapter.module.get_messages(self):
             # Connect users middleware
             message.sender = self.database.find_by_adapter_id(message.adapter_id)
+            if 'language' in message.sender.data:
+                message.language = message.sender.data['language']
+            else:
+                logger.warning_message(
+                    'Language not set for {} user'.format(message.adapter_id)
+                )
+                message.language = self.config.get(
+                    'LEONARD_DEFAULT_LANGUAGE', 'en'
+                )
+
             # Parse message in new thread
             thread.start_new_thread(self.parse_message, (message, ))
 

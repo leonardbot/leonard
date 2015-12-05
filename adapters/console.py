@@ -4,7 +4,7 @@ name: console # Name of adapter, lowercase, match with
               # file or package name.
 description: "Example adapter for testing bot."
 config:                          # Config variable that needed to set
-  LEONARD_CONSOLE_LANGUAGE: 'en' # in environment.
+  LEONARD_EXAMPLE_VARIABLE: 'aa' # in environment.
                                  # You can set default values after colon.
 """
 from os import getlogin
@@ -47,7 +47,7 @@ def get_messages(bot):
                 ))
         yield IncomingMessage(adapter_id='console' + str(hash(getlogin())),
                               language=bot.config.get(
-                                  'LEONARD_CONSOLE_LANGUAGE',
+                                  'LEONARD_DEFAULT_LANGUAGE',
                                   'en'
                               ),
                               text=text, attachments=attachments,
