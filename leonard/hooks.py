@@ -165,7 +165,7 @@ class KeywordsHook(Hook):
         :param incoming_message: IncomingMessage object
         :return: True or False
         """
-        message_text = incoming_message.text
+        message_text = incoming_message.text.lower()
         for sym in REPLACE_SYMBOLS:
             message_text = message_text.replace(sym, ' ')
         message_words = message_text.split()
@@ -174,8 +174,8 @@ class KeywordsHook(Hook):
             # keywords by words
             keywords_set = set(keywords)
             for word in keywords:
-                if word in message_words:
-                    keywords_set.pop(word)
+                if word.lower() in message_words:
+                    keywords_set.remove(word)
             # If set is empty, so all words found, return True
             if keywords_set == set():
                 return True
