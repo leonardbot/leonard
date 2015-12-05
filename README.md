@@ -58,11 +58,11 @@ If you created new plugin don't forget to add it to ```installed_plugins.txt```.
 * You can translate Leonard to your language. Checkout ```messages``` folder and ```leonard/messages.py```.
 
 ## Contact
-Send me a message in Telegram: [@sevazhidkov](https://telegram.me/sevazhidkov)
+Send me a message in Telegram: [@sevazhidkov](https://telegram.me/sevazhidkov).
 
-Or in Twitter: [@sevazhidkov](https://twitter.com/sevazhidkov)
+Or in Twitter: [@sevazhidkov](https://twitter.com/sevazhidkov).
 
-Or E-mail: [zhidkovseva@gmail.com](mailto:zhidkovseva@gmail.com)
+Or E-mail: [zhidkovseva@gmail.com](mailto:zhidkovseva@gmail.com).
 
-Also you can buy me [coffee](https://paypal.me/sevazhidkov/5), [pizza](https://paypal.me/sevazhidkov/10),
-[new Macbook Pro](https://paypal.me/sevazhidkov/2408) or [whatever you want](https://paypal.me/sevazhidkov).
+Also you can buy me [coffee](https://paypal.me/sevazhidkov/5USD), [pizza](https://paypal.me/sevazhidkov/10USD),
+[new Macbook Pro](https://paypal.me/sevazhidkov/2408USD) or [whatever you want](https://paypal.me/sevazhidkov).
