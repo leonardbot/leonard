@@ -16,6 +16,7 @@ import schedule
 @leonard.hooks.message(['hello, bot', 'hey, bot'])
 def hello_message(message, bot):
     answer = leonard.OutgoingMessage(
+        recipient=message.sender,
         text=leonard.get_text('hello.hello_message', message),
         attachments=[]
     )
@@ -25,10 +26,10 @@ def hello_message(message, bot):
 @leonard.hooks.command('hello')
 def hello_command(message, bot):
     answer = leonard.OutgoingMessage(
+        recipient=message.sender,
         text=leonard.get_text('hello.hello_message', message),
         attachments=[]
     )
-    bot.send_message(answer)
 
 
 @leonard.hooks.interval(schedule.every(5).minutes)

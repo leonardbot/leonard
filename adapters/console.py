@@ -59,6 +59,7 @@ def get_messages(bot):
 
 def send_message(message, bot):
     print('BOT: ', message.text)
+    print(message.recipient.data)
     print('Attachments:')
     for attachment in message.attachments:
         print(attachment.id)

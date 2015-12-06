@@ -88,8 +88,15 @@ class OutgoingMessage(Message):
     Class for messages from bot.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, recipient, *args, **kwargs):
+        """
+        Create new message from bot
+
+        :param recipient: User object
+        :return:
+        """
         super().__init__(*args, **kwargs)
+        self.recipient = recipient
 
 
 class Attachment:

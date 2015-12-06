@@ -9,7 +9,9 @@ Copyright (C) 2015
 """
 
 import time
+import pickle
 import _thread as thread
+
 import schedule
 
 from leonard import adapter
@@ -155,6 +157,17 @@ class Leonard:
                     'LEONARD_DEFAULT_LANGUAGE', 'en'
                 )
 
+            if ('question' in message.sender.data and
+                    message.sender.data['question'] != ''):
+                # Parse question callback
+                callback = pickle.loads(message.sender.data['question'])
+                # Delete question
+                message.sender.data['question'] = ''
+                message.sender.update()
+                # Run callback
+                thread.start_new_thread(callback, (message, self))
+                continue
+
             # Parse message in new thread
             thread.start_new_thread(self.parse_message, (message, ))
 
@@ -207,3 +220,16 @@ class Leonard:
         :return:
         """
         self.adapter.module.send_message(message, self)
+
+    def ask_question(self, message, callback):
+        """
+        Ask about something the user from plugin.
+
+        :param message: OutgoingMessage object
+        :param callback: function that called with (message, bot)
+                         after users next message
+        :return:
+        """
+        self.send_message(message)
+        message.recipient.data['question'] = pickle.dumps(callback)
+        message.recipient.update()
