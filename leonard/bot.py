@@ -204,12 +204,12 @@ class Leonard:
                 ),
                 reverse=True
             )
-            analytics.track_message(
-                message=message.variables['last_message'],
-                adapter=self.adapter.name,
-                plugin=found_hooks[0].plugin.name,
-                bot=self
-            )
+            thread.start_new_thread(analytics.track_message, (), {
+                'message': message.variables['last_message'],
+                'adapter': self.adapter.name,
+                'plugin': found_hooks[0].plugin.name,
+                'bot': self
+            })
             found_hooks[0].call(message, self)
 
     def start_interval_hooks(self):
