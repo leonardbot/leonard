@@ -30,4 +30,4 @@ from leonard.utils import *
 
 __author__ = 'sevazhidkov'
 __version__ = '0.0.1'
-__email__ = 'zhidkovseva@gmail.com'
+__email__ = 'seva@leonardbot.xyz'
