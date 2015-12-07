@@ -30,6 +30,7 @@ def hello_command(message, bot):
         text=leonard.get_text('hello.hello_message', message),
         attachments=[]
     )
+    bot.send_message(answer)
 
 
 @leonard.hooks.interval(schedule.every(5).minutes)
