@@ -23,5 +23,5 @@ from leonard.adapter import *
 from leonard.messages import *
 
 __author__ = 'sevazhidkov'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __email__ = 'seva@leonardbot.xyz'
