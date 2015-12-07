@@ -26,7 +26,7 @@ for file_name in messages_files:
         messages[file_name.strip('.yml')] = yaml.load(file.read())
 
 
-def get_text(name, incoming_message=None):
+def get_text(name, user=None):
     """
     Get data for message in incoming message language
     from plugin file messages folder
@@ -36,8 +36,7 @@ def get_text(name, incoming_message=None):
                                          separated by dot>'
                  For example, 'hello.hello_message',
                               'hello.bye_messages.aggressive'
-    :param incoming_message: IncomingMessage object, needed for determine
-                             user's language
+    :param user: User object, needed for determine language
     :return: str (message text), list of str (list of text)
     """
     # Split name of text message by dot
@@ -57,7 +56,7 @@ def get_text(name, incoming_message=None):
     # different language versions of message.
     if type(result) == dict:
         try:
-            return result[incoming_message.language]
+            return result[user.data['language']]
         except (TypeError, KeyError):
             return None
     return result

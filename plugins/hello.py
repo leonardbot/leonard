@@ -17,7 +17,7 @@ import schedule
 def hello_message(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=leonard.get_text('hello.hello_message', message),
+        text=leonard.get_text('hello.hello_message', message.sender),
         attachments=[]
     )
     bot.send_message(answer)
@@ -27,7 +27,7 @@ def hello_message(message, bot):
 def hello_command(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=leonard.get_text('hello.hello_message', message),
+        text=leonard.get_text('hello.hello_message', message.sender),
         attachments=[]
     )
     bot.send_message(answer)
