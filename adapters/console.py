@@ -52,9 +52,10 @@ def get_messages(bot):
                               ),
                               text=text, attachments=attachments,
                               variables={
-                                  # Fake message id
-                                  'console_id': randint(1, 1000000000)
+                                  'first_name': 'John',
+                                  'last_name': 'Doe'
                               })
+    return []
 
 
 def send_message(message, bot):

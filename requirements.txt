@@ -2,3 +2,4 @@ pyyaml==3.11
 redis==2.10.3
 schedule==0.3.2
 pymongo==§3.1.1
+requests

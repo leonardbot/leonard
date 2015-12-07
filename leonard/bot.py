@@ -157,6 +157,14 @@ class Leonard:
                     'LEONARD_DEFAULT_LANGUAGE', 'en'
                 )
 
+            # If some adapter's variables not saved in DB or changed,
+            # update it
+            for variable in message.variables:
+                if (variable not in message.sender.data or
+                        message.variables[variable] != message.sender.data[variable]):
+                    message.sender.data[variable] = message.variables[variable]
+            message.sender.update()
+
             if ('question' in message.sender.data and
                     message.sender.data['question'] != ''):
                 # Parse question callback
