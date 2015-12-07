@@ -11,18 +11,9 @@ import time
 import json
 import requests
 from leonard.adapter import IncomingMessage
-from leonard.utils import logger
+from leonard.utils import logger, analytics
 
 TELEGRAM_API_URL = 'https://api.telegram.org/bot{token}/{method}?{params}'
-
-
-def track_message(message):
-    """
-    Track message in Botan.io
-
-    :param message: dict, message from telegram
-    """
-    message['adapter'] = 'telegram'
 
 
 def get_messages(bot):
@@ -57,8 +48,6 @@ def get_messages(bot):
             last_update_id = event['update_id']
             if 'message' in event:
                 message = event['message']
-                # Track message
-                track_message(message)
                 yield IncomingMessage(
                     adapter_id='telegram-{}'.format(message['from']['id']),
                     text=message['text'],
@@ -67,6 +56,7 @@ def get_messages(bot):
                         'id': message['from']['id'],
                         'first_name': message['from']['first_name'],
                         'last_name': message['from']['last_name'],
+                        'last_message': message,
                         'adapter': 'telegram'
                     }
                 )

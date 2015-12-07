@@ -45,7 +45,8 @@ Variables sorted by priority: from high to low.
 | LEONARD\_REDIS\_PORT       | Port for Redis storage                                      | 6379                      |
 | LEONARD\_REDIS\_DB         | Num of DB for Redis storage                                 | 0                         |
 | LEONARD\_CONSOLE\_LANGUAGE | Letters of language that console adapter uses as default    | en                        |
-| LEONARD\_TELEGRAM_TOKEN    | Token for connection to Telegram Bot API (telegram adapter) |                           |
+| LEONARD\_TELEGRAM\_TOKEN   | Token for connection to Telegram Bot API (telegram adapter) |                           |
+| LEONARD\_BOTAN\_TOKEN      | Token for message analytics                                 |                           |
 
 ## Contributing
 * You can create new plugins or extend existing plugins. You can find examples of

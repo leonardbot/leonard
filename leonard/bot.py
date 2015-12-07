@@ -20,7 +20,7 @@ from leonard import db
 from leonard import exceptions
 from leonard import manager
 from leonard import storage
-from leonard.utils import logger
+from leonard.utils import logger, analytics
 
 
 class Leonard:
@@ -201,6 +201,12 @@ class Leonard:
                     h.priority
                 ),
                 reverse=True
+            )
+            analytics.track_message(
+                message=message.variables['last_message'],
+                adapter=self.adapter.name,
+                plugin=found_hooks[0].plugin.name,
+                bot=self
             )
             found_hooks[0].call(message, self)
 
