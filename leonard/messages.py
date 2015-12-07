@@ -54,7 +54,7 @@ def get_text(name, user=None):
     # Choose right message for user language.
     # If result is dict, it should be dict with
     # different language versions of message.
-    if type(result) == dict:
+    if type(result) == dict and user is not None:
         try:
             return result[user.data['language']]
         except (TypeError, KeyError):

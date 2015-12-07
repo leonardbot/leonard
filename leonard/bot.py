@@ -161,19 +161,12 @@ class Leonard:
         message.sender = self.database.find_by_adapter_id(message.adapter_id)
         if 'language' in message.sender.data:
             message.language = message.sender.data['language']
-        else:
-            logger.warning_message(
-                'Language not set for {} user'.format(message.adapter_id)
-            )
-            message.language = self.config.get(
-                'LEONARD_DEFAULT_LANGUAGE', 'en'
-            )
 
         # If some adapter's variables not saved in DB or changed,
         # update it
         for variable in message.variables:
             if (variable not in message.sender.data or
-                  message.variables[variable] != message.sender.data[variable]):
+                    message.variables[variable] != message.sender.data[variable]):
                 message.sender.data[variable] = message.variables[variable]
                 message.sender.update()
 

@@ -71,7 +71,10 @@ class ModuleConfig:
         """
         self.name = data['name']
         self.description = data['description']
-        self.variables = data['config']
+        if 'config' in data:
+            self.variables = data['config']
+        else:
+            self.variables = {}
         self._data = data
 
 
