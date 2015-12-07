@@ -142,50 +142,52 @@ class Leonard:
 
         :return:
         """
+        logger.info_message('Starting bot')
+
         thread.start_new_thread(self.start_interval_hooks, ())
 
         for message in self.adapter.module.get_messages(self):
-            # Connect users middleware
-            message.sender = self.database.find_by_adapter_id(message.adapter_id)
-            if 'language' in message.sender.data:
-                message.language = message.sender.data['language']
-            else:
-                logger.warning_message(
-                    'Language not set for {} user'.format(message.adapter_id)
-                )
-                message.language = self.config.get(
-                    'LEONARD_DEFAULT_LANGUAGE', 'en'
-                )
-
-            # If some adapter's variables not saved in DB or changed,
-            # update it
-            for variable in message.variables:
-                if (variable not in message.sender.data or
-                        message.variables[variable] != message.sender.data[variable]):
-                    message.sender.data[variable] = message.variables[variable]
-            message.sender.update()
-
-            if ('question' in message.sender.data and
-                    message.sender.data['question'] != ''):
-                # Parse question callback
-                callback = pickle.loads(message.sender.data['question'])
-                # Delete question
-                message.sender.data['question'] = ''
-                message.sender.update()
-                # Run callback
-                thread.start_new_thread(callback, (message, self))
-                continue
-
             # Parse message in new thread
             thread.start_new_thread(self.parse_message, (message, ))
 
     def parse_message(self, message):
         """
-        Check message for all hooks of plugins and call matched hook
+        Prepare message, check for all hooks of plugins and call matched hook
 
         :param message: IncomingMessage object
         :return:
         """
+        # Connect users middleware
+        message.sender = self.database.find_by_adapter_id(message.adapter_id)
+        if 'language' in message.sender.data:
+            message.language = message.sender.data['language']
+        else:
+            logger.warning_message(
+                'Language not set for {} user'.format(message.adapter_id)
+            )
+            message.language = self.config.get(
+                'LEONARD_DEFAULT_LANGUAGE', 'en'
+            )
+
+        # If some adapter's variables not saved in DB or changed,
+        # update it
+        for variable in message.variables:
+            if (variable not in message.sender.data or
+                  message.variables[variable] != message.sender.data[variable]):
+                message.sender.data[variable] = message.variables[variable]
+                message.sender.update()
+
+        if ('question' in message.sender.data and
+                message.sender.data['question'] != ''):
+            # Parse question callback
+            callback = pickle.loads(message.sender.data['question'])
+            # Delete question
+            message.sender.data['question'] = ''
+            message.sender.update()
+            # Run callback
+            thread.start_new_thread(callback, (message, self))
+            return
+
         found_hooks = []
         for plugin in self.plugins_manager.plugins:
             hook = plugin.check_hooks(message)
