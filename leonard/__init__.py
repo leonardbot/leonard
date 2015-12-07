@@ -22,12 +22,6 @@ from leonard.adapter import *
 # of messages
 from leonard.messages import *
 
-# Utils folder contains scripts for more
-# comfortable work with sending and parsing
-# messages. For example, script for downloading
-# files by url.
-from leonard.utils import *
-
 __author__ = 'sevazhidkov'
 __version__ = '0.0.1'
 __email__ = 'seva@leonardbot.xyz'
