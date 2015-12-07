@@ -30,11 +30,11 @@ python start.py --adapter telegram
 ```
 Don't forget set adapter's environment variables that listed below.
 ## Plugins
-| Name  | Description                | Example              |
-|-------|----------------------------|----------------------|
-| hello | Send hello message to user | Hello, bot<br>!hello |
-|       |                            |                      |
-|       |                            |                      |
+| Name  | Description                | Example              | Priority |
+|-------|----------------------------|----------------------|----------|
+| hello | Send hello message to user | Hello, bot<br>!hello | 5        |
+|       |                            |                      |          |
+|       |                            |                      |          |
 ## Environment variables
 Variables sorted by priority: from high to low.
 
