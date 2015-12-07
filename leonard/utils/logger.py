@@ -10,23 +10,28 @@ Functions for sending messages to log file
 Copyright (C) 2015
 """
 
+import sys
 import logging
 
-# Set logging file
-logging.basicConfig(filename='sheldon.log', level=logging.INFO)
+# Setup logging
+log = logging.getLogger()
+log.setLevel(logging.INFO)
+log_stream = logging.StreamHandler(sys.stdout)
+log_stream.setLevel(logging.WARNING)
+log.addHandler(log_stream)
 
 
 def info_message(message):
-    logging.info(message)
+    log.info(message)
 
 
 def warning_message(message):
-    logging.warning(message)
+    log.warning(message)
 
 
 def error_message(message):
-    logging.error(message)
+    log.error(message)
 
 
 def critical_message(message):
-    logging.critical(message)
+    log.critical(message)
