@@ -11,7 +11,7 @@ import time
 import json
 import requests
 from leonard.adapter import IncomingMessage
-from leonard.utils import logger, analytics
+from leonard.utils import logger
 
 TELEGRAM_API_URL = 'https://api.telegram.org/bot{token}/{method}?{params}'
 
@@ -48,14 +48,31 @@ def get_messages(bot):
             last_update_id = event['update_id']
             if 'message' in event:
                 message = event['message']
+                # May be user didn't provided text of message, so message['text']
+                # is empty.
+                if 'text' in message:
+                    message_text = message['text']
+                else:
+                    message_text = ''
+                # Check, is first_name and last_name set in
+                # user's telegram profile. If not, save None.
+                if 'first_name' in message['from']:
+                    first_name = message['from']['first_name']
+                else:
+                    first_name = None
+                if 'last_name' in message['from']:
+                    last_name = message['from']['last_name']
+                else:
+                    last_name = None
+                # Leonard iterating with message with 'for in', so our function
+                # is generator of IncomingMessage objects.
                 yield IncomingMessage(
-                    adapter_id='telegram-{}'.format(message['from']['id']),
-                    text=message['text'],
+                    adapter_id=message['from']['id'],
+                    text=message_text,
                     attachments=[],
                     variables={
-                        'id': message['from']['id'],
-                        'first_name': message['from']['first_name'],
-                        'last_name': message['from']['last_name'],
+                        'first_name': first_name,
+                        'last_name': last_name,
                         'last_message': message,
                         'adapter': 'telegram'
                     }
@@ -65,14 +82,15 @@ def get_messages(bot):
 
 
 def send_message(message, bot):
+    logger.info_message('Sending message', message)
     response = requests.get(TELEGRAM_API_URL.format(
         token=bot.config.get('LEONARD_TELEGRAM_TOKEN', ''),
         method='sendMessage', params='chat_id={}&text={}'.format(
-            message.recipient.data['id'],
+            message.recipient.data['adapter_id'],
             message.text
         )
     ))
     if not json.loads(response.text)['ok']:
         logger.error_message(
-            'Problems with sending message: {}'.format(response)
+            'Problems with sending message: {}'.format(response.text)
         )

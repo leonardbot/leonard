@@ -61,6 +61,19 @@ class Message:
             self.attachments = attachments
         self.variables = variables
 
+    def __str__(self):
+        # If message.text length is more than 15 chars, trim it
+        if len(self.text) > 15:
+            message_preview = self.text[:15] + '...'
+        else:
+            message_preview = self.text
+        answer = 'Message "{}", variables: {}'.format(message_preview, self.variables)
+        if type(self) == IncomingMessage:
+            answer += ' from {}'.format(self.sender)
+        else:
+            answer += ' to {}'.format(self.recipient)
+        return answer
+
 
 class IncomingMessage(Message):
     """

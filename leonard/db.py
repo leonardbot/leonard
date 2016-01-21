@@ -104,3 +104,6 @@ class User:
         self.database.collection.update({
             'adapter_id': self.adapter_id
         }, self.data)
+
+    def __str__(self):
+        return 'User #{}: {}'.format(self.adapter_id, self.data)
