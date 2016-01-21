@@ -9,8 +9,8 @@ Decorators and other functions for hooks.
 
 Copyright (C) 2015
 """
-import _thread as thread
 import re
+import threading
 
 from leonard.exceptions import catch_module_errors
 
@@ -207,7 +207,8 @@ class IntervalHook(Hook):
         :param incoming_message: not using
         :return:
         """
-        thread.start_new_thread(self.func, (bot, ))
+        thread = threading.Thread(target=self.func, args=(bot, ))
+        thread.start()
 
 
 def find_hooks(plugin):
