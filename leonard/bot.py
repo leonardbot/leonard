@@ -57,6 +57,8 @@ class Leonard:
                                                        Default - 'LEONARD_'
         :return:
         """
+        logger.info_message('Loading config')
+
         self.config = config.Config(prefix=command_line_arguments['config-prefix'])
 
         # If we had problems with config loading, stop the bot.
@@ -74,6 +76,7 @@ class Leonard:
                                                        Default - 'LEONARD_'
         :return:
         """
+        logger.info_message('Connecting to redis storage')
         self.storage = storage.Storage(
             self, command_line_arguments['config-prefix']
         )
@@ -88,6 +91,7 @@ class Leonard:
                                                        Default - 'LEONARD_'
         :return:
         """
+        logger.info_message('Connecting to database')
         self.database = db.Database(
             self, command_line_arguments['config-prefix']
         )
@@ -104,6 +108,8 @@ class Leonard:
                                                  Default - 'console'.
         :return:
         """
+        logger.info_message('Loading adapter')
+
         self.adapter = adapter.load_adapter(command_line_arguments['adapter'])
 
         # If load adapter function return None, stop the bot.
@@ -119,7 +125,7 @@ class Leonard:
     def _load_plugins(self):
         """
         Load plugins from plugins folder or PyPi using plugins manager.
-        
+
         :return:
         """
         self.plugins_manager = manager.PluginsManager(self.config)
@@ -157,10 +163,15 @@ class Leonard:
         :param message: IncomingMessage object
         :return:
         """
+        logger.info_message('Got message', message)
+
         # Connect users middleware
         message.sender = self.database.find_by_adapter_id(message.adapter_id)
+        # If we know message.sender language, add it to message.language
         if 'language' in message.sender.data:
             message.language = message.sender.data['language']
+        else:
+            logger.warning_message('Language not set for ', message)
 
         # If some adapter's variables not saved in DB or changed,
         # update it
@@ -168,10 +179,11 @@ class Leonard:
             if (variable not in message.sender.data or
                     message.variables[variable] != message.sender.data[variable]):
                 message.sender.data[variable] = message.variables[variable]
-                message.sender.update()
+        message.sender.update()
 
         if ('question' in message.sender.data and
                 message.sender.data['question'] != ''):
+            logger.info_message('Detected question answer for', message)
             # Parse question callback
             callback = pickle.loads(message.sender.data['question'])
             # Delete question
@@ -188,6 +200,7 @@ class Leonard:
                 found_hooks.append(hook)
 
         if found_hooks:
+            logger.info_message('Found', len(found_hooks), 'hooks')
             # Sort found hooks by priority of plugin and priority of hook,
             # than call the most appropriate
             found_hooks.sort(
@@ -204,6 +217,9 @@ class Leonard:
                 'bot': self
             })
             found_hooks[0].call(message, self)
+            return
+
+        logger.warning_message('Hooks not found for', message)
 
     def start_interval_hooks(self):
         """
@@ -215,6 +231,7 @@ class Leonard:
             for hook in plugin.interval_hooks:
                 # Call hook with bot argument
                 hook.interval.do(lambda: hook.call(self))
+                logger.info_message('Added interval hook', hook)
 
         while True:
             schedule.run_pending()
@@ -228,6 +245,7 @@ class Leonard:
         :param message: OutgoingMessage object
         :return:
         """
+        logger.info_message('Sending message', message)
         self.adapter.module.send_message(message, self)
 
     def ask_question(self, message, callback):
@@ -239,6 +257,7 @@ class Leonard:
                          after users next message
         :return:
         """
+        logger.info_message('Asking question', message)
         self.send_message(message)
         message.recipient.data['question'] = pickle.dumps(callback)
         message.recipient.update()
