@@ -10,7 +10,7 @@ Copyright (C) 2015
 
 import time
 import pickle
-import _thread as thread
+import threading
 
 import schedule
 
@@ -150,11 +150,19 @@ class Leonard:
         """
         logger.info_message('Starting bot')
 
-        thread.start_new_thread(self.start_interval_hooks, ())
+        interval_thread = threading.Thread(
+            target=self.start_interval_hooks,
+            args=()
+        )
+        interval_thread.start()
 
         for message in self.adapter.module.get_messages(self):
             # Parse message in new thread
-            thread.start_new_thread(self.parse_message, (message, ))
+            message_thread = threading.Thread(
+                target=self.parse_message,
+                args=(message, )
+            )
+            message_thread.start()
 
     def parse_message(self, message):
         """
@@ -190,7 +198,7 @@ class Leonard:
             message.sender.data['question'] = ''
             message.sender.update()
             # Run callback
-            thread.start_new_thread(callback, (message, self))
+            callback(message, self)
             return
 
         found_hooks = []
@@ -210,12 +218,19 @@ class Leonard:
                 ),
                 reverse=True
             )
-            thread.start_new_thread(analytics.track_message, (), {
-                'message': message.variables['last_message'],
-                'adapter': self.adapter.name,
-                'plugin': found_hooks[0].plugin.name,
-                'bot': self
-            })
+
+            # Track message using Botan.io analytics in new thread
+            analytics_thread = threading.Thread(
+                target=analytics.track_message,
+                kwargs={
+                    'message': message.variables['last_message'],
+                    'adapter': self.adapter.name,
+                    'plugin': found_hooks[0].plugin.name,
+                    'bot': self
+                }
+            )
+            analytics_thread.start()
+
             found_hooks[0].call(message, self)
             return
 
