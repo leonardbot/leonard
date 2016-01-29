@@ -55,7 +55,11 @@ class Config:
         :return:
         """
         plugins_file = open('installed_plugins.txt')
-        self.installed_plugins = plugins_file.readlines()
+        # Strip installed_plugins.txt file by \n and delete it from strings
+        self.installed_plugins = list(
+            map(lambda plugin: plugin.rstrip(), plugins_file.readlines())
+        )
+        plugins_file.close()
 
 
 class ModuleConfig:
@@ -120,7 +124,3 @@ def parse_config(module, type):
     else:
         config = ModuleConfig(config_data)
     return config
-
-
-
-
