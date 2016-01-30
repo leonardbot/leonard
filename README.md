@@ -1,4 +1,4 @@
-# Leonard bot
+# Leonard bot [![Build Status](https://travis-ci.org/leonardbot/leonard.svg?branch=master)](https://travis-ci.org/leonardbot/leonard)
 Leonard bot is a virtual assistant, who will be can create notifications, notes, search in the internet and in the maps etc.
 ## Install and start
 ```
