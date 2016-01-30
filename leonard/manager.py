@@ -95,8 +95,8 @@ class Plugin:
         :return:
         """
         self.module = importlib.reload(self.module)
-        self.config = parse_config(self.module)
-        self.hooks = find_hooks(self.module)
+        self.config = parse_config(self.module, 'plugin')
+        self.hooks = find_hooks(self)
 
     def check_hooks(self, message):
         """

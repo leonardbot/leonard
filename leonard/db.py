@@ -19,7 +19,7 @@ class Database:
     """
     Class for MongoDB client to store users data
     """
-    def __init__(self, bot, config_prefix):
+    def __init__(self, bot, config_prefix='LEONARD_'):
         """
         Create new db for storing users information
 

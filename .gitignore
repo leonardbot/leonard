@@ -60,5 +60,8 @@ target/
 # Vargant files
 vargant/
 
-# Ignore PyCharm files
+# PyCharm files
 .idea
+
+# Redis dump files
+*.rdb
