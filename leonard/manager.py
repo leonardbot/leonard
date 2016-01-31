@@ -5,7 +5,7 @@ Manager for plugins: importing and loading
 
 @author: Seva Zhidkov
 @contact: zhidkovseva@gmail.com
-@license: The MIT license
+@license: Creative Commons Attribution-NonCommercial 4.0 International Public License
 
 Copyright (C) 2015
 """
