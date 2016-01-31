@@ -10,10 +10,17 @@ def test_creating_adapter():
 
 def test_installed_plugins_list():
     result = config.Config()
-    with open('installed_plugins.txt') as file:
-        file_data = file.read()
-        plugins = file_data.split('\n')
-    assert plugins == result.installed_plugins
+    assert 'plugins.hello' in result.installed_plugins
+    assert 'plugins.registration' in result.installed_plugins
+    assert 'plugins.__pycache__' not in result.installed_plugins
+    for plugin in result.installed_plugins:
+        # result.installed_plugins containts full import paths,
+        # like "plugins.hello". To get plugin name,
+        # we need to split "plugins.hello" to ['plugins', 'hello']
+        # and get second (first from zero) element
+        plugin_name = plugin.split('.')[1]
+        assert not plugin_name.startswith('.')
+        assert not plugin_name.startswith('__')
 
 
 def test_parsing_adapter_config():

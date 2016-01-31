@@ -28,6 +28,8 @@ class Config:
         """
         # Bot config variables
         self.variables = {}
+        # Installed plugins names
+        self.installed_plugins = []
 
         for variable in os.environ:
             if variable.startswith(prefix):
@@ -51,15 +53,23 @@ class Config:
 
     def _set_installed_plugins(self):
         """
-        Create list of installed plugins from installed_plugins.txt
+        Create list of installed plugins from './plugins' directory
         :return:
         """
-        plugins_file = open('installed_plugins.txt')
-        # Strip installed_plugins.txt file by \n and delete it from strings
-        self.installed_plugins = list(
-            map(lambda plugin: plugin.rstrip(), plugins_file.readlines())
-        )
-        plugins_file.close()
+        # All plugins modules are stored in 'plugins' directory
+        for module_name in os.listdir('./plugins'):
+            # If file starts from '.' (hidden files) or from '__' (python
+            # system files), don't add it plugins
+            if module_name.startswith('.') or module_name.startswith('__'):
+                continue
+            # If module is single-file package (like 'hello.py'),
+            # delete file extension for python import in future
+            # adapters.hello.py => adapters.hello
+            if module_name.endswith('.py'):
+                module_name = module_name.rstrip('.py')
+            # We importing plugins from 'plugins' directory,
+            # so import path should be 'plugins.' + module_name
+            self.installed_plugins.append('plugins.' + module_name)
 
 
 class ModuleConfig:
