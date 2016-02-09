@@ -1,7 +1,7 @@
 """
 name: location
 description: "Plugin that gives information about location based on other plugins"
-priority: 500
+priority: 100
 """
 import leonard
 
