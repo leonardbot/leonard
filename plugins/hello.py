@@ -17,7 +17,7 @@ import schedule
 def hello_message(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=leonard.get_text('hello.hello_message', message.sender),
+        text=message.locale.hello_message,
         attachments=[]
     )
     bot.send_message(answer)
@@ -27,7 +27,7 @@ def hello_message(message, bot):
 def hello_command(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=leonard.get_text('hello.hello_message', message.sender),
+        text=message.locale.hello_message,
         attachments=[]
     )
     bot.send_message(answer)
@@ -35,4 +35,15 @@ def hello_command(message, bot):
 
 @leonard.hooks.interval(schedule.every(5).minutes)
 def hello_interval(bot):
-    leonard.logger.info_message('Hello from hello module')
+    leonard.logger.info_message(bot.get_locale('hello', 'en').interval_message)
+
+
+class EnglishLocale:
+    language_code = 'en'
+    hello_message = 'Hi!'
+    interval_message = 'Hello from hello module'
+
+
+class RussianLocale:
+    language_code = 'ru'
+    hello_message = 'Привет!'
