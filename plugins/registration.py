@@ -6,19 +6,24 @@ priority: 1000
 import leonard
 
 
-language_variants = (
+LANGUAGE_VARIANTS = (
     '1) English - enter "en" or "1"',
     '2) Русский - введите "ru" или "2"'
 )
 
-languages_dict = {
+LANGUAGE_BUTTONS = [
+     ['English'],
+     ['Русский']
+]
+
+LANGUAGES_DICT = {
      'en': ['en', 'english', '1'],
      'ru': ['ru', 'russian', 'русский', '2']
 }
 
-before_registration = (
+BEFORE_REGISTRATION = (
     'Choose language: / Выберите язык:\n' +
-    '\n'.join(language_variants)
+    '\n'.join(LANGUAGE_VARIANTS)
 )
 
 
@@ -35,8 +40,9 @@ def registration(message, bot):
     :return:
     """
     question = leonard.OutgoingMessage(
-        text=before_registration,
-        recipient=message.sender
+        text=BEFORE_REGISTRATION,
+        recipient=message.sender,
+        buttons=LANGUAGE_BUTTONS
     )
     bot.ask_question(question, registration_callback)
 
@@ -52,7 +58,7 @@ def registration_callback(message, bot):
     # Normalize message
     message_text = message.text.lower().rstrip().lstrip()
     language = None
-    for (language_code, variants) in languages_dict.items():
+    for (language_code, variants) in LANGUAGES_DICT.items():
         for variant in variants:
             if message_text == variant:
                 language = language_code
@@ -60,8 +66,9 @@ def registration_callback(message, bot):
 
     if language is None:
         question = leonard.OutgoingMessage(
-            text=before_registration,
-            recipient=message.sender
+            text=BEFORE_REGISTRATION,
+            recipient=message.sender,
+            buttons=LANGUAGE_BUTTONS
         )
         bot.ask_question(question, registration_callback)
         return
@@ -77,12 +84,13 @@ def registration_callback(message, bot):
 
 class EnglishLocale:
     language_code = 'en'
-    success_register = 'Hi! I want to be your friend :) Do you want something?'
+    success_register = 'Hi! I want to be your friend :) BOT FUNCTIONS HERE'
 
 
 class RussianLocale:
     language_code = 'ru'
     success_register = (
         'Привет! Я рад, что мы теперь друзья :) '
-        'Тебе нужно что-нибудь?'
+        'Здесь будет описание различных возможностей бота, инструкция как '
+        'перерегистрироваться'
     )

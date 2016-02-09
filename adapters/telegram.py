@@ -13,7 +13,7 @@ import requests
 from leonard.adapter import IncomingMessage
 from leonard.utils import logger
 
-TELEGRAM_API_URL = 'https://api.telegram.org/bot{token}/{method}?{params}'
+TELEGRAM_API_URL = 'https://api.telegram.org/bot{token}/{method}'
 
 
 def get_messages(bot):
@@ -25,9 +25,7 @@ def get_messages(bot):
 
     # Try connect to Telegram
     response = json.loads(requests.get(
-        TELEGRAM_API_URL.format(
-            token=token, method='getMe', params=''
-        )
+        TELEGRAM_API_URL.format(token=token, method='getMe')
     ).text)
     if not response['ok']:
         logger.critical_message(
@@ -39,10 +37,8 @@ def get_messages(bot):
     last_update_id = -1
     while True:
         response = json.loads(requests.get(
-            TELEGRAM_API_URL.format(
-                token=token, method='getUpdates',
-                params='offset={}'.format(last_update_id + 1)
-            )
+            TELEGRAM_API_URL.format(token=token, method='getUpdates'),
+            data={'offset': last_update_id + 1}
         ).text)
         for event in response['result']:
             last_update_id = event['update_id']
@@ -83,13 +79,28 @@ def get_messages(bot):
 
 def send_message(message, bot):
     logger.info_message('Sending message', message)
+
+    data = {
+        'chat_id': message.recipient.data['adapter_id'],
+        'text': message.text
+    }
+
+    # Add buttons to message data
+    if message.buttons:
+        data['reply_markup'] = json.dumps({
+            'keyboard': message.buttons,
+            'one_time_keyboard': True
+        })
+    else:
+        data['reply_markup'] = json.dumps({
+            'hide_keyboard': True
+        })
+
     response = requests.get(TELEGRAM_API_URL.format(
         token=bot.config.get('LEONARD_TELEGRAM_TOKEN', ''),
-        method='sendMessage', params='chat_id={}&text={}'.format(
-            message.recipient.data['adapter_id'],
-            message.text
-        )
-    ))
+        method='sendMessage'
+    ), data=data)
+
     if not json.loads(response.text)['ok']:
         logger.error_message(
             'Problems with sending message: {}'.format(response.text)

@@ -289,6 +289,7 @@ class Leonard:
         :return:
         """
         logger.info_message('Asking question', message)
+        message.is_question = True
         self.send_message(message)
         message.recipient.data['question'] = pickle.dumps(callback)
         message.recipient.update()
@@ -304,7 +305,7 @@ class Leonard:
         # Convert short plugin name to full name.
         # For example, 'hello' => 'plugins.hello'
         plugin_name = 'plugins.' + plugin_name
-        
+
         for plugin in self.plugins_manager.plugins:
             if plugin_name == plugin.name:
                 return plugin.localization.get(language_code)

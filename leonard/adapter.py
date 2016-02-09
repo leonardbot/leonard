@@ -103,15 +103,18 @@ class OutgoingMessage(Message):
     Class for messages from bot.
     """
 
-    def __init__(self, recipient, *args, **kwargs):
+    def __init__(self, recipient, buttons=[], *args, **kwargs):
         """
         Create new message from bot
 
         :param recipient: User object
+        :param buttons: list of list of str with buttons
         :return:
         """
         super().__init__(*args, **kwargs)
         self.recipient = recipient
+        self.buttons = buttons
+        self.is_question = False
 
 
 class Attachment:
