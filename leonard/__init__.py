@@ -18,10 +18,6 @@ from leonard.hooks import *
 # for plugins sending messages
 from leonard.adapter import *
 
-# Import function for getting localized text
-# of messages
-from leonard.messages import *
-
 __author__ = 'sevazhidkov'
 __version__ = '0.0.2'
 __email__ = 'seva@leonardbot.xyz'

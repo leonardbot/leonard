@@ -5,14 +5,20 @@ priority: 1000
 """
 import leonard
 
-LANGUAGES_LIST = (
-    ('English', 'enter', 'en', 'en'),
-    ('Русский', 'введите', 'ру', 'ru')
+
+language_variants = (
+    '1) English - enter "en" or "1"',
+    '2) Русский - введите "ru" или "2"'
 )
 
-question_text = (
-    leonard.get_text('registration.choose_language') + '\n' +
-    '\n'.join(leonard.get_text('registration.language_variants'))
+languages_dict = {
+     'en': ['en', 'english', '1'],
+     'ru': ['ru', 'russian', 'русский', '2']
+}
+
+before_registration = (
+    'Choose language: / Выберите язык:\n' +
+    '\n'.join(language_variants)
 )
 
 
@@ -29,7 +35,7 @@ def registration(message, bot):
     :return:
     """
     question = leonard.OutgoingMessage(
-        text=question_text,
+        text=before_registration,
         recipient=message.sender
     )
     bot.ask_question(question, registration_callback)
@@ -43,20 +49,40 @@ def registration_callback(message, bot):
     :param bot:
     :return:
     """
-    languages_dict = leonard.get_text('registration.languages_dict')
-    try:
-        language = languages_dict[message.text.lower().rstrip()]
-    except KeyError:
+    # Normalize message
+    message_text = message.text.lower().rstrip().lstrip()
+    language = None
+    for (language_code, variants) in languages_dict.items():
+        for variant in variants:
+            if message_text == variant:
+                language = language_code
+                break
+
+    if language is None:
         question = leonard.OutgoingMessage(
-            text=question_text,
+            text=before_registration,
             recipient=message.sender
         )
         bot.ask_question(question, registration_callback)
         return
+
     message.sender.data['language'] = language
     message.sender.update()
     answer = leonard.OutgoingMessage(
-        text=leonard.get_text('registration.introduction', message.sender),
+        text=bot.get_locale('registration', language).success_register,
         recipient=message.sender
     )
     bot.send_message(answer)
+
+
+class EnglishLocale:
+    language_code = 'en'
+    success_register = 'Hi! I want to be your friend :) Do you want something?'
+
+
+class RussianLocale:
+    language_code = 'ru'
+    success_register = (
+        'Привет! Я рад, что мы теперь друзья :) '
+        'Тебе нужно что-нибудь?'
+    )

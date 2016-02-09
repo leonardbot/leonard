@@ -60,6 +60,9 @@ class Message:
         else:
             self.attachments = attachments
         self.variables = variables
+        # Correct locale for hooked plugin.
+        # For example, object of EnglishLocale of hello plugin
+        self.locale = None
 
     def __str__(self):
         # If message.text length is more than 15 chars, trim it
@@ -67,7 +70,9 @@ class Message:
             message_preview = self.text[:15] + '...'
         else:
             message_preview = self.text
-        answer = 'Message "{}", variables: {}'.format(message_preview, self.variables)
+        answer = 'Message "{}", variables: {}'.format(
+            message_preview, self.variables
+        )
         if type(self) == IncomingMessage:
             answer += ' from {}'.format(self.sender)
         else:

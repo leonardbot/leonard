@@ -59,7 +59,9 @@ class Leonard:
         """
         logger.info_message('Loading config')
 
-        self.config = config.Config(prefix=command_line_arguments['config-prefix'])
+        self.config = config.Config(
+            prefix=command_line_arguments['config-prefix']
+        )
 
         # If we had problems with config loading, stop the bot.
         if not self.config:
@@ -120,7 +122,9 @@ class Leonard:
         # Collect config variables from adapter.
         for variable in self.adapter.config.variables:
             if variable not in self.config.variables:
-                self.config.variables[variable] = self.adapter.config.variables[variable]
+                self.config.variables[variable] = (
+                     self.adapter.config.variables[variable]
+                )
 
     def _load_plugins(self):
         """
@@ -197,6 +201,10 @@ class Leonard:
             # Delete question
             message.sender.data['question'] = ''
             message.sender.update()
+            # Add correct locale for message
+            user_locale = message.sender.data.get('language', None)
+            if user_locale:
+                message.locale = hook.plugin.localization.get(user_locale)
             # Run callback
             callback(message, self)
             return
@@ -219,19 +227,26 @@ class Leonard:
                 reverse=True
             )
 
+            hook = found_hooks[0]
+
             # Track message using Botan.io analytics in new thread
             analytics_thread = threading.Thread(
                 target=analytics.track_message,
                 kwargs={
                     'message': message.variables['last_message'],
                     'adapter': self.adapter.name,
-                    'plugin': found_hooks[0].plugin.name,
+                    'plugin': hook.plugin.name,
                     'bot': self
                 }
             )
             analytics_thread.start()
 
-            found_hooks[0].call(message, self)
+            # Add correct locale for message
+            user_locale = message.sender.data.get('language', None)
+            if user_locale:
+                message.locale = hook.plugin.localization.get(user_locale)
+
+            hook.call(message, self)
             return
 
         logger.warning_message('Hooks not found for', message)
@@ -263,6 +278,7 @@ class Leonard:
         logger.info_message('Sending message', message)
         self.adapter.module.send_message(message, self)
 
+    @exceptions.catch_module_errors
     def ask_question(self, message, callback):
         """
         Ask about something the user from plugin.
@@ -276,3 +292,22 @@ class Leonard:
         self.send_message(message)
         message.recipient.data['question'] = pickle.dumps(callback)
         message.recipient.update()
+
+    def get_locale(self, plugin_name, language_code):
+        """
+        Get plugin locale from bot object. It's needed in interval hooks.
+
+        :param plugin_name: str, plugin name
+        :param language_code: str, two-letters locale language code
+        :return: locale class, like EnglishLocale
+        """
+        # Convert short plugin name to full name.
+        # For example, 'hello' => 'plugins.hello'
+        plugin_name = 'plugins.' + plugin_name
+        
+        for plugin in self.plugins_manager.plugins:
+            if plugin_name == plugin.name:
+                return plugin.localization.get(language_code)
+        logger.error_message("Didn't find '{}' locale for {} plugin".format(
+            language_code, plugin_name
+        ))

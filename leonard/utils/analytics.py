@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+
+"""
+Functions for creating bot analytics
+
+@author: Seva Zhidkov
+@contact: zhidkovseva@gmail.com
+@license: Creative Commons Attribution-NonCommercial 4.0 International Public License
+
+Copyright (C) 2015
+"""
+
 import json
 import requests
 

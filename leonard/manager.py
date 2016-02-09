@@ -14,7 +14,9 @@ import importlib
 
 from leonard.utils import logger
 from leonard.hooks import find_hooks
+from leonard.locale import find_locales
 from leonard.config import parse_config
+from leonard.exceptions import catch_module_errors
 
 
 class PluginsManager:
@@ -67,6 +69,7 @@ class PluginsManager:
                         [], [])
         # Set plugin hooks and interval hooks by find_hooks function
         plugin.hooks, plugin.interval_hooks = find_hooks(plugin)
+        plugin.localization = find_locales(plugin)
         self.plugins.append(plugin)
 
 
@@ -87,6 +90,10 @@ class Plugin:
         self.config = config
         self.hooks = hooks
         self.interval_hooks = interval_hooks
+        self.localization = None
+
+    def __str__(self):
+        return 'Plugin <' + self.name + '>'
 
     def reload_plugin(self):
         """
@@ -126,7 +133,7 @@ def import_plugin(plugin_name):
     """
     try:
         return importlib.import_module(plugin_name)
-    except ImportError as error:
+    except Exception as error:
         logger.error_message('Error with loading {}: \n {}'.format(
             plugin_name, str(error)
         ))
