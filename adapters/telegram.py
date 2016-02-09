@@ -60,16 +60,26 @@ def get_messages(bot):
                     last_name = message['from']['last_name']
                 else:
                     last_name = None
+                # If user send localition, save it to message object
+                if 'location' in message:
+                    location = (
+                        message['location']['latitude'],
+                        message['location']['longitude']
+                    )
+                else:
+                    location = None
                 # Leonard iterating with message with 'for in', so our function
                 # is generator of IncomingMessage objects.
                 yield IncomingMessage(
                     adapter_id=message['from']['id'],
                     text=message_text,
                     attachments=[],
+                    location=location,
                     variables={
                         'first_name': first_name,
                         'last_name': last_name,
                         'last_message': message,
+                        'location': location,
                         'adapter': 'telegram'
                     }
                 )

@@ -41,7 +41,7 @@ class Message:
     """
     Class for every message: incoming and outgoing.
     """
-    def __init__(self, text='', attachments=[], variables={}):
+    def __init__(self, text='', attachments=[], location=None, variables={}):
         """
         Create new message.
 
@@ -59,6 +59,7 @@ class Message:
             self.attachments = [attachments]
         else:
             self.attachments = attachments
+        self.location = location
         self.variables = variables
         # Correct locale for hooked plugin.
         # For example, object of EnglishLocale of hello plugin
