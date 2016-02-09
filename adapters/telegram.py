@@ -60,12 +60,21 @@ def get_messages(bot):
                     last_name = message['from']['last_name']
                 else:
                     last_name = None
-                # If user send localition, save it to message object
+                # Prepare variables to save it in DB
+                variables = {
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'last_message': message,
+                    'adapter': 'telegram'
+                }
+                # If user send localition, save it to message object and
+                # DB variables to use location later
                 if 'location' in message:
                     location = (
                         message['location']['latitude'],
                         message['location']['longitude']
                     )
+                    variables['location'] = location
                 else:
                     location = None
                 # Leonard iterating with message with 'for in', so our function
@@ -75,13 +84,7 @@ def get_messages(bot):
                     text=message_text,
                     attachments=[],
                     location=location,
-                    variables={
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'last_message': message,
-                        'location': location,
-                        'adapter': 'telegram'
-                    }
+                    variables=variables
                 )
         time.sleep(1)
     return []

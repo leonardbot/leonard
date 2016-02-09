@@ -40,15 +40,16 @@ Don't forget set adapter's environment variables that listed below.
 ## Environment variables
 Variables sorted by priority: from high to low.
 
-| Name                       | Description                                                 | Default value             |
-|----------------------------|-------------------------------------------------------------|---------------------------|
-| LEONARD\_MONGODB\_URI      | URI for connecting MongoDB                                  | mongodb://localhost:27017 |
-| LEONARD\_REDIS\_HOST       | Host for Redis storage                                      | localhost                 |
-| LEONARD\_REDIS\_PORT       | Port for Redis storage                                      | 6379                      |
-| LEONARD\_REDIS\_DB         | Num of DB for Redis storage                                 | 0                         |
-| LEONARD\_CONSOLE\_LANGUAGE | Letters of language that console adapter uses as default    | en                        |
-| LEONARD\_TELEGRAM\_TOKEN   | Token for connection to Telegram Bot API (telegram adapter) |                           |
-| LEONARD\_BOTAN\_TOKEN      | Token for message analytics                                 |                           |
+| Name                         | Description                                                 | Default value             |
+|------------------------------|-------------------------------------------------------------|---------------------------|
+| LEONARD\_MONGODB\_URI        | URI for connecting MongoDB                                  | mongodb://localhost:27017 |
+| LEONARD\_REDIS\_HOST         | Host for Redis storage                                      | localhost                 |
+| LEONARD\_REDIS\_PORT         | Port for Redis storage                                      | 6379                      |
+| LEONARD\_REDIS\_DB           | Num of DB for Redis storage                                 | 0                         |
+| LEONARD\_CONSOLE\_LANGUAGE   | Letters of language that console adapter uses as default    | en                        |
+| LEONARD\_TELEGRAM\_TOKEN     | Token for connection to Telegram Bot API (telegram adapter) |                           |
+| LEONARD\_BOTAN\_TOKEN        | Token for message analytics                                 |                           |
+| LEONARD\_FORECAST\_IO\_TOKEN | Token for getting weather data from Forecast.io             |                           |
 
 ## Contributing
 * You can create new plugins or extend existing plugins. You can find examples of
