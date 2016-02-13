@@ -21,7 +21,7 @@ def location_message(message, bot):
 
 class EnglishLocale:
     language_code = 'en'
-    base_text = "I got coordinates: {}, {}"
+    base_text = "SUCCESS MESSAGE, PLACE DESCRIPTION I got coordinates: {}, {}"
 
 
 class RussianLocale:

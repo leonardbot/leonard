@@ -20,7 +20,7 @@ def get_weather_data(token, location, language_code, units_id):
 
 @leonard.hooks.keywords([['погода'], ['weather']])
 def weather_message(message, bot):
-    location = message.sender.data['location']
+    location = message.sender.data.get('location', None)
     if location is None:
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
