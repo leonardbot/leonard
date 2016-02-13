@@ -59,9 +59,12 @@ target/
 
 # Vargant files
 vargant/
+.vagrant
 
 # PyCharm files
 .idea
 
 # Redis dump files
 *.rdb
+
+.env
