@@ -1,13 +1,21 @@
 """
 name: weather
-description: "Plugin that "
+description: "Plugin that getting weather data for user location"
 priority: 100
 """
 import json
 import requests
 import leonard
+import leonard.utils.ru
 
 FORECAST_IO_BASE = 'https://api.forecast.io/forecast/{}/{},{}?lang={}&units={}'
+
+# Util returning list of possible words like ['погода', 'погоду'...],
+# but keywords hook catching message if there are all words from one of lists.
+# So we should convert ['погода', 'погоду'] to [['погода'], ['погоду']]
+WEATHER_RU_WORDS = list(
+    map(lambda x: [x], leonard.utils.ru.vowel_ends('погод'))
+)
 
 
 def get_weather_data(token, location, language_code, units_id):
@@ -18,7 +26,7 @@ def get_weather_data(token, location, language_code, units_id):
     return json.loads(response.text)
 
 
-@leonard.hooks.keywords([['погода'], ['weather']])
+@leonard.hooks.keywords(WEATHER_RU_WORDS + [['weather']])
 def weather_message(message, bot):
     location = message.sender.data.get('location', None)
     if location is None:
