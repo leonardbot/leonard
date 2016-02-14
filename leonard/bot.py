@@ -198,13 +198,15 @@ class Leonard:
             logger.info_message('Detected question answer for', message)
             # Parse question callback
             callback = pickle.loads(message.sender.data['question'])
-            # Delete question
+            # Delete question, but save plugin name
+            plugin_name = message.sender.data['question_plugin']
             message.sender.data['question'] = ''
             message.sender.update()
             # Add correct locale for message
             user_locale = message.sender.data.get('language', None)
             if user_locale:
-                message.locale = hook.plugin.localization.get(user_locale)
+                plugin = self.plugins_manager.get_plugin_by_name(plugin_name)
+                message.locale = plugin.localization.get(user_locale)
             # Run callback
             callback(message, self)
             return
@@ -279,19 +281,21 @@ class Leonard:
         self.adapter.module.send_message(message, self)
 
     @exceptions.catch_module_errors
-    def ask_question(self, message, callback):
+    def ask_question(self, message, callback, plugin_name):
         """
         Ask about something the user from plugin.
 
         :param message: OutgoingMessage object
         :param callback: function that called with (message, bot)
                          after users next message
+        :param plugin_name: str, name of plugin that asks question
         :return:
         """
         logger.info_message('Asking question', message)
         message.is_question = True
         self.send_message(message)
         message.recipient.data['question'] = pickle.dumps(callback)
+        message.recipient.data['question_plugin'] = plugin_name
         message.recipient.update()
 
     def get_locale(self, plugin_name, language_code):

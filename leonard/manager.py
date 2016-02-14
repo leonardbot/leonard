@@ -72,6 +72,20 @@ class PluginsManager:
         plugin.localization = find_locales(plugin)
         self.plugins.append(plugin)
 
+    def get_plugin_by_name(self, plugin_name):
+        """
+        Get plugin by its name
+
+        :param plugin_name: str, short plugin name, like 'weather'
+        :return: Plugin object
+        """
+        # Convert plugin_name to full plugin name
+        plugin_name = 'plugins.' + plugin_name
+        for plugin in self.plugins:
+            if plugin.name == plugin_name:
+                return plugin
+        return None
+
 
 class Plugin:
     def __init__(self, name, module, config, hooks, interval_hooks):
