@@ -9,12 +9,12 @@ import feedparser
 
 import requests
 import leonard
+import leonard.utils
 import leonard.utils.ru
 
 # See comments for weather plugin
-NEWS_RU_WORDS = list(
-    map(lambda x: [x], leonard.utils.ru.vowel_ends('новост'))
-)
+NEWS_RU_WORDS = leonard.utils.keywords_from_words(
+    leonard.utils.ru.vowel_ends('новост'))
 
 
 def get_news_data(rss_url):

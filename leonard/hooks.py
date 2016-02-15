@@ -15,7 +15,8 @@ import threading
 from leonard.exceptions import catch_module_errors
 
 REPLACE_SYMBOLS = [',', '.', '?', '!', '(',
-                   ')', ':', '"', '/', ';']
+                   ')', ':', '"', '/', ';',
+                   "'s"]
 
 
 class Hook:
