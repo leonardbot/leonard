@@ -75,6 +75,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", run: 'always', inline: <<-SHELL
       sudo service mongodb restart
       service redis-server restart
+      cd /vagrant
       pip3 install -r requirements.txt
   SHELL
 

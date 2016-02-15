@@ -109,6 +109,10 @@ def send_message(message, bot):
             'hide_keyboard': True
         })
 
+    # There is special variable for hiding previews in Telegram
+    if message.variables.get('telegram_hide_preview', False):
+        data['disable_web_page_preview'] = True
+
     response = requests.get(TELEGRAM_API_URL.format(
         token=bot.config.get('LEONARD_TELEGRAM_TOKEN', ''),
         method='sendMessage'
