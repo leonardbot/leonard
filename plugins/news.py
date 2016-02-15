@@ -1,6 +1,6 @@
 """
-name: weather
-description: "Plugin that getting weather data for user location"
+name: news
+description: "Get last news from Google News or Yandex News"
 priority: 100
 """
 import json

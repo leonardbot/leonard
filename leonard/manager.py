@@ -10,6 +10,7 @@ Manager for plugins: importing and loading
 Copyright (C) 2015
 """
 
+import threading
 import importlib
 
 from leonard.utils import logger
@@ -126,16 +127,51 @@ class Plugin:
         :param message: IncomingMessage object
         :return: Hook object or None
         """
-        found_hooks = []
+        threads = []
+        # Save found hooks in one object for all threads
+        found_hooks = FoundHooks()
         for hook in self.hooks:
-            if hook.check(message):
-                found_hooks.append(hook)
+            thread = threading.Thread(target=check_hook,
+                                      args=(hook, message, found_hooks))
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()
+
+        # Convert FoundHooks object to list with hooks
+        found_hooks = found_hooks.data
 
         if found_hooks:
             found_hooks.sort(key=lambda h: h.priority, reverse=True)
             return found_hooks[0]
         else:
             return None
+
+
+class FoundHooks:
+    """
+    Already found hooks while processing message.
+    It's important because we checking hooks in threads.
+    """
+    def __init__(self):
+        """
+        Create object for saving found hooks
+        """
+        self.data = []
+
+
+def check_hook(hook, message, found_hooks):
+    """
+    Check hook and if it matched add it to found hooks
+
+    :param hook: Hook object
+    :param message: IncomingMessage object
+    :param found_hooks: FoundHooks object
+    :return:
+    """
+    if hook.check(message):
+        found_hooks.data.append(hook)
 
 
 def import_plugin(plugin_name):

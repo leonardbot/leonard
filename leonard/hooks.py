@@ -144,7 +144,7 @@ class CallbackHook(Hook):
 class KeywordsHook(Hook):
     def __init__(self, user_function, keywords_list):
         """
-        Create new callback hook.
+        Create new keywords hook.
 
         :param user_function: decorated user's function, called
                               when callback matching with incoming message
@@ -152,7 +152,7 @@ class KeywordsHook(Hook):
                               For example, [['weather', 'now'],
                                             ['weather', 'tomorrow']]
         """
-        self.type = 'callback'
+        self.type = 'keywords'
         self.priority = 2
 
         self.func = user_function
