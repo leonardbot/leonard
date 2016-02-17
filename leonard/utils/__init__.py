@@ -1,4 +1,39 @@
-from leonard.hooks import REPLACE_SYMBOLS
+REPLACE_WORDS = [',', '.', '?', '!', '(',
+                 ')', ':', '"', '/', ';',
+                 "'s", 'bot', 'leonard',
+                 'hey', 'hi', 'leo', 'i need',
+                 'i want', 'tell me', 'do you know',
+                 'you know', 'how', 'what', 'who',
+                 'how is', 'what is', 'who is', 'is',
+                 'please', 'but', 'эй', 'бот', 'ок',
+                 'леонард', 'мне нужно', 'я хочу',
+                 'расскажи мне', 'скажи мне',
+                 'ты знаешь', 'как', 'что', 'когда']
+
+
+def normalize_message(message_text):
+    """
+    Normalize message to make catching hooks easier.
+
+    "Hey, Leonard, who is Taylor Swift" => "taylor swift"
+
+    :param message_text: str, original message text
+    :return: str, normalizated message text
+    """
+    # First, make all letters lower.
+    # "hey, leonard, who is taylor swift"
+    message_text = message_text.lower()
+
+    # Delete all words or symbols, that not effecting
+    # on user's message
+    # "          taylor swift"
+    for word in REPLACE_WORDS:
+        message_text = message_text.replace(word, '')
+
+    # If there are extra spaces, delete it
+    message_text = ' '.join(message_text.split())
+
+    return message_text
 
 
 def keywords_from_words(words):

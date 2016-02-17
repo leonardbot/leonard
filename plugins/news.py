@@ -48,7 +48,6 @@ class EnglishLocale:
     news_report = 'Last news:\n\n{}'
 
 
-
 class RussianLocale:
     language_code = 'ru'
 

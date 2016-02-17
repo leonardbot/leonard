@@ -12,7 +12,7 @@ Copyright (C) 2015
 
 import importlib
 
-from leonard.utils import logger
+from leonard.utils import logger, normalize_message
 from leonard.config import parse_config
 
 
@@ -54,6 +54,7 @@ class Message:
                           Parameters should start from adapter name.
         """
         self.text = text
+        self.normalizated_text = normalize_message(text)
         # If attachment only one, convert it to list
         if type(attachments) == Attachment:
             self.attachments = [attachments]

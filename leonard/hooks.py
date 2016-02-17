@@ -14,10 +14,6 @@ import threading
 
 from leonard.exceptions import catch_module_errors
 
-REPLACE_SYMBOLS = [',', '.', '?', '!', '(',
-                   ')', ':', '"', '/', ';',
-                   "'s"]
-
 
 class Hook:
     """
@@ -49,7 +45,8 @@ class Hook:
 
 
 class MessageHook(Hook):
-    def __init__(self, user_function, regexes, case_sensitive=False):
+    def __init__(self, user_function, regexes,
+                 case_sensitive=False, normalize=True):
         """
         Create new message hook
 
@@ -59,6 +56,7 @@ class MessageHook(Hook):
         :param regexes: regular expression for messages
         :param case_sensitive: bool, is hook catching messages
                                      with case sensitive
+        :param normalize: bool, find words in normalized_message or not
         """
         self.type = 'message'
         self.priority = 3
@@ -70,6 +68,7 @@ class MessageHook(Hook):
         self.regexes = regexes
 
         self.case_sensitive = case_sensitive
+        self.normalize = normalize
 
     def check(self, incoming_message):
         """
@@ -78,13 +77,22 @@ class MessageHook(Hook):
         :param incoming_message: IncomingMessage object
         :return: True or False
         """
+        if self.normalize:
+            message_text = incoming_message.normalizated_text
+        else:
+            message_text = incoming_message.text
+        
         if not self.case_sensitive:
             for regex in self.regexes:
-                if re.match(regex, incoming_message.text, re.IGNORECASE):
+                match = re.match(regex, message_text, re.IGNORECASE)
+                if match:
+                    incoming_message.variables['regex_match'] = match
                     return True
         else:
             for regex in self.regexes:
-                if re.match(regex, incoming_message.text):
+                match = re.match(regex, message_text)
+                if match:
+                    incoming_message.variables['regex_match'] = match
                     return True
 
         return False
@@ -143,7 +151,7 @@ class CallbackHook(Hook):
 
 
 class KeywordsHook(Hook):
-    def __init__(self, user_function, keywords_list):
+    def __init__(self, user_function, keywords_list, normalize=True):
         """
         Create new keywords hook.
 
@@ -152,12 +160,14 @@ class KeywordsHook(Hook):
         :param keywords_list: list of lists of str (keywords).
                               For example, [['weather', 'now'],
                                             ['weather', 'tomorrow']]
+        :param normalize: bool, find words in normalized_message or not
         """
         self.type = 'keywords'
         self.priority = 2
 
         self.func = user_function
         self.keywords_list = keywords_list
+        self.normalize = normalize
 
     def check(self, incoming_message):
         """
@@ -166,9 +176,10 @@ class KeywordsHook(Hook):
         :param incoming_message: IncomingMessage object
         :return: True or False
         """
-        message_text = incoming_message.text.lower()
-        for sym in REPLACE_SYMBOLS:
-            message_text = message_text.replace(sym, ' ')
+        if self.normalize:
+            message_text = incoming_message.normalizated_text
+        else:
+            message_text = incoming_message.text.lower()
         message_words = message_text.split()
         for keywords in self.keywords_list:
             # Create set for keywords to have ability to delete
@@ -241,13 +252,14 @@ def find_hooks(plugin):
     return [hooks, interval_hooks]
 
 
-def message(regexes=[], case_sensitive=False):
+def message(regexes=[], case_sensitive=False, normalize=True):
     """
     Hook for catching messages, for example:
     "i want cat", "thanks" etc.
 
     :param regexes: list[string], regular expressions for catching messages
     :param case_sensitive: bool, is bot catching messages with case sensitive
+    :param normalize: bool, find words in normalized_message or not
     :return:
     """
 
@@ -262,7 +274,8 @@ def message(regexes=[], case_sensitive=False):
             """
             return func(message_object, bot_object)
 
-        wrapped._leonard_hook = MessageHook(wrapped, regexes, case_sensitive)
+        wrapped._leonard_hook = MessageHook(wrapped, regexes,
+                                            case_sensitive, normalize)
         return wrapped
 
     return hook
@@ -321,7 +334,7 @@ def callback(callback_func):
     return hook
 
 
-def keywords(keywords_list):
+def keywords(keywords_list, normalize=True):
     """
     Hook for catching catching messages by keywords list.
     Hook match only when all words from one or more of keyword list
@@ -330,6 +343,7 @@ def keywords(keywords_list):
     :param keywords_list: list of lists of str (keywords).
                           For example, [['weather', 'now'],
                                         ['weather', 'tomorrow']]
+    :param normalize: bool, find words in normalized_message or not
     :return:
     """
 
@@ -344,7 +358,7 @@ def keywords(keywords_list):
             """
             return func(message_object, bot_object)
 
-        wrapped._leonard_hook = KeywordsHook(wrapped, keywords_list)
+        wrapped._leonard_hook = KeywordsHook(wrapped, keywords_list, normalize)
         return wrapped
 
     return hook
