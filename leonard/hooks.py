@@ -81,7 +81,7 @@ class MessageHook(Hook):
             message_text = incoming_message.normalizated_text
         else:
             message_text = incoming_message.text
-        
+
         if not self.case_sensitive:
             for regex in self.regexes:
                 match = re.match(regex, message_text, re.IGNORECASE)
@@ -156,7 +156,7 @@ class KeywordsHook(Hook):
         Create new keywords hook.
 
         :param user_function: decorated user's function, called
-                              when callback matching with incoming message
+                              when keywords matching with incoming message
         :param keywords_list: list of lists of str (keywords).
                               For example, [['weather', 'now'],
                                             ['weather', 'tomorrow']]
@@ -190,6 +190,45 @@ class KeywordsHook(Hook):
                     keywords_set.remove(word)
             # If set is empty, so all words found, return True
             if keywords_set == set():
+                return True
+        return False
+
+
+class StartEndHook(Hook):
+    def __init__(self, user_function, words, normalize=True):
+        """
+        Create new start_end hook.
+
+        :param user_function: decorated user's function, called
+                              when callback matching with incoming message
+        :param words: list of str, variants of start or end.
+        :param normalize: bool, find words in normalized_message or not
+        """
+        self.type = 'keywords'
+        self.priority = 2
+
+        self.func = user_function
+        self.words = words
+        self.normalize = normalize
+
+    def check(self, incoming_message):
+        """
+        Check, is this message catching for this hook
+
+        :param incoming_message: IncomingMessage object
+        :return: True or False
+        """
+        if self.normalize:
+            message_text = incoming_message.normalizated_text
+        else:
+            message_text = incoming_message.text.lower()
+
+        for word in self.words:
+            if message_text.startswith(word) or message_text.endswith(word):
+                query = message_text.replace(word, '')
+                # Delete extra spaces
+                query = ' '.join(query.split())
+                incoming_message.variables['query'] = query
                 return True
         return False
 
@@ -336,7 +375,7 @@ def callback(callback_func):
 
 def keywords(keywords_list, normalize=True):
     """
-    Hook for catching catching messages by keywords list.
+    Hook for catching messages by keywords list.
     Hook match only when all words from one or more of keyword list
     (not list of keywords lists) is in the message words.
 
@@ -359,6 +398,34 @@ def keywords(keywords_list, normalize=True):
             return func(message_object, bot_object)
 
         wrapped._leonard_hook = KeywordsHook(wrapped, keywords_list, normalize)
+        return wrapped
+
+    return hook
+
+
+def start_end(starts_ends, normalize=True):
+    """
+    Hook for catching messages by defined starts or ends.
+    For example, starts_ends=['book', 'booking'] will catch
+    'book hotel', 'booking hotel', 'hotel book', 'hotel booking'.
+
+    :param starts_ends: list of str, variants of starts and ends
+    :param normalize: bool, find words in normalized_message or not
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = StartEndHook(wrapped, starts_ends, normalize)
         return wrapped
 
     return hook
