@@ -11,6 +11,13 @@ REPLACE_WORDS = [',', '.', '?', '!', '(',
                  'ты знаешь', 'как', 'что', 'когда']
 
 
+class NextHook(BaseException):
+    """
+    Exception that raises plugin if there is no data for user.
+    """
+    pass
+
+
 def normalize_message(message_text):
     """
     Normalize message to make catching hooks easier.

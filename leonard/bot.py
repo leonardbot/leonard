@@ -20,7 +20,7 @@ from leonard import db
 from leonard import exceptions
 from leonard import manager
 from leonard import storage
-from leonard.utils import logger, analytics
+from leonard.utils import logger, analytics, NextHook
 
 
 class Leonard:
@@ -217,19 +217,30 @@ class Leonard:
             if hook is not None:
                 found_hooks.append(hook)
 
-        if found_hooks:
-            logger.info_message('Found', len(found_hooks), 'hooks')
-            # Sort found hooks by priority of plugin and priority of hook,
-            # than call the most appropriate
-            found_hooks.sort(
-                key=lambda h: (
-                    h.plugin.config.priority,
-                    h.priority
-                ),
-                reverse=True
-            )
+        if not found_hooks:
+            logger.warning_message('Hooks not found for', message)
+            return
+        logger.info_message('Found', len(found_hooks), 'hooks')
+        # Sort found hooks by priority of plugin and priority of hook,
+        # than call the most appropriate
+        found_hooks.sort(
+            key=lambda h: (
+                h.plugin.config.priority,
+                h.priority
+            ),
+            reverse=True
+        )
 
-            hook = found_hooks[0]
+        for hook in found_hooks:
+            # Add correct locale for message
+            user_locale = message.sender.data.get('language', None)
+            if user_locale:
+                message.locale = hook.plugin.localization.get(user_locale)
+
+            try:
+                hook.call(message, self)
+            except NextHook:
+                continue
 
             # Track message using Botan.io analytics in new thread
             analytics_thread = threading.Thread(
@@ -242,16 +253,7 @@ class Leonard:
                 }
             )
             analytics_thread.start()
-
-            # Add correct locale for message
-            user_locale = message.sender.data.get('language', None)
-            if user_locale:
-                message.locale = hook.plugin.localization.get(user_locale)
-
-            hook.call(message, self)
             return
-
-        logger.warning_message('Hooks not found for', message)
 
     def start_interval_hooks(self):
         """
