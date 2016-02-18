@@ -1,14 +1,36 @@
-REPLACE_WORDS = [',', '.', '?', '!', '(',
+# -*- coding: utf-8 -*-
+
+"""
+Different functions for making bot better
+
+@author: Seva Zhidkov
+@contact: zhidkovseva@gmail.com
+@license: Creative Commons Attribution-NonCommercial 4.0 International Public License
+
+Copyright (C) 2015
+"""
+import os
+import os.path
+import time
+import random
+import requests
+
+REPLACE_WORDS = [
+                 ',', '.', '?', '!', '(',
                  ')', ':', '"', '/', ';',
                  "'s", 'bot', 'leonard',
                  'hey', 'hi', 'leo', 'i need',
                  'i want', 'tell me', 'do you know',
                  'you know', 'how', 'what', 'who',
                  'how is', 'what is', 'who is', 'is',
-                 'please', 'but', 'эй', 'бот', 'ок',
-                 'леонард', 'мне нужно', 'я хочу',
-                 'расскажи мне', 'скажи мне',
-                 'ты знаешь', 'как', 'что', 'когда']
+                 'me', 'say', 'sorry', 'can', 'you', 'give',
+                 'need', 'for', 'please', 'but', 'about',
+                 'эй', 'бот', 'ок', 'леонард', 'дай', 'подай',
+                 'мне нужно', 'я хочу', 'расскажи мне',
+                 'скажи мне', 'ты знаешь', 'как', 'что',
+                 'мне', 'я', 'можешь', 'когда', 'про',
+                 'о'
+                ]
 
 
 class NextHook(BaseException):
@@ -79,3 +101,27 @@ def pop_words(message_text, words):
         if word not in words:
             message_words.append(word)
     return ' '.join(message_words)
+
+
+def download_file(url, plugin_name):
+    """
+    Download file from url and save it
+
+    :param url: file url
+    :param plugin_name: str, name of plugin that downloading file
+    :return: absolute path to file
+    """
+    response = requests.get(url)
+    # Create folder for data
+    try:
+        os.mkdir('data/' + plugin_name)
+    except OSError:
+        # If folder already existing, just pass
+        pass
+    file_extension = response.url.split('.')[-1].rstrip('/')
+    file_name = str(time.time()) + '_' + str(random.randint(1, 1000000000))
+    file_path = 'data/' + plugin_name + '/' + file_name + '.' + file_extension
+    downloaded_file = open(file_path, 'wb')
+    downloaded_file.write(response.content)
+    downloaded_file.close()
+    return os.path.abspath(file_path)

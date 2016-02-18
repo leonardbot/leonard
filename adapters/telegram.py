@@ -122,3 +122,20 @@ def send_message(message, bot):
         logger.error_message(
             'Problems with sending message: {}'.format(response.text)
         )
+
+    # Now send attachments from message
+    for attachment in message.attachments:
+        data = {
+            'chat_id': message.recipient.data['adapter_id']
+        }
+        response = requests.get(TELEGRAM_API_URL.format(
+            token=bot.config.get('LEONARD_TELEGRAM_TOKEN', ''),
+            method='send' + attachment.type.capitalize()
+        ), data=data, files={
+            attachment.type: (attachment.path, open(attachment.path, 'rb').read())
+        })
+
+        if not json.loads(response.text)['ok']:
+            logger.error_message(
+                'Problems with sending message: {}'.format(response.text)
+            )

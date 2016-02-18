@@ -1,4 +1,5 @@
 """
+# ADAPTER CURRENTLY NOT WORKING. USE TELEGERAM ADAPTER.
 # Config (valid YAML document) must be at __doc__.
 name: console # Name of adapter, lowercase, match with
               # file or package name.

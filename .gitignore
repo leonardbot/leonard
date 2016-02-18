@@ -67,4 +67,8 @@ vargant/
 # Redis dump files
 *.rdb
 
+# Env file with variable
 .env
+
+# Data folder with downloaded images
+data/
