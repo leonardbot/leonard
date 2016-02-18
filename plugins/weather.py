@@ -76,7 +76,7 @@ class RussianLocale:
     base_text = (
         "ОК, я расскажу тебе про погоду. \n\n"
         "Сейчас: {} - {}\n\n"
-        "{}"
+        "{}\n\n"
         "Данные получены с Forecast.io"
     )
     set_location_text = (
