@@ -15,10 +15,13 @@ import time
 import random
 import requests
 
+REPLACE_SYMBOLS = [
+                   ',', '.', '?', '!', '(',
+                   ')', ':', '"', ';'
+                  ]
+
 REPLACE_WORDS = [
-                 ',', '.', '?', '!', '(',
-                 ')', ':', '"', '/', ';',
-                 "'s", 'bot', 'leonard',
+                 "'s", 'bot', 'leonard', 'hello',
                  'hey', 'hi', 'leo', 'i need',
                  'i want', 'tell me', 'do you know',
                  'you know', 'how', 'what', 'who',
@@ -40,19 +43,37 @@ class NextHook(BaseException):
     pass
 
 
+def clean_message(message_text):
+    """
+    Delete punctuation marks and lowercase message text
+
+    "Hey, Leonard, who is Taylor Swift" => "hey leonard who is taylor swift"
+
+    :param message_text: str, original message
+    :return: str, cleaned message_text
+    """
+    # First, make all letters lower.
+    # "hey, leonard, who is taylor swift"
+    message_text = message_text.lower()
+
+    # Delete punctuation marks
+    for symbol in REPLACE_SYMBOLS:
+        message_text = message_text.replace(symbol, ' ')
+
+    # Delete extra spaces
+    message_text = ' '.join(message_text.split())
+
+    return message_text
+
 def normalize_message(message_text):
     """
     Normalize message to make catching hooks easier.
 
     "Hey, Leonard, who is Taylor Swift" => "taylor swift"
 
-    :param message_text: str, original message text
+    :param message_text: str, cleaned message text
     :return: str, normalizated message text
     """
-    # First, make all letters lower.
-    # "hey, leonard, who is taylor swift"
-    message_text = message_text.lower()
-
     # Delete all words or symbols, that not effecting
     # on user's message
     # "          taylor swift"

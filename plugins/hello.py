@@ -13,18 +13,8 @@ import leonard
 import schedule
 
 
-@leonard.hooks.message(['hello, bot', 'hey, bot'])
+@leonard.hooks.message([''])
 def hello_message(message, bot):
-    answer = leonard.OutgoingMessage(
-        recipient=message.sender,
-        text=message.locale.hello_message,
-        attachments=[]
-    )
-    bot.send_message(answer)
-
-
-@leonard.hooks.command('hello')
-def hello_command(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
         text=message.locale.hello_message,

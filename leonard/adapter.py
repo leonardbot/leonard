@@ -12,7 +12,7 @@ Copyright (C) 2015
 
 import importlib
 
-from leonard.utils import logger, normalize_message
+from leonard.utils import logger, normalize_message, clean_message
 from leonard.config import parse_config
 
 
@@ -95,6 +95,8 @@ class IncomingMessage(Message):
                            For example, 'console12983'
         """
         super().__init__(*args, **kwargs)
+        self.uncleaned_message = self.text
+        self.text = clean_message(self.text)
         self.adapter_id = adapter_id
         # Sender will be set by users middleware
         self.sender = None
