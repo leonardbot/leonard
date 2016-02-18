@@ -63,7 +63,8 @@ class EnglishLocale:
     base_text = (
         "OK, I tell you some words about weather\n\n"
         "Now: {} - {}\n\n"
-        "{}"
+        "{}\n\n"
+        "Powered by Forecast.io"
     )
     set_location_text = "Send your location for correct weather forecasts."
 
@@ -76,6 +77,7 @@ class RussianLocale:
         "ОК, я расскажу тебе про погоду. \n\n"
         "Сейчас: {} - {}\n\n"
         "{}"
+        "Данные получены с Forecast.io"
     )
     set_location_text = (
         "Отправьте ваше местоположение "
