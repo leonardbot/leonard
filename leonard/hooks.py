@@ -59,7 +59,7 @@ class MessageHook(Hook):
         :param normalize: bool, find words in normalized_message or not
         """
         self.type = 'message'
-        self.priority = 3
+        self.priority = 4
 
         self.func = user_function
 
@@ -163,7 +163,7 @@ class KeywordsHook(Hook):
         :param normalize: bool, find words in normalized_message or not
         """
         self.type = 'keywords'
-        self.priority = 2
+        self.priority = 3
 
         self.func = user_function
         self.keywords_list = keywords_list
@@ -204,7 +204,7 @@ class StartEndHook(Hook):
         :param words: list of str, variants of start or end.
         :param normalize: bool, find words in normalized_message or not
         """
-        self.type = 'keywords'
+        self.type = 'start_end'
         self.priority = 2
 
         self.func = user_function
