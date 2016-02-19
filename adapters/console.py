@@ -17,45 +17,28 @@ from leonard.adapter import IncomingMessage, Attachment
 
 
 def get_messages(bot):
+    variables = {
+        'first_name': input('Your first name: '),
+        'last_name': input('Your last name: '),
+        'adapter': 'console'
+    }
     while True:
         # Let plugin thread end
         sleep(1)
         text = input('Enter message: ')
-
-        attachments = []
-        # For our example, attachment will be looking like:
-        # '[type]_[path]'
-        received_attachments = input(
-            'Enter a comma-separated attachments'
-            '(<type>_<path>):'
-        ).split(',')
-
-        # If user don't enter attachment,
-        # message_attachments will be empty
-        if received_attachments[0]:
-            for attachment in received_attachments:
-                # Parse incoming attachment:
-                # attachment_data[0] will be attachment type
-                # attachment_data[1] will be attachment path
-                attachment_data = attachment.split('_')
-                if len(attachment_data) < 2:
-                    print('Incorrect attachment "{}"'.format(attachment))
-                    continue
-                attachments.append(Attachment(
-                    attachment_type=attachment_data[0],
-                    attachment_path=attachment_data[1:],
-                    attachment_id=randint(1, 1000000000)  # Fake id
-                ))
-        yield IncomingMessage(adapter_id='console' + str(hash(getlogin())),
-                              language=bot.config.get(
-                                  'LEONARD_DEFAULT_LANGUAGE',
-                                  'en'
-                              ),
-                              text=text, attachments=attachments,
-                              variables={
-                                  'first_name': 'John',
-                                  'last_name': 'Doe'
-                              })
+        location_text = input('Enter location (if no, just leave it blank):')
+        location = None
+        if location_text:
+            location = tuple(map(float, location_text.split()))
+        variables['last_message'] = {'text': text, 'from': {'id': 1}}
+        variables['location'] = location
+        yield IncomingMessage(
+            adapter_id='console1',
+            text=text,
+            attachments=[],
+            location=location,
+            variables=variables
+        )
     return []
 
 

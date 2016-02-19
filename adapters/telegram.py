@@ -80,7 +80,7 @@ def get_messages(bot):
                 # Leonard iterating with message with 'for in', so our function
                 # is generator of IncomingMessage objects.
                 yield IncomingMessage(
-                    adapter_id=message['from']['id'],
+                    adapter_id='tg' + str(message['from']['id']),
                     text=message_text,
                     attachments=[],
                     location=location,
@@ -94,7 +94,7 @@ def send_message(message, bot):
     logger.info_message('Sending message', message)
 
     data = {
-        'chat_id': message.recipient.data['adapter_id'],
+        'chat_id': message.recipient.data['adapter_id'].lstrip('tg'),
         'text': message.text
     }
 

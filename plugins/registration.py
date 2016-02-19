@@ -70,7 +70,7 @@ def language_callback(message, bot):
             recipient=message.sender,
             buttons=LANGUAGE_BUTTONS
         )
-        bot.ask_question(question, registration_callback, 'registration')
+        bot.ask_question(question, language_callback, 'registration')
         return
 
     message.sender.data['language'] = language
