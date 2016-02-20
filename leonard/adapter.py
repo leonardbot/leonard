@@ -54,7 +54,6 @@ class Message:
                           Parameters should start from adapter name.
         """
         self.text = text
-        self.normalizated_text = normalize_message(text)
         # If attachment only one, convert it to list
         if type(attachments) == Attachment:
             self.attachments = [attachments]
@@ -97,6 +96,7 @@ class IncomingMessage(Message):
         super().__init__(*args, **kwargs)
         self.uncleaned_message = self.text
         self.text = clean_message(self.text)
+        self.normalizated_text = normalize_message(self.text)
         self.adapter_id = adapter_id
         # Sender will be set by users middleware
         self.sender = None
