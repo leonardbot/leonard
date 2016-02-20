@@ -131,6 +131,22 @@ def pop_words(message_text, words):
     return ' '.join(message_words)
 
 
+def find_numbers(message_text):
+    """
+    Find all numbers in message words
+
+    'numbers between 5 and 20' => [5, 20]
+
+    :param message_text: str, normalizated, cleaned or original message
+    :return: list of int
+    """
+    numbers = []
+    for word in message_text.split(' '):
+        if word.isdigit():
+            numbers.append(int(word))
+    return numbers
+
+
 def download_file(url, plugin_name):
     """
     Download file from url and save it
