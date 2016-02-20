@@ -77,7 +77,14 @@ def normalize_message(message_text):
     # Delete all words or symbols, that not effecting
     # on user's message
     # "          taylor swift"
+
+    # Add extra spaces to begin and end of message to make
+    # deleting words easier
+    message_text = " " + message_text + " "
+
     for word in REPLACE_WORDS:
+        # Word should be separate
+        word = " " + word + " "
         message_text = message_text.replace(word, '')
 
     # If there are extra spaces, delete it

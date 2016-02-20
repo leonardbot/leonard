@@ -86,13 +86,13 @@ class MessageHook(Hook):
             for regex in self.regexes:
                 match = re.match(regex, message_text, re.IGNORECASE)
                 if match:
-                    incoming_message.variables['regex_match'] = match
+                    incoming_message.variables['regex_match'] = match.groups()
                     return True
         else:
             for regex in self.regexes:
                 match = re.match(regex, message_text)
                 if match:
-                    incoming_message.variables['regex_match'] = match
+                    incoming_message.variables['regex_match'] = match.groups()
                     return True
 
         return False
