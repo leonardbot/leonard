@@ -21,10 +21,10 @@ REPLACE_SYMBOLS = [
                   ]
 
 REPLACE_WORDS = [
-                 "'s", 'bot', 'leonard', 'hello',
-                 'hey', 'hi', 'leo', 'i need',
-                 'i want', 'tell me', 'do you know',
-                 'you know', 'how', 'what', 'who',
+                 "'s", 'bot', 'leonard', 'hello', 'now',
+                 'hey', 'hi', 'leo', 'i need', 'hm', 'well',
+                 'i want', 'tell me', 'do you know', 'so',
+                 'you know', 'how', 'what', 'who', 'are',
                  'how is', 'what is', 'who is', 'is',
                  'me', 'say', 'sorry', 'can', 'you', 'give',
                  'need', 'for', 'please', 'but', 'about',
@@ -32,7 +32,7 @@ REPLACE_WORDS = [
                  'мне нужно', 'я хочу', 'расскажи мне',
                  'скажи мне', 'ты знаешь', 'как', 'что',
                  'мне', 'я', 'можешь', 'когда', 'про',
-                 'о'
+                 'о', 'слушай'
                 ]
 
 

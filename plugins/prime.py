@@ -37,6 +37,20 @@ def all_primes(n):
     return primes
 
 
+def factor(n):
+    answer = []
+    d = 2
+    while d ** 2 <= n:
+        if n % d == 0:
+            answer.append(d)
+            n //= d
+        else:
+            d += 1
+    if n > 1:
+        answer.append(n)
+    return answer
+
+
 @leonard.hooks.message(['prime (\d+)', '(\d+) in primes', 'простое (\d+)'])
 def is_prime_message(message, bot):
     number = int(message.variables['regex_match'][0])
@@ -109,12 +123,54 @@ def primes_list_message(message, bot):
     bot.send_message(answer)
 
 
+@leonard.hooks.start_end(['factor', 'factorize', 'prime factors', 'разложи',
+                          'множители', 'простые множители', 'факторизуй'])
+def factorize_message(message, bot):
+    numbers = leonard.utils.find_numbers(message.normalizated_text)
+    if not numbers:
+        answer = leonard.OutgoingMessage(
+            recipient=message.sender,
+            text=message.locale.no_factor_number
+        )
+        bot.send_message(answer)
+        return
+
+    n = numbers[0]
+
+    if n > 1000000:
+        answer = leonard.OutgoingMessage(
+            recipient=message.sender,
+            text=message.locale.too_big
+        )
+        bot.send_message(answer)
+        return
+
+    if is_prime(n):
+        answer = leonard.OutgoingMessage(
+            recipient=message.sender,
+            text=message.locale.is_prime.format(n)
+        )
+        bot.send_message(answer)
+        return
+
+    n_factors = factor(n)
+    answer = leonard.OutgoingMessage(
+        recipient=message.sender,
+        text=message.locale.factors.format(n,
+            ', '.join(map(str, n_factors))
+        )
+    )
+    bot.send_message(answer)
+
+
 class EnglishLocale:
     language_code = 'en'
     too_big = "It's too big for me"
     is_prime = '{} number is prime'
     isnt_prime = "{} number isn't prime"
     primes = "Prime numbers from {} to {}:\n\n{}"
+    no_factor_number = "I don't know which number I should factorize, sorry"
+    factors = "Prime factors of {}: {}"
 
 
 class RussianLocale:
@@ -122,4 +178,6 @@ class RussianLocale:
     too_big = 'Это слишком много для меня'
     is_prime = 'Число {} простое'
     isnt_prime = 'Число {} не простое'
-    primes = "Простые числа от {} до {}:\n\n{}"
+    primes = 'Простые числа от {} до {}:\n\n{}'
+    no_factor_number = 'Я не знаю, какое число я должен разложить на множители'
+    factors = 'Простые множители числа {}: {}'
