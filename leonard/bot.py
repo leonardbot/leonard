@@ -213,9 +213,8 @@ class Leonard:
 
         found_hooks = []
         for plugin in self.plugins_manager.plugins:
-            hook = plugin.check_hooks(message)
-            if hook is not None:
-                found_hooks.append(hook)
+            hooks = plugin.check_hooks(message)
+            found_hooks.extend(hooks)
 
         if not found_hooks:
             logger.warning_message('Hooks not found for', message)

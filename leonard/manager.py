@@ -141,12 +141,7 @@ class Plugin:
 
         # Convert FoundHooks object to list with hooks
         found_hooks = found_hooks.data
-
-        if found_hooks:
-            found_hooks.sort(key=lambda h: h.priority, reverse=True)
-            return found_hooks[0]
-        else:
-            return None
+        return found_hooks
 
 
 class FoundHooks:
