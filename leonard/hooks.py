@@ -98,6 +98,35 @@ class MessageHook(Hook):
         return False
 
 
+def message(regexes=[], case_sensitive=False, normalize=True):
+    """
+    Hook for catching messages, for example:
+    "i want cat", "thanks" etc.
+
+    :param regexes: list[string], regular expressions for catching messages
+    :param case_sensitive: bool, is bot catching messages with case sensitive
+    :param normalize: bool, find words in normalized_message or not
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = MessageHook(wrapped, regexes,
+                                            case_sensitive, normalize)
+        return wrapped
+
+    return hook
+
+
 class CommandHook(Hook):
     def __init__(self, user_function, command):
         """
@@ -124,6 +153,32 @@ class CommandHook(Hook):
         return incoming_message.text.lstrip().startswith('!' + self.command)
 
 
+def command(command_text):
+    """
+    Hook for catching commands, for example:
+    "!asana", "!deploy leonard" etc.
+
+    :param command_text: str, command text without '!'. For example, 'join'.
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = CommandHook(wrapped, command_text)
+        return wrapped
+
+    return hook
+
+
 class CallbackHook(Hook):
     def __init__(self, user_function, callback_func):
         """
@@ -148,6 +203,33 @@ class CallbackHook(Hook):
         :return: True or False
         """
         return self.callback_func.__call__(incoming_message)
+
+
+def callback(callback_func):
+    """
+    Hook for catching anything you want, based on
+    your callback function
+
+    :param callback_func: callback func, takes incoming message
+                          and returns True or False
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = CallbackHook(wrapped, callback_func)
+        return wrapped
+
+    return hook
 
 
 class KeywordsHook(Hook):
@@ -194,6 +276,36 @@ class KeywordsHook(Hook):
         return False
 
 
+def keywords(keywords_list, normalize=True):
+    """
+    Hook for catching messages by keywords list.
+    Hook match only when all words from one or more of keyword list
+    (not list of keywords lists) is in the message words.
+
+    :param keywords_list: list of lists of str (keywords).
+                          For example, [['weather', 'now'],
+                                        ['weather', 'tomorrow']]
+    :param normalize: bool, find words in normalized_message or not
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = KeywordsHook(wrapped, keywords_list, normalize)
+        return wrapped
+
+    return hook
+
+
 class StartEndHook(Hook):
     def __init__(self, user_function, words, normalize=True):
         """
@@ -233,6 +345,34 @@ class StartEndHook(Hook):
         return False
 
 
+def start_end(starts_ends, normalize=True):
+    """
+    Hook for catching messages by defined starts or ends.
+    For example, starts_ends=['book', 'booking'] will catch
+    'book hotel', 'booking hotel', 'hotel book', 'hotel booking'.
+
+    :param starts_ends: list of str, variants of starts and ends
+    :param normalize: bool, find words in normalized_message or not
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = StartEndHook(wrapped, starts_ends, normalize)
+        return wrapped
+
+    return hook
+
+
 class IntervalHook(Hook):
     def __init__(self, user_function, interval):
         """
@@ -262,6 +402,32 @@ class IntervalHook(Hook):
         thread.start()
 
 
+def interval(interval_object):
+    """
+    Hook for running code by intervals.
+    All functionality needs to import from schedule module.
+
+    :param interval_object: interval object from schedule module.
+                            For example, schedule.every().wednesday.at("13:15")
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(bot_object):
+            """
+            Wrapper around user's function
+
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(bot_object)
+
+        wrapped._leonard_hook = IntervalHook(wrapped, interval_object)
+        return wrapped
+
+    return hook
+
+
 def find_hooks(plugin):
     """
     Find hooks in plugin module
@@ -289,169 +455,3 @@ def find_hooks(plugin):
                       item._leonard_hook.type == 'interval'):
             interval_hooks.append(item._leonard_hook)
     return [hooks, interval_hooks]
-
-
-def message(regexes=[], case_sensitive=False, normalize=True):
-    """
-    Hook for catching messages, for example:
-    "i want cat", "thanks" etc.
-
-    :param regexes: list[string], regular expressions for catching messages
-    :param case_sensitive: bool, is bot catching messages with case sensitive
-    :param normalize: bool, find words in normalized_message or not
-    :return:
-    """
-
-    def hook(func):
-        def wrapped(message_object, bot_object):
-            """
-            Wrapper around user's function
-
-            :param message_object: incoming message, Message object
-            :param bot_object: Leonard object
-            :return:
-            """
-            return func(message_object, bot_object)
-
-        wrapped._leonard_hook = MessageHook(wrapped, regexes,
-                                            case_sensitive, normalize)
-        return wrapped
-
-    return hook
-
-
-def command(command_text):
-    """
-    Hook for catching commands, for example:
-    "!asana", "!deploy leonard" etc.
-
-    :param command_text: str, command text without '!'. For example, 'join'.
-    :return:
-    """
-
-    def hook(func):
-        def wrapped(message_object, bot_object):
-            """
-            Wrapper around user's function
-
-            :param message_object: incoming message, Message object
-            :param bot_object: Leonard object
-            :return:
-            """
-            return func(message_object, bot_object)
-
-        wrapped._leonard_hook = CommandHook(wrapped, command_text)
-        return wrapped
-
-    return hook
-
-
-def callback(callback_func):
-    """
-    Hook for catching anything you want, based on
-    your callback function
-
-    :param callback_func: callback func, takes incoming message
-                          and returns True or False
-    :return:
-    """
-
-    def hook(func):
-        def wrapped(message_object, bot_object):
-            """
-            Wrapper around user's function
-
-            :param message_object: incoming message, Message object
-            :param bot_object: Leonard object
-            :return:
-            """
-            return func(message_object, bot_object)
-
-        wrapped._leonard_hook = CallbackHook(wrapped, callback_func)
-        return wrapped
-
-    return hook
-
-
-def keywords(keywords_list, normalize=True):
-    """
-    Hook for catching messages by keywords list.
-    Hook match only when all words from one or more of keyword list
-    (not list of keywords lists) is in the message words.
-
-    :param keywords_list: list of lists of str (keywords).
-                          For example, [['weather', 'now'],
-                                        ['weather', 'tomorrow']]
-    :param normalize: bool, find words in normalized_message or not
-    :return:
-    """
-
-    def hook(func):
-        def wrapped(message_object, bot_object):
-            """
-            Wrapper around user's function
-
-            :param message_object: incoming message, Message object
-            :param bot_object: Leonard object
-            :return:
-            """
-            return func(message_object, bot_object)
-
-        wrapped._leonard_hook = KeywordsHook(wrapped, keywords_list, normalize)
-        return wrapped
-
-    return hook
-
-
-def start_end(starts_ends, normalize=True):
-    """
-    Hook for catching messages by defined starts or ends.
-    For example, starts_ends=['book', 'booking'] will catch
-    'book hotel', 'booking hotel', 'hotel book', 'hotel booking'.
-
-    :param starts_ends: list of str, variants of starts and ends
-    :param normalize: bool, find words in normalized_message or not
-    :return:
-    """
-
-    def hook(func):
-        def wrapped(message_object, bot_object):
-            """
-            Wrapper around user's function
-
-            :param message_object: incoming message, Message object
-            :param bot_object: Leonard object
-            :return:
-            """
-            return func(message_object, bot_object)
-
-        wrapped._leonard_hook = StartEndHook(wrapped, starts_ends, normalize)
-        return wrapped
-
-    return hook
-
-
-def interval(interval_object):
-    """
-    Hook for running code by intervals.
-    All functionality needs to import from schedule module.
-
-    :param interval_object: interval object from schedule module.
-                            For example, schedule.every().wednesday.at("13:15")
-    :return:
-    """
-
-    def hook(func):
-        def wrapped(bot_object):
-            """
-            Wrapper around user's function
-
-            :param bot_object: Leonard object
-            :return:
-            """
-            return func(bot_object)
-
-        wrapped._leonard_hook = IntervalHook(wrapped, interval_object)
-        return wrapped
-
-    return hook
