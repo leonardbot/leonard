@@ -20,7 +20,9 @@ from leonard import db
 from leonard import exceptions
 from leonard import manager
 from leonard import storage
-from leonard.utils import logger, analytics, NextHook
+from leonard.utils import CANCEL_WORDS, logger, analytics, NextHook
+
+from plugins import utils as utils_plugin
 
 
 class Leonard:
@@ -196,6 +198,12 @@ class Leonard:
         if ('question' in message.sender.data and
                 message.sender.data['question'] != ''):
             logger.info_message('Detected question answer for', message)
+            # Check, may be user sent message for quit from question
+            if message.text in CANCEL_WORDS:
+                utils_plugin.cancel_from_question(message, self)
+                message.sender.data['question'] = ''
+                message.sender.update()
+                return
             # Parse question callback
             callback = pickle.loads(message.sender.data['question'])
             # Delete question, but save plugin name

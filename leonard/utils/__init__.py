@@ -12,6 +12,7 @@ Copyright (C) 2015
 import os
 import os.path
 import time
+import datetime
 import random
 import requests
 
@@ -34,6 +35,9 @@ REPLACE_WORDS = [
                  'мне', 'я', 'можешь', 'когда', 'про',
                  'о', 'слушай'
                 ]
+
+CANCEL_WORDS = ['oops', 'ops', 'undo', 'cancel', 'exit', 'stop', 'no', 'reset',
+                'ой', 'упс', 'отмени', 'отменить', 'выйти', 'стоп', 'не надо']
 
 
 class NextHook(BaseException):
@@ -169,3 +173,14 @@ def download_file(url, plugin_name):
     downloaded_file.write(response.content)
     downloaded_file.close()
     return os.path.abspath(file_path)
+
+
+def utc():
+    """
+    Get seconds from January 1, 1970 in UTC time
+
+    :return: int, num of seconds
+    """
+    now = datetime.datetime.utcnow()
+    # Thanks Mark Ransom (http://stackoverflow.com/a/15940303/3945443)
+    return (now - datetime.datetime(1970, 1, 1)).total_seconds()
