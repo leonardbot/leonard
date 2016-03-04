@@ -12,7 +12,7 @@ Copyright (C) 2015
 import re
 import threading
 
-import ross
+import ross as ross_module
 
 from leonard.exceptions import catch_module_errors
 
@@ -443,6 +443,7 @@ class RossHook(Hook):
         self.type = 'ross'
         self.priority = 3
 
+        self.func = user_function
         self.params = params
 
     def check(self, incoming_message):
@@ -455,7 +456,12 @@ class RossHook(Hook):
         # Tip for refactoring:
         # Right now ross is working no so slow, but when it will,
         # try to get cached params from incoming_message.variables['ross']
-        message_params = ross.process_message(incoming_message.uncleaned_text)
+        message_data = ross_module.process_message(
+            incoming_message.uncleaned_text
+        )
+        if message_data is None:
+            return False
+        message_params = message_data.__dict__
         for (param_name, param_value) in self.params.items():
             if not (param_name in message_params
                 and message_params[param_name] == param_value):
@@ -497,7 +503,7 @@ def ross(**kwargs):
             """
             return func(message_object, bot_object)
 
-        wrapped._leonard_hook = StartEndHook(wrapped, kwargs)
+        wrapped._leonard_hook = RossHook(wrapped, kwargs)
         return wrapped
 
     return hook

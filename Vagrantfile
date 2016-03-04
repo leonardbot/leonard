@@ -61,6 +61,8 @@ Vagrant.configure(2) do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
   config.vm.provision "shell", inline: <<-SHELL
+      # Install git for getting external packages from git (like ross)
+      sudo apt-get install -y git
       # Install MongoDB
       sudo apt-get update
       sudo apt-get install -y mongodb-server
@@ -76,7 +78,7 @@ Vagrant.configure(2) do |config|
       sudo service mongodb restart
       service redis-server restart
       cd /vagrant
-      pip3 install -r requirements.txt
+      sudo pip3 install -r requirements.txt --upgrade
   SHELL
 
 
