@@ -12,6 +12,8 @@ Copyright (C) 2015
 import re
 import threading
 
+import ross
+
 from leonard.exceptions import catch_module_errors
 
 
@@ -423,6 +425,79 @@ def interval(interval_object):
             return func(bot_object)
 
         wrapped._leonard_hook = IntervalHook(wrapped, interval_object)
+        return wrapped
+
+    return hook
+
+
+class RossHook(Hook):
+    def __init__(self, user_function, params):
+        """
+        Create new Ross hook.
+
+        :param user_function: decorated user's function, called
+                              when ross params matching with incoming message
+        :param params: dict of Ross parameters for catching message.
+                       {'type': 'note', 'subtype': 'add'}
+        """
+        self.type = 'ross'
+        self.priority = 3
+
+        self.params = params
+
+    def check(self, incoming_message):
+        """
+        Check, is this message catching for this hook
+
+        :param incoming_message: IncomingMessage object
+        :return: True or False
+        """
+        # Tip for refactoring:
+        # Right now ross is working no so slow, but when it will,
+        # try to get cached params from incoming_message.variables['ross']
+        message_params = ross.process_message(incoming_message.uncleaned_text)
+        for (param_name, param_value) in self.params.items():
+            if not (param_name in message_params
+                and message_params[param_name] == param_value):
+                return False
+
+        # Bot is sorting matched hooks by priority, so
+        # we should indicate that if message catched by more params.
+        # After adding float priorities,
+        # Ross hook priorities will look like '3.{num of hook params}'
+        self.priority = float('{}.{}'.format(self.priority,
+                                             len(self.params)))
+        # We should pass Ross data to plugin using message variables.
+        incoming_message.variables['ross'] = message_params
+        return True
+
+
+def ross(**kwargs):
+    """
+    Hook for catching messages by defined Ross return params.
+    Ross - library for parsing users' requests to bot.
+    It's built specially for Leonard bot: https://github.com/leonardbot/ross
+    For example, type='notes', subtype='add' will catch message that needed
+
+
+    :param kwargs: dict of defined ross params. Hook catches message
+                   if ALL params from hook contains (and equals, of course)
+                   in message params.
+    :return:
+    """
+
+    def hook(func):
+        def wrapped(message_object, bot_object):
+            """
+            Wrapper around user's function
+
+            :param message_object: incoming message, Message object
+            :param bot_object: Leonard object
+            :return:
+            """
+            return func(message_object, bot_object)
+
+        wrapped._leonard_hook = StartEndHook(wrapped, kwargs)
         return wrapped
 
     return hook

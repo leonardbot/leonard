@@ -94,7 +94,7 @@ class IncomingMessage(Message):
                            For example, 'console12983'
         """
         super().__init__(*args, **kwargs)
-        self.uncleaned_message = self.text
+        self.uncleaned_text = self.text
         self.text = clean_message(self.text)
         self.normalizated_text = normalize_message(self.text)
         self.adapter_id = adapter_id
