@@ -467,12 +467,6 @@ class RossHook(Hook):
                 and message_params[param_name] == param_value):
                 return False
 
-        # Bot is sorting matched hooks by priority, so
-        # we should indicate that if message catched by more params.
-        # After adding float priorities,
-        # Ross hook priorities will look like '3.{num of hook params}'
-        self.priority = float('{}.{}'.format(self.priority,
-                                             len(self.params)))
         # We should pass Ross data to plugin using message variables.
         incoming_message.variables['ross'] = message_params
         return True

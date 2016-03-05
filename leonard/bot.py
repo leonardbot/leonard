@@ -195,6 +195,7 @@ class Leonard:
                 message.sender.data[variable] = message.variables[variable]
         message.sender.update()
 
+        # TODO: Move to different function
         if ('question' in message.sender.data and
                 message.sender.data['question'] != ''):
             logger.info_message('Detected question answer for', message)
