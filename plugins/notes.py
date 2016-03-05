@@ -13,7 +13,12 @@ def add_note(user, note_text):
     if len(note_text) > 1000:
         note_text = note_text[:1000]
     user.data['notes'] = user.data.get('notes', [])
-    user.data['notes'].append({'datetime': leonard.utils.utc(),
+    if not user.data['notes']:
+        note_id = 1
+    else:
+        note_id = max(user.data['notes'], key=lambda x: x['id'])['id'] + 1
+    user.data['notes'].append({'id': note_id,
+                               'datetime': leonard.utils.utc(),
                                'text': note_text})
     user.update()
 
@@ -72,7 +77,7 @@ class RussianLocale:
     saved = 'Заметка сохранена 👍'
 
     def enter_note(self, bot):
-        answer = ('Что ты хочешь записать? 📝 (если заметка будет очень ' +
+        answer = ('Что ты хочешь записать? 📝\n(если заметка будет очень ' +
                   'большая, я смогу сохранить только первые 1000 символов)\n\n' +
                    bot.get_locale('utils', self.language_code).question_explanation)
         return answer
