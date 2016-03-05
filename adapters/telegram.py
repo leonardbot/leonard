@@ -104,6 +104,7 @@ def send_message(message, bot):
             'keyboard': message.buttons,
             'one_time_keyboard': True
         })
+        print(data)
     else:
         data['reply_markup'] = json.dumps({
             'hide_keyboard': True
