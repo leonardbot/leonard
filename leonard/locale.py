@@ -47,15 +47,15 @@ class PluginLocalization:
         """
         Get plugin locale with correct language_code
 
-        :param language: two-letters language code, like 'en'
-        :return: class of locale, like EnglishLocale of hello pluin
+        :param language_code: two-letters language code, like 'en'
+        :return: class of locale, like EnglishLocale of hello plugin
         """
         for locale in self.locales:
             if locale.language_code == language_code:
                 return locale.locale_class()
 
         logger.error_message(
-            "Din't find locale with", language_code, 'in', str(self.plugin)
+            "Din't found locale with", language_code, 'in', str(self.plugin)
         )
         return None
 

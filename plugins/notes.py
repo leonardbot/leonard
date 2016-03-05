@@ -7,10 +7,11 @@ priority: 150
 import time
 import leonard
 import leonard.utils
-import leonard.utils.locale as locale_utils
 
 
 def add_note(user, note_text):
+    if len(note_text) > 1000:
+        note_text = note_text[:1000]
     user.data['notes'] = user.data.get('notes', [])
     user.data['notes'].append({'datetime': leonard.utils.utc(),
                                'text': note_text})
@@ -24,7 +25,7 @@ def add_note_message(message, bot):
     if not query:
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message.locale.enter_note
+            text=message.locale.enter_note(bot)
         )
         bot.ask_question(answer, add_note_callback, 'notes')
         return
@@ -55,15 +56,23 @@ def add_note_callback(message, bot):
 
 class EnglishLocale:
     language_code = 'en'
-    enter_note = ('What do you want to note?\n\n' +
-                  locale_utils.get(language_code)['question_explanation'])
     no_text = 'There are nothing to note.'
     saved = 'Note saved 👍'
+
+    def enter_note(self, bot):
+        answer = ('What do you want to note? 📝\n(if note will be very long, ' +
+                  'I will can save only first 1000 symbols)\n\n' +
+                  bot.get_locale('utils', self.language_code).question_explanation)
+        return answer
 
 
 class RussianLocale:
     language_code = 'ru'
-    enter_note = ('Что ты хочешь записать?\n\n' +
-                  locale_utils.get(language_code)['question_explanation'])
     no_text = 'Здесь нечего записывать.'
     saved = 'Заметка сохранена 👍'
+
+    def enter_note(self, bot):
+        answer = ('Что ты хочешь записать? 📝 (если заметка будет очень ' +
+                  'большая, я смогу сохранить только первые 1000 символов)\n\n' +
+                   bot.get_locale('utils', self.language_code).question_explanation)
+        return answer
