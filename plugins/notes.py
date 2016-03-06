@@ -102,7 +102,9 @@ def last_notes_message(message, bot):
         for note in last_notes:
             answer_text += message.locale.note.format(
                 note['id'],
-                note['datetime'],
+                bot.get_locale('utils', message.sender.data['language']).format_datetime(
+                    note['datetime'], message.sender.data.get('utc_offset', 0)
+                ),
                 note['text']
             )
         answer_text += '\n'
@@ -128,7 +130,11 @@ def notes_by_id_message(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
         text=message.locale.note.format(
-            note['id'], note['datetime'], note['text']
+            note['id'],
+            bot.get_locale('utils', message.sender.data['language']).format_datetime(
+                note['datetime'], message.sender.data.get('utc_offset', 0)
+            ),
+            note['text']
         )
     )
     bot.send_message(answer)
@@ -201,7 +207,9 @@ def all_notes_callback(message, bot):
     for note in show_notes:
         answer_text += message.locale.note.format(
             note['id'],
-            note['datetime'],
+            bot.get_locale('utils', message.sender.data['language']).format_datetime(
+                note['datetime'], message.sender.data.get('utc_offset', 0)
+            ),
             note['text']
         )
     answer_text += '\n'
