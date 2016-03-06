@@ -159,7 +159,9 @@ def all_notes_message(message, bot):
     for note in show_notes:
         answer_text += message.locale.note.format(
             note['id'],
-            note['datetime'],
+            bot.get_locale('utils', message.sender.data['language']).format_datetime(
+                note['datetime'], message.sender.data.get('utc_offset', 0)
+            ),
             note['text']
         )
     answer_text += '\n'
@@ -240,7 +242,8 @@ class EnglishLocale:
 class RussianLocale:
     language_code = 'ru'
     no_text = 'Здесь нечего записывать.'
-    saved = 'Заметка сохранена 👍'
+    saved = ('Заметка сохранена 👍\n\nОтправь "последняя заметка", '
+             'если хочешь просмотреть ее')
     no_notes = ("Я пока не знаю твоих заметок. 🤔\n"
                 "Отправь 'запиши' или 'запиши что ...', "
                 "если хочешь создать новую.")
