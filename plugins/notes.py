@@ -94,7 +94,9 @@ def last_notes_message(message, bot):
         answer_text = (message.locale.last_note +
                        message.locale.note.format(
                            last_note['id'],
-                           last_note['datetime'],
+                           bot.get_locale('utils', message.sender.data['language']).format_datetime(
+                               last_note['datetime'], message.sender.data.get('utc_offset', 0)
+                           ),
                            last_note['text']
                        ) + '\n' + message.locale.how_see_all)
     else:
