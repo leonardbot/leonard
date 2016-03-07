@@ -36,8 +36,8 @@ REPLACE_WORDS = [
                  'о', 'слушай'
                 ]
 
-CANCEL_WORDS = ['oops', 'ops', 'undo', 'cancel', 'exit', 'stop', 'no', 'reset',
-                'ой', 'упс', 'отмени', 'отменить', 'выйти', 'стоп', 'не надо']
+CANCEL_WORDS = ['oops', 'ops', 'undo', 'cancel', 'exit', 'stop', 'reset',
+                'ой', 'упс', 'отмени', 'отменить', 'выйти', 'стоп']
 
 
 class NextHook(BaseException):

@@ -9,10 +9,12 @@ Interface to MongoDB storage.
 
 Copyright (C) 2015
 """
-from leonard.utils import logger
+import time
 
 from pymongo import MongoClient
 from bson import ObjectId
+
+from leonard.utils import logger, location
 
 
 class Database:
@@ -33,6 +35,7 @@ class Database:
         ))
         self.db = self.client.leonard
         self.collection = self.db.users
+        self.bot = bot
 
     def find_by_adapter_id(self, adapter_id):
         """
@@ -104,6 +107,18 @@ class User:
         self.database.collection.update({
             'adapter_id': self.adapter_id
         }, self.data)
+
+    def update_location_data(self, coordinates):
+        """
+        Update user's parameters that depends from location
+
+        :coordinates: tuple of two ints
+        :return:
+        """
+        self.data.update(location.get_place_data(coordinates, self.database.bot))
+        self.data.update(location.get_timezone(coordinates, self.database.bot))
+        self.data['location_updated'] = time.time()
+        self.update()
 
     def __str__(self):
         return 'User #{}: {}'.format(self.adapter_id, self.data)

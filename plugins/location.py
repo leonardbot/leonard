@@ -5,73 +5,56 @@ priority: 100
 """
 import json
 import requests
+
 import leonard
+from leonard.utils import location
 
-MAPBOX_GEOCODE_API = ('https://api.mapbox.com/geocoding/v5/mapbox.places/'
-                      '{},{}.json?access_token={}')
-TIMEZONEDB_API = 'http://api.timezonedb.com/?lat={}&lng={}&format=json&key={}'
+FOURSQUARE_SEARCH_API = ('https://api.foursquare.com/v2/venues/explore?'
+                         'client_id={}&client_secret={}&ll={}'
+                         '&locale={}&v=20160301')
 
 
-def get_place_data(coordinates, bot):
-    response = requests.get(MAPBOX_GEOCODE_API.format(
-        coordinates[1], coordinates[0], bot.config.get('LEONARD_MAPBOX_TOKEN')
+def get_near_places(coordinates, language_code, bot):
+    response = requests.get(FOURSQUARE_SEARCH_API.format(
+        bot.config.get('LEONARD_FOURSQUARE_CLIENT_ID'),
+        bot.config.get('LEONARD_FOURSQUARE_CLIENT_SECRET'),
+        ','.join([str(coordinates[0]), str(coordinates[1])]),
+        language_code
     ))
-    place_data = json.loads(response.text)
-    # Get nearest place (for example, street)
-    nearest_place = place_data['features'][0]['text']
-
-    for feature in place_data['features']:
-        if feature['id'].startswith('place'):
-            city_name = feature['text']
-            break
-    else:
-        city_name = None
-
-    for feature in place_data['features']:
-        if feature['id'].startswith('postcode'):
-            postcode = feature['text']
-            break
-    else:
-        postcode = None
-
-    for feature in place_data['features']:
-        if feature['id'].startswith('country'):
-            print(feature)
-            country = feature['text']
-            if 'short_code' in feature:
-                country_code = feature['short_code']
-            else:
-                country_code = feature['properties']['short_code']
-            break
-    else:
-        contry = None
-        country_code = None
-
-    return {'nearest_place': nearest_place, 'city_name': city_name,
-            'postcode': postcode, 'country': country,
-            'country_code': country_code}
-
-
-def get_timezone(coordinates, bot):
-    response = requests.get(TIMEZONEDB_API.format(
-        coordinates[0], coordinates[1],
-        bot.config.get('LEONARD_TIMEZONEDB_TOKEN')
-    ))
-    timezone_data = json.loads(response.text)
-    return {'timezone_name': timezone_data['zoneName'],
-            'utc_offset': int(timezone_data['gmtOffset'])}
+    near_places_data = json.loads(response.text)
+    places = []
+    for place in near_places_data['response']['groups'][0]['items']:
+        categories = []
+        for category in place['venue']['categories']:
+            categories.append(category['name'])
+        reasons = []
+        for reason in place['reasons']['items']:
+            reasons.append(reason['summary'])
+        places.append({'name': place['venue']['name'],
+                       'categories': categories,
+                       'reasons': reasons,
+                       'distance': place['venue']['location']['distance'],
+                       'location': (place['venue']['location']['lat'],
+                                    place['venue']['location']['lng']),
+                       'rating': place['venue'].get('rating', None),
+                       'link': 'https://foursquare.com/v/{}'.format(
+                           place['venue']['id'])})
+    return places
 
 
 @leonard.hooks.callback(lambda message: message.location is not None)
 def location_message(message, bot):
+    message.sender.update_location_data(message.location)
+    places = get_near_places(message.location, message.sender.data['language'],
+                             bot)
+    places_text = ''
+    for place in places[:5]:
+        places_text += message.locale.place.format(
+            place['name'], ', '.join(place['categories']), place['distance']
+        )
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=message.locale.base_text.format(
-            message.location[0],
-            message.location[1],
-            get_place_data(message.location, bot),
-            get_timezone(message.location, bot)
-        ),
+        text=message.locale.location_text.format(places_text),
         attachments=[]
     )
     bot.send_message(answer)
@@ -79,13 +62,15 @@ def location_message(message, bot):
 
 class EnglishLocale:
     language_code = 'en'
-    base_text = ("I got coordinates: {}, {}\n"
-                 "My information: {}\n"
-                 "Timezone data: {}\n"
-                 "Powered by Mapbox.com, timezonedb.com/")
+    location_text = ("Places around there:\n\n{}\n"
+                     "Send 'where i can go' if you want to get more "
+                     "information about places")
+    place = '"{}" ({}) - {} meters\n'
 
 
 class RussianLocale:
     language_code = 'ru'
-    base_text = ("Я получил координаты: {}, {}\n"
-                 "Данные получены из Mapbox.com")
+    location_text = ("Места поблизости:\n\n{}\n"
+                     "Отправь 'куда мне сходить', если хочешь выбрать место "
+                     "себе по душе.")
+    place = '"{}" ({}) - {} м\n'

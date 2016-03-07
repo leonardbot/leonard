@@ -91,6 +91,7 @@ def location_callback(message, bot):
         )
         bot.ask_question(answer, location_callback, 'registration')
         return
+    message.sender.update_location_data(message.location)
     answer = leonard.OutgoingMessage(
         text=message.locale.success_register,
         recipient=message.sender
