@@ -14,13 +14,16 @@ FOURSQUARE_SEARCH_API = ('https://api.foursquare.com/v2/venues/explore?'
                          '&locale={}&v=20160301')
 
 
-def get_near_places(coordinates, language_code, bot):
+def get_near_places(coordinates, language_code, bot, query=None):
+    params = {}
+    if query:
+        params['query'] = query
     response = requests.get(FOURSQUARE_SEARCH_API.format(
         bot.config.get('LEONARD_FOURSQUARE_CLIENT_ID'),
         bot.config.get('LEONARD_FOURSQUARE_CLIENT_SECRET'),
         ','.join([str(coordinates[0]), str(coordinates[1])]),
         language_code
-    ))
+    ), params=params)
     near_places_data = json.loads(response.text)
     places = []
     for place in near_places_data['response']['groups'][0]['items']:
@@ -56,6 +59,15 @@ def location_message(message, bot):
         recipient=message.sender,
         text=message.locale.location_text.format(places_text),
         attachments=[]
+    )
+    bot.send_message(answer)
+
+
+@leonard.hooks.ross(type='places', subtype='explore')
+def explore_message(message, bot):
+    answer = leonard.OutgoingMessage(
+        recipient=message.sender,
+        text='Yayks'
     )
     bot.send_message(answer)
 

@@ -126,7 +126,7 @@ def send_message(message, bot):
     # Now send attachments from message
     for attachment in message.attachments:
         data = {
-            'chat_id': message.recipient.data['adapter_id']
+            'chat_id': message.recipient.data['adapter_id'].lstrip('tg')
         }
         response = requests.get(TELEGRAM_API_URL.format(
             token=bot.config.get('LEONARD_TELEGRAM_TOKEN', ''),
