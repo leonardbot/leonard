@@ -108,7 +108,8 @@ def explore_choose_location_callback(message, bot):
     if not (message.location or message.text == message.locale.default):
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message.locale.choose_location(bot)
+            text=message.locale.choose_location(bot),
+            buttons=[[message.locale.default]]
         )
         bot.ask_question(answer, explore_choose_location_callback, 'location')
         return
@@ -149,7 +150,12 @@ def explore_choose_type_callback(message, bot):
 
 def more_places_callback(message, bot):
     if message.text != message.locale.more:
-        bot.ask_question(need_more_answer, more_places_callback, 'location')
+        answer = leonard.OutgoingMessage(
+            recipient=message.sender,
+            text=message.locale.need_more,
+            buttons=[[message.locale.more], [message.locale.exit]]
+        )
+        bot.ask_question(answer, more_places_callback, 'location')
         return
     if not message.sender.data['recommended_places']:
         answer = leonard.OutgoingMessage(
