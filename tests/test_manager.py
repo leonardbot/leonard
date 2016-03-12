@@ -1,7 +1,9 @@
-from leonard import manager, config
+from leonard import manager, config, Leonard
 
+bot = Leonard({'config-prefix': 'LEONARD_',
+               'adapter': 'console'})
 bot_config = config.Config()
-plugins_manager = manager.PluginsManager(bot_config)
+plugins_manager = manager.PluginsManager(bot_config, bot)
 
 
 def test_loading_plugins():
