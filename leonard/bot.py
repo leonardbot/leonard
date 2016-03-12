@@ -247,7 +247,7 @@ class Leonard:
 
             try:
                 hook.call(message, self)
-            except NextHook:
+            except Exception:
                 continue
 
             # Track message using Botan.io analytics in new thread
