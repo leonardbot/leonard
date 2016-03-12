@@ -134,7 +134,7 @@ class Leonard:
 
         :return:
         """
-        self.plugins_manager = manager.PluginsManager(self.config)
+        self.plugins_manager = manager.PluginsManager(self.config, self)
 
         # Run function for searching and importing new plugins
         self.plugins_manager.load_plugins()

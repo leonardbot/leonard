@@ -21,14 +21,16 @@ from leonard.exceptions import catch_module_errors
 
 
 class PluginsManager:
-    def __init__(self, config):
+    def __init__(self, config, bot):
         """
         Create plugins manager
 
         :param config: Config object with bot information
+        :param bot: Leonard object
         :return:
         """
         self.config = config
+        self.bot = bot
         self.plugins = []
 
     def load_plugins(self):
@@ -66,7 +68,7 @@ class PluginsManager:
             return
         plugin_config = parse_config(plugin_module, 'plugin')
         # Create new Plugin object with no hooks and no interval hooks
-        plugin = Plugin(plugin_name, plugin_module, plugin_config,
+        plugin = Plugin(plugin_name, plugin_module, plugin_config, self.bot,
                         [], [])
         # Set plugin hooks and interval hooks by find_hooks function
         plugin.hooks, plugin.interval_hooks = find_hooks(plugin)
@@ -89,13 +91,14 @@ class PluginsManager:
 
 
 class Plugin:
-    def __init__(self, name, module, config, hooks, interval_hooks):
+    def __init__(self, name, module, config, bot, hooks, interval_hooks):
         """
         Create new plugin
 
         :param name: string, module name
         :param module: module, imported plugin module
         :param config: ModuleConfig object, parsed plugin config
+        :param bot: Leonard object
         :param hooks: list of Hook objects
         :param interval_hooks: list of IntervalHooks objects
         :return:
@@ -103,6 +106,7 @@ class Plugin:
         self.name = name
         self.module = module
         self.config = config
+        self.bot = bot
         self.hooks = hooks
         self.interval_hooks = interval_hooks
         self.localization = None
@@ -132,7 +136,8 @@ class Plugin:
         found_hooks = FoundHooks()
         for hook in self.hooks:
             thread = threading.Thread(target=check_hook,
-                                      args=(hook, message, found_hooks))
+                                      args=(hook, message,
+                                            found_hooks, self.bot))
             thread.start()
             threads.append(thread)
 
@@ -156,16 +161,17 @@ class FoundHooks:
         self.data = []
 
 
-def check_hook(hook, message, found_hooks):
+def check_hook(hook, message, found_hooks, bot):
     """
     Check hook and if it matched add it to found hooks
 
     :param hook: Hook object
     :param message: IncomingMessage object
     :param found_hooks: FoundHooks object
+    :param bot: Leonard object
     :return:
     """
-    if hook.check(message):
+    if hook.check(message, bot):
         found_hooks.data.append(hook)
 
 

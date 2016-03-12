@@ -72,11 +72,12 @@ class MessageHook(Hook):
         self.case_sensitive = case_sensitive
         self.normalize = normalize
 
-    def check(self, incoming_message):
+    def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
 
         :param incoming_message: IncomingMessage object
+        :param bot: Leonard object
         :return: True or False
         """
         if self.normalize:
@@ -145,11 +146,12 @@ class CommandHook(Hook):
         self.func = user_function
         self.command = command
 
-    def check(self, incoming_message):
+    def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
 
         :param incoming_message: IncomingMessage object
+        :param bot: Leonard object
         :return: True or False
         """
         return incoming_message.text.lstrip().startswith('!' + self.command)
@@ -197,14 +199,15 @@ class CallbackHook(Hook):
         self.func = user_function
         self.callback_func = callback_func
 
-    def check(self, incoming_message):
+    def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
 
         :param incoming_message: IncomingMessage object
+        :param bot: Leonard object
         :return: True or False
         """
-        return self.callback_func.__call__(incoming_message)
+        return self.callback_func.__call__(incoming_message, bot)
 
 
 def callback(callback_func):
@@ -253,11 +256,12 @@ class KeywordsHook(Hook):
         self.keywords_list = keywords_list
         self.normalize = normalize
 
-    def check(self, incoming_message):
+    def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
 
         :param incoming_message: IncomingMessage object
+        :param bot: Leonard object
         :return: True or False
         """
         if self.normalize:
@@ -325,11 +329,12 @@ class StartEndHook(Hook):
         self.words = words
         self.normalize = normalize
 
-    def check(self, incoming_message):
+    def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
 
         :param incoming_message: IncomingMessage object
+        :param bot: Leonard object
         :return: True or False
         """
         if self.normalize:
@@ -446,11 +451,12 @@ class RossHook(Hook):
         self.func = user_function
         self.params = params
 
-    def check(self, incoming_message):
+    def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
 
         :param incoming_message: IncomingMessage object
+        :param bot: Leonard object
         :return: True or False
         """
         # Tip for refactoring:

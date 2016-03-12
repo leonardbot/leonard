@@ -73,7 +73,7 @@ def send_place_detail(place, message, bot):
     bot.ask_question(need_more_answer, more_places_callback, 'location')
 
 
-@leonard.hooks.callback(lambda message: message.location is not None)
+@leonard.hooks.callback(lambda message, bot: message.location is not None)
 def location_message(message, bot):
     message.sender.update_location_data(message.location)
     places = get_near_places(message.location, message.sender.data['language'],

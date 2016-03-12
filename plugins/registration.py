@@ -28,7 +28,7 @@ BEFORE_REGISTRATION = (
 
 
 @leonard.hooks.callback(
-    lambda message: 'language' not in message.sender.data
+    lambda message, bot: 'language' not in message.sender.data
 )
 def registration(message, bot):
     """
