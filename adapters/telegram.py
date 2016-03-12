@@ -128,12 +128,17 @@ def send_message(message, bot):
         data = {
             'chat_id': message.recipient.data['adapter_id'].lstrip('tg')
         }
+        files = {}
+        if attachment.type == 'image':
+            files[attachment.type] = (attachment.path,
+                                      open(attachment.path, 'rb').read())
+        elif attachment.type == 'location':
+            data['latitude'] = attachment.lat
+            data['longitude'] = attachment.lng
         response = requests.get(TELEGRAM_API_URL.format(
             token=bot.config.get('LEONARD_TELEGRAM_TOKEN', ''),
             method='send' + attachment.type.capitalize()
-        ), data=data, files={
-            attachment.type: (attachment.path, open(attachment.path, 'rb').read())
-        })
+        ), data=data, files=files)
 
         if not json.loads(response.text)['ok']:
             logger.error_message(

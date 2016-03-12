@@ -127,7 +127,8 @@ class Attachment:
     """
 
     def __init__(self, attachment_type, attachment_path=None,
-                 attachment_text='', attachment_id=None):
+                 attachment_text='', attachment_id=None,
+                 lat=None, lng=None):
         """
         Init new attachment.
 
@@ -137,12 +138,16 @@ class Attachment:
         :param attachment_text: optional text of attachment - may
                                 be сaption or something another
         :param attachment_id: int, not required id of attachment from adapter
+        :param lat: int, latitude, if type == 'location'
+        :param lng: int, longitude, if type == 'location'
         :return:
         """
         self.type = attachment_type.lower()
         self.path = attachment_path
         self.text = attachment_text
         self.id = attachment_id
+        self.lat = lat
+        self.lng = lng
 
 
 def load_adapter(adapter_name):

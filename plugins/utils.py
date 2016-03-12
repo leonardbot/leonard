@@ -34,7 +34,7 @@ class EnglishLocale:
 class RussianLocale:
     language_code = 'ru'
     cancel_from_question = 'Ладно.'
-    question_explanation =  ('Ты можешь ответить на вопрос в течение часа,'
+    question_explanation =  ('Ты можешь ответить на вопрос в течение часа, '
                              'потому что потом я могу забыть о нем.\n'
                              'Если не хочешь отвечать, отправь "Ой" и '
                              'будем считать, что ничего не было.')
