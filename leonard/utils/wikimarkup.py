@@ -15,8 +15,8 @@ DELETE_TAGS = ['{{fa}}', '{{reflist}}', '__PARTS__']
 IMAGE_TAG_RE = '\[\[Image:.+?\]\]'
 CATEGORY_TAG_RE = '\[\[Category:.+?\]\]'
 WIKI_LINK_RE = '\[\[(.+?)\]\]'
-HEADER_RE = '\n==(.+?)==\n'
-SUBHEADER_RE = '\n===(.+?)==='
+HEADER_RE = '\n== ?(.+?) ?==\n'
+SUBHEADER_RE = '\n=== ?(.+?) ?==='
 
 
 def parse_square_brackets(markup):
