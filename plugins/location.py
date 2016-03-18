@@ -1,7 +1,7 @@
 """
 name: location
 description: "Plugin that gives information about user's location"
-priority: 100
+priority: 250
 """
 import json
 import requests

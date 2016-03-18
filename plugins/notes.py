@@ -1,7 +1,7 @@
 """
 name: notes
 description: saving user's notes
-priority: 150
+priority: 250
 """
 
 import time

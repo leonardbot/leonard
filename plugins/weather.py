@@ -1,7 +1,7 @@
 """
 name: weather
 description: "Plugin that getting weather data for user location"
-priority: 100
+priority: 150
 """
 import json
 import requests

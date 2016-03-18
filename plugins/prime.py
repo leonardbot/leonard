@@ -1,7 +1,7 @@
 """
 name: prime
 description: Hooks for working with prime numbers
-priority: 150
+priority: 250
 """
 
 import leonard
