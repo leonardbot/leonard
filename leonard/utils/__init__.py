@@ -14,6 +14,7 @@ import os.path
 import time
 import datetime
 import random
+import re
 import requests
 
 REPLACE_SYMBOLS = [
@@ -184,3 +185,21 @@ def utc():
     now = datetime.datetime.utcnow()
     # Thanks Mark Ransom (http://stackoverflow.com/a/15940303/3945443)
     return (now - datetime.datetime(1970, 1, 1)).total_seconds()
+
+
+def split_message(message_text, max_length=500):
+    """
+    Split message by paragraphs if it more than max_length symbols
+
+    :param message_text: str, message text
+    :param max_length: int, split by paragraphs if length more than that value
+    :return: list of str, text of messages
+    """
+    if not max_length > len(message_text):
+        return [message_text]
+    i = 1
+    while True:
+        paragraphs = message_text.split('\n', maxsplit=i)
+        if all(lambda x: len(x) <= 500, paragraphs):
+            return paragraphs
+        i += 1

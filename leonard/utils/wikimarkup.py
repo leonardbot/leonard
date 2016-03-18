@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Parse wiki markup text to plain text. Designed to use with Wikihow.
+Parse wiki markup text to plain text. Designed for Wikihow.
 
 @author: Seva Zhidkov
 @contact: zhidkovseva@gmail.com
@@ -10,10 +10,13 @@ Parse wiki markup text to plain text. Designed to use with Wikihow.
 Copyright (C) 2015
 """
 import re
+from leonard.utils import split_message
 
-DELETE_TAGS = ['{{fa}}', '{{reflist}}', '__PARTS__']
+REF_TAG = '<ref>.+?</ref>'
+DELETE_TAGS = ['{{fa}}', '{{reflist}}', '{{nointroimg}}', '__PARTS__', '<br>']
 IMAGE_TAG_RE = '\[\[Image:.+?\]\]'
 CATEGORY_TAG_RE = '\[\[Category:.+?\]\]'
+ARTICLE_LINK_RE = '\[\[.+?\|(.+?)\]\]'
 WIKI_LINK_RE = '\[\[(.+?)\]\]'
 HEADER_RE = '\n== ?(.+?) ?==\n'
 SUBHEADER_RE = '\n=== ?(.+?) ?==='
@@ -29,8 +32,10 @@ def parse_square_brackets(markup):
     markup = re.sub(IMAGE_TAG_RE, '', markup)
     # Delete category tag
     markup = re.sub(CATEGORY_TAG_RE, '', markup)
-    # Delete square brackets from other tags
-    markup = re.sub(WIKI_LINK_RE, lambda match: match.group(1), markup)
+    # Save only text from articles links
+    markup = re.sub(ARTICLE_LINK_RE, lambda match: match.group(1), markup)
+    # Delete other tags
+    markup = re.sub(WIKI_LINK_RE, '', markup)
     return markup
 
 
@@ -45,26 +50,23 @@ def split_headers(markup):
     # it to '&&&Foo\n' and than split markup by '&&&'.
     # '&&&' - is just symbols that never contains in markup (i hope).
     markup = re.sub(HEADER_RE,
-                    lambda match: '&&&{}\n\n'.format(match.group(1)),
+                    lambda match: '&&&{}:\n\n'.format(match.group(1)),
                     markup)
     messages = markup.split('&&&')
     return messages
 
 
-def parse_subheaders(messages):
+def parse_subheaders(markup):
     """
-    Find and change subheaders in all messages
+    Find and change subheaders in markup
 
-    :param messages: list of str
-    :return: list of str, changed messages
+    :param markup: str
+    :return: str, new markup with changed subheaders
     """
-    new_messages = []
-    for message in messages:
-        message = re.sub(SUBHEADER_RE,
-                         lambda match: '\n{}:'.format(match.group(1)),
-                         message)
-        new_messages.append(message)
-    return new_messages
+    markup = re.sub(SUBHEADER_RE,
+                    lambda match: '\n\n{}:'.format(match.group(1)),
+                    markup)
+    return markup
 
 
 def parse_wikihow_markup(markup):
@@ -77,17 +79,32 @@ def parse_wikihow_markup(markup):
     # First, delete all unneeded tags from markup
     for tag in DELETE_TAGS:
         markup = markup.replace(tag, '')
+    # Delete ref tag
+    markup = re.sub(REF_TAG, '', markup)
     # Delete square-brackets tags from markup
     markup = parse_square_brackets(markup)
+    # Make Wikihow lists more beautiful
+    markup = markup.replace('\n#', '\n*')
     # In Wikihow first paragraph is always short description of article.
     # So we can add it to description.
     messages.append(markup.split('\n')[0])
     # And delete it from original markup
     markup = '\n'.join(markup.split('\n')[1:])
+    # Parse subheaders in messages
+    markup = parse_subheaders(markup)
+    # Small hack: if header is now first paragraph,
+    # so imitate line ending to continue using regex for header.
+    markup = '\n' + markup
     # Split markup by headers and save it to messages
     messages.extend(split_headers(markup))
-    # Split subheaders in messages
-    messages = parse_subheaders(messages)
     # Delete empty messages
     messages = list(filter(None, messages))
+    # Maybe messages is too big, so we should separate it by paragraphs
+    # using split_message util
+    new_messages = []
+    for message in messages:
+        new_messages.extend(split_message(message))
+    messages = new_messages
+    # And delete unusable line endings
+    messages = list(map(lambda s: s.rstrip(), messages))
     return messages

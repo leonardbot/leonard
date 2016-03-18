@@ -34,11 +34,10 @@ def page_exists(message, bot):
         response = requests.get(url).text
         bot.storage.set('url["{}"]'.format(url), response)
     response = json.loads(response)
-    print(response)
     # If there is a results, so save first in variables and return True
     if response['query']['search']:
         message.variables['wikihow_title'] = (
-            response['query']['search'][0]['title']
+            response['query']['search'][0]['title'].replace(' ', '+')
         )
         return True
     return False
@@ -53,22 +52,31 @@ def article_message(message, bot):
     # Send article title
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=message.variables['wikihow_title'].capitalize()
+        text=message.variables['wikihow_title'].replace('+', ' ').capitalize()
     )
     bot.send_message(answer)
     for message_text in messages:
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message_text
+            text=message_text,
+            variables={"telegram_hide_preview": True}
         )
         bot.send_message(answer)
+    answer = leonard.OutgoingMessage(
+        recipient=message.sender,
+        text=message.locale.source.format(url.rstrip('&action=raw')),
+        variables={"telegram_hide_preview": True}
+    )
+    bot.send_message(answer)
 
 
 class EnglishLocale:
     language_code = 'en'
     language_subdomain = ''
+    source = 'Source: {}'
 
 
 class RussianLocale:
     language_code = 'ru'
     language_subdomain = 'ru.'
+    source = 'Источник: {}'
