@@ -51,7 +51,6 @@ def send_gif(message, bot):
         )
         bot.send_message(answer)
         return
-    print(gif)
     gif_path = leonard.utils.download_file(gif['images']['original']['url'], 'gif')
     gif_attachment = leonard.Attachment('document', gif_path)
     answer = leonard.OutgoingMessage(

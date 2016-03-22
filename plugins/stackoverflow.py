@@ -55,7 +55,6 @@ class EnglishLocale:
                                      bot.config.get('LEONARD_STACKOVERFLOW_TOKEN'))
         )
         data = json.loads(response.text)
-        print(data)
         return data['items']
 
 

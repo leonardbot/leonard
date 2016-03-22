@@ -28,7 +28,6 @@ def get_last_notes(user, num):
         return []
     user_notes = sorted(user.data['notes'], key=lambda x: x['datetime'],
                         reverse=True)
-    print(user_notes, num)
     return user_notes[:num]
 
 

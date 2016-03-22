@@ -91,8 +91,6 @@ def get_messages(bot):
 
 
 def send_message(message, bot):
-    logger.info_message('Sending message', message)
-
     data = {
         'chat_id': message.recipient.data['adapter_id'].lstrip('tg'),
         'text': message.text

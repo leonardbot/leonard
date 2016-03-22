@@ -14,7 +14,6 @@ import os.path
 import time
 import datetime
 import random
-import re
 import requests
 
 REPLACE_SYMBOLS = [
@@ -195,11 +194,13 @@ def split_message(message_text, max_length=500):
     :param max_length: int, split by paragraphs if length more than that value
     :return: list of str, text of messages
     """
-    if not max_length > len(message_text):
+    if len(message_text) < max_length:
         return [message_text]
     i = 1
     while True:
         paragraphs = message_text.split('\n', maxsplit=i)
-        if all(lambda x: len(x) <= 500, paragraphs):
+        if all(map(lambda x: len(x) <= max_length, paragraphs)):
+            return paragraphs
+        if i > 1000:
             return paragraphs
         i += 1

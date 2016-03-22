@@ -52,7 +52,9 @@ def article_message(message, bot):
     # Send article title
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=message.variables['wikihow_title'].replace('+', ' ').capitalize()
+        text='{}?'.format(
+            message.variables['wikihow_title'].replace('+', ' ').capitalize()
+        )
     )
     bot.send_message(answer)
     for message_text in messages:

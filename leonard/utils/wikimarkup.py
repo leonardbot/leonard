@@ -15,6 +15,7 @@ from leonard.utils import split_message
 REF_TAG = '<ref>.+?</ref>'
 DELETE_TAGS = ['{{fa}}', '{{reflist}}', '{{nointroimg}}', '__PARTS__', '<br>']
 IMAGE_TAG_RE = '\[\[Image:.+?\]\]'
+WHVID_RE = '\{\{whvid\|.+?\}\}'
 CATEGORY_TAG_RE = '\[\[Category:.+?\]\]'
 ARTICLE_LINK_RE = '\[\[.+?\|(.+?)\]\]'
 WIKI_LINK_RE = '\[\[(.+?)\]\]'
@@ -79,8 +80,10 @@ def parse_wikihow_markup(markup):
     # First, delete all unneeded tags from markup
     for tag in DELETE_TAGS:
         markup = markup.replace(tag, '')
-    # Delete ref tag
+    # Delete ref tags
     markup = re.sub(REF_TAG, '', markup)
+    # Delete whvid tags
+    markup = re.sub(WHVID_RE, '', markup)
     # Delete square-brackets tags from markup
     markup = parse_square_brackets(markup)
     # Make Wikihow lists more beautiful
@@ -97,14 +100,14 @@ def parse_wikihow_markup(markup):
     markup = '\n' + markup
     # Split markup by headers and save it to messages
     messages.extend(split_headers(markup))
-    # Delete empty messages
-    messages = list(filter(None, messages))
     # Maybe messages is too big, so we should separate it by paragraphs
     # using split_message util
     new_messages = []
     for message in messages:
         new_messages.extend(split_message(message))
     messages = new_messages
-    # And delete unusable line endings
+    # Delete unusable line endings
     messages = list(map(lambda s: s.rstrip(), messages))
+    # Delete empty messages
+    messages = list(filter(None, messages))
     return messages

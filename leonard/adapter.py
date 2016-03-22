@@ -66,18 +66,18 @@ class Message:
         self.locale = None
 
     def __str__(self):
-        # If message.text length is more than 15 chars, trim it
-        if len(self.text) > 15:
-            message_preview = self.text[:15] + '...'
+        # If message.text length is more than 50 chars, trim it
+        if len(self.text) > 50:
+            message_preview = self.text[:50] + '...'
         else:
             message_preview = self.text
         answer = 'Message "{}", variables: {}'.format(
             message_preview, self.variables
         )
         if type(self) == IncomingMessage:
-            answer += ' from {}'.format(self.sender)
+            answer += ' from {}'.format(str(self.sender)[:200])
         else:
-            answer += ' to {}'.format(self.recipient)
+            answer += ' to {}'.format(str(self.recipient)[:200])
         return answer
 
 
