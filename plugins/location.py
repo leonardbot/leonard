@@ -98,12 +98,13 @@ def search_message(message, bot):
         text=message.locale.choose_location(bot),
         buttons=[[message.locale.default]]
     )
+    message.sender.data['place_query'] = message.variables['ross']['query']
     bot.ask_question(answer, search_choose_location_callback, 'location')
 
 
 def search_choose_location_callback(message, bot):
     # Search query was saved when Ross have detected search place message
-    query = message.sender.data['ross']['query']
+    query = message.sender.data['place_query']
     places = get_near_places(
         message.sender.data['location'], message.sender.data['language'],
         bot, query
