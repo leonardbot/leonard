@@ -9,16 +9,16 @@ import requests
 import leonard
 from leonard.utils import location
 
-FOURSQUARE_SEARCH_API = ('https://api.foursquare.com/v2/venues/explore?'
-                         'client_id={}&client_secret={}&ll={}'
-                         '&locale={}&v=20160301')
+FOURSQUARE_EXPLORE_API = ('https://api.foursquare.com/v2/venues/explore?'
+                          'client_id={}&client_secret={}&ll={}'
+                          '&locale={}&v=20160301')
 
 
 def get_near_places(coordinates, language_code, bot, query=None):
     params = {}
     if query:
         params['query'] = query
-    response = requests.get(FOURSQUARE_SEARCH_API.format(
+    response = requests.get(FOURSQUARE_EXPLORE_API.format(
         bot.config.get('LEONARD_FOURSQUARE_CLIENT_ID'),
         bot.config.get('LEONARD_FOURSQUARE_CLIENT_SECRET'),
         ','.join([str(coordinates[0]), str(coordinates[1])]),
@@ -89,6 +89,36 @@ def location_message(message, bot):
         attachments=[]
     )
     bot.send_message(answer)
+
+
+@leonard.hooks.ross(type='places', subtype='search')
+def search_message(message, bot):
+    answer = leonard.OutgoingMessage(
+        recipient=message.sender,
+        text=message.locale.choose_location(bot),
+        buttons=[[message.locale.default]]
+    )
+    bot.ask_question(answer, search_choose_location_callback, 'location')
+
+
+def search_choose_location_callback(message, bot):
+    # Search query was saved when Ross have detected search place message
+    query = message.sender.data['ross']['query']
+    places = get_near_places(
+        message.sender.data['location'], message.sender.data['language'],
+        bot, query
+    )
+    if not places:
+        answer = leonard.OutgoingMessage(
+            recipient=message.sender,
+            text=message.locale.not_found
+        )
+        bot.send_message(answer)
+        return
+    message.sender.data['recommended_places'] = list(reversed(places))
+    first_place = message.sender.data['recommended_places'].pop()
+    message.sender.update()
+    send_place_detail(first_place, message, bot)
 
 
 @leonard.hooks.ross(type='places', subtype='explore')
