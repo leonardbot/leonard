@@ -9,9 +9,12 @@ Interface to Redis-storage.
 
 Copyright (C) 2015
 """
-from leonard.utils import logger
+
+import json
 
 from redis import StrictRedis
+
+from leonard.utils import logger
 
 
 class Storage:
@@ -81,3 +84,27 @@ class Storage:
             return None
 
         return self.redis.set(key, value)
+
+    def get_json(self, key, default_value=None):
+        """
+        Get value from Redis and parse JSON in it
+
+        :param key: str
+        :param default_value: string, value that returns if
+                              key not found or redis isn't
+                              connected to this bot
+        :return: list/dict
+        """
+        json_value = json.loads(self.get(key, default_value).decode('utf-8'))
+        return json_value
+
+    def set_json(self, key, value):
+        """
+        Dump value into json and save it in Redis
+
+        :param key: string
+        :param value: list/dict
+        :return:
+        """
+        json_value = json.dumps(value)
+        return self.set(key, json_value)
