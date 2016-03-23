@@ -14,6 +14,7 @@ import os.path
 import time
 import datetime
 import random
+import re
 import requests
 
 REPLACE_SYMBOLS = [
@@ -204,3 +205,15 @@ def split_message(message_text, max_length=500):
         if i > 1000:
             return paragraphs
         i += 1
+
+
+def strip_tags(text):
+    """
+    Delete all HTML-tags from text
+
+    :param text: str
+    :return: str without tags
+    """
+    # Thanks @mmmdreg in http://stackoverflow.com/a/4869782/3945443
+    # Also it function deleting date in squares in Wikipedia
+    return re.sub('(<[^<]+?>|\(\d+?\))', '', text)
