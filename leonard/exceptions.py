@@ -15,7 +15,7 @@ import bugsnag
 from leonard.utils import logger, NextHook
 
 bugsnag.configure(
-  api_key=os.environ['LEONARD_BUGSNAG_KEY'],
+  api_key=os.environ.get('LEONARD_BUGSNAG_KEY', ''),
   project_root=os.getcwd(),
   release_stage=os.environ.get('ENV', 'development')
 )
