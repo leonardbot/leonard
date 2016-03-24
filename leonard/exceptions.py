@@ -10,7 +10,15 @@ Tools for catching exceptions
 Copyright (C) 2015
 """
 
+import os
+import bugsnag
 from leonard.utils import logger, NextHook
+
+bugsnag.configure(
+  api_key=os.environ['LEONARD_BUGSNAG_KEY'],
+  project_root=os.getcwd(),
+  release_stage=os.environ.get('ENV', 'development')
+)
 
 
 def catch_module_errors(module_call_function):
@@ -26,6 +34,7 @@ def catch_module_errors(module_call_function):
         except Exception as error:
             error_message = str(error)
             logger.error_message('Module error: \n' + error_message)
+            bugsnag.notify(error)
 
             if type(error) == NextHook:
                 raise NextPluginHook

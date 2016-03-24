@@ -8,3 +8,4 @@ requests
 git+https://github.com/leonardbot/ross.git
 
 pytest
+bugsnag
