@@ -1,7 +1,7 @@
 """
 name: wikipedia
 description: get data from Wikipedia.org
-priority: 300
+priority: 350
 """
 import json
 import requests
@@ -44,13 +44,13 @@ def summary_message(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     dont_know = "I don't know 😬"
     summary = '{}\n\n{}'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     dont_know = "Я не знаю 😬"
     summary = '{}\n\n{}'

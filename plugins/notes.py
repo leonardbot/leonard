@@ -223,7 +223,7 @@ def all_notes_callback(message, bot):
     bot.ask_question(answer, all_notes_callback, 'notes')
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     no_text = 'There are nothing to note.'
     saved = 'Note saved 👍\n\nYou can view it by sending "last note"'
@@ -248,7 +248,7 @@ class EnglishLocale:
         return answer
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     no_text = 'Здесь нечего записывать.'
     saved = ('Заметка сохранена 👍\n\nОтправь "последняя заметка", '

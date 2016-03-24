@@ -61,7 +61,7 @@ def send_gif(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
 
     random_gif = 'Your random gif'
@@ -71,7 +71,7 @@ class EnglishLocale:
     your_gif = "Your '{}' gif"
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
 
     random_gif = 'Твоя случайная гифка'

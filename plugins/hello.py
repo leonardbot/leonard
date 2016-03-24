@@ -28,12 +28,12 @@ def hello_interval(bot):
     leonard.logger.info_message(bot.get_locale('hello', 'en').interval_message)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     hello_message = 'Hi!'
     interval_message = 'Hello from hello module'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     hello_message = 'Привет!'

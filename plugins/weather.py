@@ -56,7 +56,7 @@ def weather_message(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     units_id = 'us'
     units = ' °F'
@@ -69,7 +69,7 @@ class EnglishLocale:
     set_location_text = "Send your location for correct weather forecasts."
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     units_id = 'si'
     units = ' °C'

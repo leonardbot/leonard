@@ -163,7 +163,7 @@ def factorize_message(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     too_big = "It's too big for me"
     is_prime = '{} number is prime'
@@ -173,7 +173,7 @@ class EnglishLocale:
     factors = "Prime factors of {}: {}"
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     too_big = 'Это слишком много для меня'
     is_prime = 'Число {} простое'

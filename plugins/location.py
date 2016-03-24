@@ -200,7 +200,7 @@ def more_places_callback(message, bot):
     send_place_detail(place, message, bot)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     location_text = ("Places around there:\n\n{}\n"
                      "Send 'where i can go' if you want to get more "
@@ -229,7 +229,7 @@ class EnglishLocale:
         return text
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     location_text = ("Места поблизости:\n\n{}\n"
                      "Отправь 'куда мне сходить', если хочешь выбрать место "

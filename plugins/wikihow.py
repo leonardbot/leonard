@@ -74,13 +74,13 @@ def article_message(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     language_subdomain = ''
     source = 'Source: {}'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     language_subdomain = 'ru.'
     source = 'Источник: {}'

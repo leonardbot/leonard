@@ -40,7 +40,7 @@ def search_question(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
 
     not_found = "Sorry, but I've not found '{}' on Stackoverflow"
@@ -58,7 +58,7 @@ class EnglishLocale:
         return data['items']
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
 
     not_found = "Извини, я не нашел '{}' на Stackoverflow"

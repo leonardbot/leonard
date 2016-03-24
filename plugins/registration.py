@@ -100,7 +100,7 @@ def location_callback(message, bot):
 
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     send_location = (
         'Your location is needed by many plugins, like news or weather. '
@@ -109,7 +109,7 @@ class EnglishLocale:
     success_register = 'Hi! I want to be your friend :) BOT FUNCTIONS HERE'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     send_location = (
          'Ваше местоположение нужно для многих функций бота, как новости или '

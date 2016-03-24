@@ -22,11 +22,11 @@ def random_number_message(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     your_random = 'Your random number is {}'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     your_random = 'Твое рандомное число - '

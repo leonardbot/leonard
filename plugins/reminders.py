@@ -67,13 +67,13 @@ def reminders_tick(bot):
     reminders = bot.storage.set_json('reminders', reminders)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
     created = 'I created reminder 👍\n\nI will send notification to you.'
     reminder = 'Reminder: «{}»'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
     created = 'Я создал напоминание 👍\n\nЯ отправлю уведомление о нем.'
     reminder = 'Напоминание: «{}»'

@@ -72,3 +72,8 @@ class PluginLocale:
         """
         self.language_code = locale_class().language_code
         self.locale_class = locale_class
+
+
+class EnglishLocale:
+    default = 'default'
+    more = 'More'

@@ -40,7 +40,7 @@ def news_message(message, bot):
     bot.send_message(answer)
 
 
-class EnglishLocale:
+class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
 
     rss_url = 'https://news.google.com/news?cf=all&hl=en&ned=us&output=rss'
@@ -48,7 +48,7 @@ class EnglishLocale:
     news_report = 'Last news:\n\n{}'
 
 
-class RussianLocale:
+class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
 
     rss_url = 'https://news.yandex.ru/index.rss'
