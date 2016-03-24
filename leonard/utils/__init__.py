@@ -187,7 +187,7 @@ def utc():
     return (now - datetime.datetime(1970, 1, 1)).total_seconds()
 
 
-def split_message(message_text, max_length=500):
+def split_message(message_text, max_length=5000):
     """
     Split message by paragraphs if it more than max_length symbols
 

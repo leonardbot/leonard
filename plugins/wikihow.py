@@ -4,6 +4,7 @@ description: plugin for getting information from wikihow
 priority: 100
 """
 
+import time
 import json
 import requests
 import leonard
@@ -64,6 +65,7 @@ def article_message(message, bot):
             variables={"telegram_hide_preview": True}
         )
         bot.send_message(answer)
+        time.sleep(0.3)
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
         text=message.locale.source.format(url.rstrip('&action=raw')),

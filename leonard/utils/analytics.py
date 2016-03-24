@@ -20,14 +20,18 @@ def track_message(message, adapter, plugin, bot):
     """
     Track message in Botan.io
 
-    :param message: dict, message from telegram
+    :param message: dict, raw message from adapter
     :param adapter: str, adapter name
     :param plugin: str, name of plugin that proceed that message
     :param bot: Leonard object
     """
     message['adapter'] = adapter
+    if adapter == 'telegram':
+        user_id = message['from']['id']
+    elif adapter == 'vk':
+        user_id = message['user_id']
     url = BOTAN_URL.format(token=bot.config.get('LEONARD_BOTAN_TOKEN'),
-                           uid=message['from']['id'], name=plugin)
+                           uid=user_id, name=plugin)
     try:
         response = requests.post(
             url, data=json.dumps(message),
