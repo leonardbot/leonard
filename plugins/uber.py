@@ -63,7 +63,7 @@ class EnglishLocale(leonard.locale.EnglishLocale):
                 'Where are you? Send me your location.\n\n' +
                 self.question_explanation)
 
-    choose_destination = 'OK. Where do you to go? 🏡\nSend me location.'
+    choose_destination = 'OK. Where do you go? 🏡\nSend me location.'
 
     open_uber = "Open Uber app using this link:\n{}"
 
