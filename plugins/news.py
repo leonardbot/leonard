@@ -17,12 +17,12 @@ NEWS_RU_WORDS = leonard.utils.keywords_from_words(
     leonard.utils.ru.vowel_ends('новост'))
 
 
-def get_news_data(rss_url):
+def get_news_data(rss_url, n=5):
     feed = feedparser.parse(rss_url)
     news = []
     for entry in feed['entries']:
         news.append({'title': entry['title'], 'url': entry['link']})
-    return news[:5]
+    return news[:n]
 
 
 @leonard.hooks.keywords(NEWS_RU_WORDS + [['news']])
