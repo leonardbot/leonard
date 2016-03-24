@@ -40,3 +40,4 @@ class EnglishLocale(leonard.locale.EnglishLocale):
 
 class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
+    article = '{} - {}'
