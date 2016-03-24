@@ -107,7 +107,9 @@ def parse_wikihow_markup(markup):
         new_messages.extend(split_message(message))
     messages = new_messages
     # Delete unusable line endings
-    messages = list(map(lambda s: s.rstrip(), messages))
+    messages = list(map(lambda s: s.rstrip().lstrip(), messages))
+    # Delete message only with '*'
+    messages = list(filter(lambda x: x != '*', messages))
     # Delete empty messages
     messages = list(filter(None, messages))
     return messages
