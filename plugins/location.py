@@ -95,7 +95,7 @@ def location_message(message, bot):
 def search_message(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=message.locale.choose_location(bot),
+        text=message.locale.choose_location,
         buttons=[[message.locale.default]]
     )
     message.sender.data['place_query'] = message.variables['ross']['query']
@@ -128,7 +128,7 @@ def explore_message(message, bot):
     if not query:
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message.locale.choose_location(bot),
+            text=message.locale.choose_location,
             buttons=[[message.locale.default]]
         )
         bot.ask_question(answer, explore_choose_location_callback, 'location')
@@ -139,7 +139,7 @@ def explore_choose_location_callback(message, bot):
     if not (message.location or message.text == message.locale.default):
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message.locale.choose_location(bot),
+            text=message.locale.choose_location,
             buttons=[[message.locale.default]]
         )
         bot.ask_question(answer, explore_choose_location_callback, 'location')
@@ -148,7 +148,7 @@ def explore_choose_location_callback(message, bot):
         message.sender.update_location_data(message.location)
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=message.locale.choose_type(bot)
+        text=message.locale.choose_type
     )
     bot.ask_question(answer, explore_choose_type_callback, 'location')
 
@@ -158,7 +158,7 @@ def explore_choose_type_callback(message, bot):
     if not query:
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message.locale.choose_type(bot)
+            text=message.locale.choose_type
         )
         bot.ask_question(answer, explore_choose_type_callback, 'location')
         return
@@ -216,16 +216,18 @@ class EnglishLocale(leonard.locale.EnglishLocale):
     thats_all = "That's all I can found 😬"
     exit = 'thanks'
 
-    def choose_location(self, bot):
+    @property
+    def choose_location(self):
         text = ("Where are you?\n\nSend me your location, "
                 "or answer 'default' if you have already sent it.\n\n" +
-                bot.get_locale('utils', self.language_code).question_explanation)
+                self.question_explanation)
         return text
 
-    def choose_type(self, bot):
+    @property
+    def choose_type(self):
         text = ("Where do you want to go? 🤔\n\nFor example, 'to drink', "
                 "'cheap place', 'restourant', 'for date'\n\n" +
-                bot.get_locale('utils', self.language_code).question_explanation)
+                self.question_explanation)
         return text
 
 
@@ -245,14 +247,16 @@ class RussianLocale(leonard.locale.RussianLocale):
     thats_all = "Это все, что я смог найти 😬"
     exit = 'всё'
 
-    def choose_location(self, bot):
+    @property
+    def choose_location(self):
         text = ("Где ты находишься?\n\nОтправь мне свое местоположение "
                 "или отправь 'обычное', если ты уже отправлял мне его\n\n" +
-                bot.get_locale('utils', self.language_code).question_explanation)
+                self.question_explanation)
         return text
 
-    def choose_type(self, bot):
+    @property
+    def choose_type(self):
         text = ("Куда ты хочешь пойти? 🤔\n\nНапример, 'выпить', "
                 "'дешевое место', 'ресторан', 'на свидание'\n\n" +
-                bot.get_locale('utils', self.language_code).question_explanation)
+                self.question_explanation)
         return text

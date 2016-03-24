@@ -77,3 +77,16 @@ class PluginLocale:
 class EnglishLocale:
     default = 'default'
     more = 'More'
+    question_explanation = ("You can answer question in 1 hour - "
+                            "or I will forget about it.\n"
+                            "If you don't want to answer - just send 'Oops' "
+                            "and consider it gone.")
+
+
+class RussianLocale:
+    default = 'Обычное'
+    more = 'Больше'
+    question_explanation =  ('Ты можешь ответить на вопрос в течение часа, '
+                             'потому что потом я могу забыть о нем.\n'
+                             'Если не хочешь отвечать, отправь "Ой" и '
+                             'будем считать, что ничего не было.')

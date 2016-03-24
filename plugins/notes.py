@@ -54,7 +54,7 @@ def add_note_message(message, bot):
     if not query:
         answer = leonard.OutgoingMessage(
             recipient=message.sender,
-            text=message.locale.enter_note(bot)
+            text=message.locale.enter_note
         )
         bot.ask_question(answer, add_note_callback, 'notes')
         return
@@ -241,10 +241,11 @@ class EnglishLocale(leonard.locale.EnglishLocale):
     how_see_all = "Send 'all notes' if you want to see more notes."
     note = '#{}, {} - «{}»\n'
 
-    def enter_note(self, bot):
+    @property
+    def enter_note(self):
         answer = ('What do you want to note? 📝\n\n(if note will be very long, ' +
                   'I will can save only first 1000 symbols)\n\n' +
-                  bot.get_locale('utils', self.language_code).question_explanation)
+                  self.question_explanation)
         return answer
 
 
@@ -269,9 +270,9 @@ class RussianLocale(leonard.locale.RussianLocale):
     how_see_all = 'Чтобы посмотреть все заметки, отправьте "все заметки".'
     note = '#{}, {} - «{}»\n'
 
-
-    def enter_note(self, bot):
+    @property
+    def enter_note(self):
         answer = ('Что ты хочешь записать? 📝\n\n(если заметка будет очень ' +
                   'большая, я смогу сохранить только первые 1000 символов)\n\n' +
-                   bot.get_locale('utils', self.language_code).question_explanation)
+                   self.question_explanation)
         return answer

@@ -21,10 +21,6 @@ def cancel_from_question(message, bot):
 class EnglishLocale:
     language_code = 'en'
     cancel_from_question = 'Fine.'
-    question_explanation = ("You can answer question in 1 hour - "
-                            "or I will forget about it.\n"
-                            "If you don't want to answer - just send 'Oops' "
-                            "and consider it gone.")
 
     def format_datetime(self, timestamp, utc_offset=0):
         local_time = time.gmtime(timestamp + utc_offset)
@@ -33,11 +29,7 @@ class EnglishLocale:
 
 class RussianLocale:
     language_code = 'ru'
-    cancel_from_question = 'Ладно.'
-    question_explanation =  ('Ты можешь ответить на вопрос в течение часа, '
-                             'потому что потом я могу забыть о нем.\n'
-                             'Если не хочешь отвечать, отправь "Ой" и '
-                             'будем считать, что ничего не было.')
+    cancel_from_question = 'Ладно.' 
     months = {
         1: ('Январь', 'Января'), 2: ('Февраль', 'Февраля'),
         3: ('Март', 'Марта'), 4: ('Апрель', 'Апреля'),
