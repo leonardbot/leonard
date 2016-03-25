@@ -4,8 +4,8 @@ MAINTAINER Seva Zhidkov
 
 ADD /leonard /leonard
 
-RUN pip install -r /leonard/requirements.txt --upgrade
-
 WORKDIR /leonard
+
+RUN pip install -r requirements.txt --upgrade
 
 ENTRYPOINT ['python', 'start.py', '--adapter telegram']
