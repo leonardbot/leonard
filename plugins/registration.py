@@ -106,7 +106,14 @@ class EnglishLocale(leonard.locale.EnglishLocale):
         'Your location is needed by many plugins, like news or weather. '
         'Please send me your location (not real, if real location is secret)'
     )
-    success_register = 'Hi! I want to be your friend :) BOT FUNCTIONS HERE'
+    success_register = (
+        """Hi! My name is Leonard and I'm bot.
+It is possible and necessary to chat with me with the human speech because natural communication the most valuable think we have.
+I'm improving all the time and you can write your feedback to seva@leonardbot.xyz and sk@leonardbot.xyz
+I can search in the Wikipedia, Wikihow, get taxi (using Uber), tell you weather, news and many different things.
+You can read more about me in https://medium.com/@sevazhidkov/leonard-bot-open-source-virtual-assistant-in-messengers-by-russian-school-students-e2b5d1aac9a5#.e2xdsduq5
+        """
+    )
 
 
 class RussianLocale(leonard.locale.RussianLocale):
@@ -117,7 +124,9 @@ class RussianLocale(leonard.locale.RussianLocale):
          ', если хотите сохранить его в секрете)'
     )
     success_register = (
-        'Привет! Я рад, что мы теперь друзья :) '
-        'Здесь будет описание различных возможностей бота, инструкция как '
-        'перерегистрироваться'
+        """Привет, меня зовут Леонард, и, как ни странно, я – бот.
+Со мной можно и нужно общаться на человеческом языке, ведь живое общение – самое ценное, что есть у нас. Я постоянно совершенствуюсь, поэтому свои предложения и замечания следует писать seva@leonardbot.xyz и sk@leonardbot.xyz
+Я могу: искать в интернете, давать подсказки на все случаи жизни, вызывать такси (если вам повезло жить в зоне действия Uber), узнавать погоду, последние новости и много что ещё.
+Подробнее обо мне можно узнать на https://medium.com/@sevazhidkov/leonard-bot-open-source-virtual-assistant-in-messengers-by-russian-school-students-e2b5d1aac9a5#.e2xdsduq5
+        """
     )

@@ -13,27 +13,21 @@ import leonard
 import schedule
 
 
-@leonard.hooks.message([''])
+@leonard.hooks.callback(lambda message, bot: True)
 def hello_message(message, bot):
     answer = leonard.OutgoingMessage(
         recipient=message.sender,
-        text=message.locale.hello_message,
+        text=message.locale.not_found,
         attachments=[]
     )
     bot.send_message(answer)
 
 
-@leonard.hooks.interval(schedule.every(5).minutes)
-def hello_interval(bot):
-    leonard.logger.info_message(bot.get_locale('hello', 'en').interval_message)
-
-
 class EnglishLocale(leonard.locale.EnglishLocale):
     language_code = 'en'
-    hello_message = 'Hi!'
-    interval_message = 'Hello from hello module'
+    not_found = "Sorry, I didn't understand you. You can find all functions in https://medium.com/@sevazhidkov/leonard-bot-open-source-virtual-assistant-in-messengers-by-russian-school-students-e2b5d1aac9a5#.e2xdsduq5"
 
 
 class RussianLocale(leonard.locale.RussianLocale):
     language_code = 'ru'
-    hello_message = 'Привет!'
+    not_found = "Извини, но я не понял тебя. Ты можешь посмотреть все мои функции на https://medium.com/@sevazhidkov/leonard-bot-open-source-virtual-assistant-in-messengers-by-russian-school-students-e2b5d1aac9a5#.e2xdsduq5"
