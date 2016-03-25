@@ -4,7 +4,7 @@ MAINTAINER Seva Zhidkov
 
 ADD /leonard /leonard
 
-RUN pip install -r /leonard/requirements.txt
+RUN pip install -r /leonard/requirements.txt --upgrade
 
 WORKDIR /leonard
 
