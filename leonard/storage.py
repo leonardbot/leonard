@@ -95,8 +95,10 @@ class Storage:
                               connected to this bot
         :return: list/dict
         """
-        json_value = json.loads(self.get(key, default_value).decode('utf-8'))
-        return json_value
+        value = self.get(key, default_value)
+        if type(value) not in [list, dict]:
+            return json.loads(value.decode('utf-8'))
+        return value
 
     def set_json(self, key, value):
         """
