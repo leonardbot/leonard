@@ -12,7 +12,7 @@ from leonard.utils import wikimarkup
 
 WIKIHOW_SEARCH_API = ('http://{}wikihow.com/api.php?action=query&list=search'
                       '&srnamespace=0&srprop=titlesnippet%7Csnippet&'
-                      'srsearch={}&format=json')
+                      'srsearch={}&format=json&srwhat=nearmatch')
 WIKIHOW_ARTICLE = 'http://{}wikihow.com/index.php?title={}&action=raw'
 
 
