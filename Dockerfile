@@ -6,6 +6,8 @@ ADD /leonard /leonard
 
 WORKDIR /leonard
 
-RUN pip install -r requirements.txt --upgrade
+RUN ls
+
+RUN ls
 
 ENTRYPOINT ['python', 'start.py', '--adapter telegram']
