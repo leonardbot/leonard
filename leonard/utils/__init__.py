@@ -217,3 +217,16 @@ def strip_tags(text):
     # Thanks @mmmdreg in http://stackoverflow.com/a/4869782/3945443
     # Also it function deleting date in squares in Wikipedia
     return re.sub('(<[^<]+?>|\(\d+?\))', '', text)
+
+
+def user_from_data(mongodb_data, database):
+    """
+    Create User object from MongoDB data.
+    It's useful if you found users throw database.find() function
+    and want send message to them
+
+    :param mongodb_data: dict
+    :param database: Database object
+    :return: User object
+    """
+    return User(mongodb_data['adapter_id'], mongodb_data, database)

@@ -21,6 +21,8 @@ def page_exists(message, bot):
     Check, is in the Wikihow article about user's requests
     Saves article title in message.variables and returns True/False
     """
+    if 'language' not in message.sender.data:
+        return False
     url = WIKIHOW_SEARCH_API.format(bot.get_locale(
                                         'wikihow',
                                         message.sender.data['language']

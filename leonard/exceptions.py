@@ -30,7 +30,7 @@ def catch_module_errors(module_call_function):
     """
     def wrapper(*args, **kwargs):
         try:
-            module_call_function(*args, **kwargs)
+            return module_call_function(*args, **kwargs)
         except Exception as error:
             error_message = str(error)
             logger.error_message('Module error: \n' + error_message)
