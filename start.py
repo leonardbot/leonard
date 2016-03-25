@@ -1,4 +1,6 @@
+import os
 import argparse
+import bugsnag
 from leonard import Leonard
 
 parser = argparse.ArgumentParser(description='Start bot')
@@ -12,4 +14,13 @@ args = parser.parse_args()
 bot = Leonard({'config-prefix': args.config_prefix,
                'adapter': args.adapter})
 
-bot.start()
+bugsnag.configure(
+  api_key=os.environ.get('LEONARD_BUGSNAG_KEY', ''),
+  project_root=os.getcwd(),
+  release_stage=os.environ.get('ENV', 'development')
+)
+
+try:
+    bot.start()
+except Exception as error:
+    bugsnag.notify(error)

@@ -72,6 +72,7 @@ class MessageHook(Hook):
         self.case_sensitive = case_sensitive
         self.normalize = normalize
 
+    @catch_module_errors
     def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
@@ -146,6 +147,7 @@ class CommandHook(Hook):
         self.func = user_function
         self.command = command
 
+    @catch_module_errors
     def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
@@ -199,6 +201,7 @@ class CallbackHook(Hook):
         self.func = user_function
         self.callback_func = callback_func
 
+    @catch_module_errors
     def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
@@ -256,6 +259,7 @@ class KeywordsHook(Hook):
         self.keywords_list = keywords_list
         self.normalize = normalize
 
+    @catch_module_errors
     def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
@@ -329,6 +333,7 @@ class StartEndHook(Hook):
         self.words = words
         self.normalize = normalize
 
+    @catch_module_errors
     def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
@@ -451,6 +456,7 @@ class RossHook(Hook):
         self.func = user_function
         self.params = params
 
+    @catch_module_errors
     def check(self, incoming_message, bot):
         """
         Check, is this message catching for this hook
