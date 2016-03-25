@@ -2,12 +2,10 @@ FROM python:3.4.4-wheezy
 
 MAINTAINER Seva Zhidkov
 
-ADD /leonard /leonard
+ADD . /leonard
 
 WORKDIR /leonard
 
-RUN ls
+RUN pip3 install -r requirements.txt --upgrade
 
-RUN ls
-
-ENTRYPOINT ['python', 'start.py', '--adapter telegram']
+CMD python3 start.py --adapter telegram
