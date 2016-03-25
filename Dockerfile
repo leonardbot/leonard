@@ -8,4 +8,4 @@ RUN pip install -r /leonard/requirements.txt --upgrade
 
 WORKDIR /leonard
 
-CMD ['python', 'start.py', '--adapter telegram']
+ENTRYPOINT ['python', 'start.py', '--adapter telegram']
