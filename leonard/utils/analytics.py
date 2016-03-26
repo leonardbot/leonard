@@ -37,6 +37,7 @@ def track_message(message, adapter, plugin, bot):
             url, data=json.dumps(message),
             headers={'Content-type': 'application/json'}
         )
+        print(response.text)
         return response
     except (requests.exceptions.Timeout, requests.exceptions.RequestException):
         return None
