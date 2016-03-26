@@ -96,6 +96,8 @@ class Storage:
         :return: list/dict
         """
         value = self.get(key, default_value)
+        if not value:
+            return value
         if type(value) not in [list, dict]:
             return json.loads(value.decode('utf-8'))
         return value
