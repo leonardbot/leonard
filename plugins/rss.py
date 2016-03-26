@@ -10,6 +10,7 @@ from plugins.news import get_news_data
 
 MEDIA_LIST = [(('buzzfeed', 'bf'), 'http://www.buzzfeed.com/index.xml'),
               (('re/code', 'recode', 'r/c'), 'http://recode.net/feed/'),
+              (('tnw', 'the next web', 'thenextweb'), 'http://feeds2.feedburner.com/thenextweb'),
               (('vc', 'vc.ru', 'цукерберг позвонит'), 'https://vc.ru/feed'),
               (('tj', 'tjournal', 'тж'), 'https://tjournal.ru/rss')]
 
