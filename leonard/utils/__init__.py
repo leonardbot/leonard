@@ -27,7 +27,7 @@ REPLACE_WORDS = [
                  'hey', 'hi', 'leo', 'i need', 'hm', 'well',
                  'i want', 'tell me', 'do you know', 'so',
                  'you know', 'how', 'what', 'who', 'are',
-                 'how is', 'what is', 'who is', 'is',
+                 'how is', 'what is', 'who is', 'is', 'oh',
                  'me', 'say', 'sorry', 'can', 'you', 'give',
                  'need', 'for', 'please', 'but', 'about',
                  'эй', 'бот', 'ок', 'леонард', 'дай', 'подай',

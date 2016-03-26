@@ -8,7 +8,7 @@ import time
 import json
 import requests
 import leonard
-from leonard.utils import wikimarkup
+from leonard.utils import wikimarkup, clean_message
 
 WIKIHOW_SEARCH_API = ('http://{}wikihow.com/api.php?action=query&list=search'
                       '&srnamespace=0&srprop=titlesnippet%7Csnippet&'
@@ -37,13 +37,21 @@ def page_exists(message, bot):
         response = requests.get(url).text
         bot.storage.set('url["{}"]'.format(url), response)
     response = json.loads(response)
-    # If there is a results, so save first in variables and return True
-    if response['query']['search']:
-        message.variables['wikihow_title'] = (
-            response['query']['search'][0]['title'].replace(' ', '+')
-        )
-        return True
-    return False
+    # If there is no result, return False
+    if 'search' not in response['query']:
+        return False
+    # If there is no intersection between title words and user's query words,
+    # so return False.
+    # Otherwise return True and save Wikihow title
+    title = response['query']['search'][0]['title']
+    title_words = clean_message(title).split()
+    message_words = message.normalizated_text.split()
+    if not set(title_words).intersection(set(message_words)):
+        return False
+    message.variables['wikihow_title'] = (
+        title.replace(' ', '+')
+    )
+    return True
 
 
 @leonard.hooks.callback(page_exists)

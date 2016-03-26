@@ -13,9 +13,11 @@ import re
 from leonard.utils import split_message
 
 REF_TAG = '<ref>.+?</ref>'
-DELETE_TAGS = ['{{fa}}', '{{reflist}}', '{{nointroimg}}', '__PARTS__', '<br>']
+DELETE_TAGS = ['{{fa}}', '{{reflist}}', '{{nointroimg}}', '__PARTS__', '<br>',
+               '__Part__']
 IMAGE_TAG_RE = '\[\[Image:.+?\]\]'
 WHVID_RE = '\{\{whvid\|.+?\}\}'
+STUB_RE = '\{\{Stub\|.+?\}\}'
 CATEGORY_TAG_RE = '\[\[Category:.+?\]\]'
 ARTICLE_LINK_RE = '\[\[.+?\|(.+?)\]\]'
 WIKI_LINK_RE = '\[\[(.+?)\]\]'
@@ -36,7 +38,7 @@ def parse_square_brackets(markup):
     # Save only text from articles links
     markup = re.sub(ARTICLE_LINK_RE, lambda match: match.group(1), markup)
     # Delete other tags
-    markup = re.sub(WIKI_LINK_RE, '', markup)
+    markup = re.sub(WIKI_LINK_RE, lambda match: match.group(1), markup)
     return markup
 
 
@@ -84,6 +86,8 @@ def parse_wikihow_markup(markup):
     markup = re.sub(REF_TAG, '', markup)
     # Delete whvid tags
     markup = re.sub(WHVID_RE, '', markup)
+    # Delete stub tags
+    markup = re.sub(STUB_RE, '', markup)
     # Delete square-brackets tags from markup
     markup = parse_square_brackets(markup)
     # Make Wikihow lists more beautiful
