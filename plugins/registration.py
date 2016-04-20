@@ -107,8 +107,8 @@ class EnglishLocale(leonard.locale.EnglishLocale):
         'Please send me your location (not real, if real location is secret)'
     )
     success_register = (
-        """Hi! My name is Leonard and I'm bot.
-It is possible and necessary to chat with me with the human speech because natural communication the most valuable think we have.
+        """Hi! My name is Leonard and I'm a bot.
+It is possible and necessary to chat with me with the human speech because natural communication is the most valuable think we have.
 I'm improving all the time and you can write your feedback to seva@leonardbot.xyz and sk@leonardbot.xyz
 I can search in the Wikipedia, Wikihow, get taxi (using Uber), tell you weather, news and many different things.
 You can read more about me in https://medium.com/@sevazhidkov/leonard-bot-open-source-virtual-assistant-in-messengers-by-russian-school-students-e2b5d1aac9a5#.e2xdsduq5
