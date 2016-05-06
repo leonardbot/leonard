@@ -279,7 +279,6 @@ class Leonard:
             schedule.run_pending()
             time.sleep(1)
 
-    @exceptions.catch_module_errors
     def send_message(self, message):
         """
         Send outgoing message from plugin
@@ -290,7 +289,6 @@ class Leonard:
         logger.info_message('Sending message', message)
         self.adapter.module.send_message(message, self)
 
-    @exceptions.catch_module_errors
     def ask_question(self, message, callback, plugin_name):
         """
         Ask about something the user from plugin.
